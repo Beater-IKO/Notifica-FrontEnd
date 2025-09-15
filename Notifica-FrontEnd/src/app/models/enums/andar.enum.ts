@@ -1,0 +1,6 @@
+export enum Andar {
+  SUBSOLO = "SUBSOLO",
+  TERREO = "TERREO",
+  PRIMEIRO = "PRIMEIRO",
+  SEGUNDO = "SEGUNDO"
+}
