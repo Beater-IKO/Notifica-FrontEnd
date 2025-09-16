@@ -5,6 +5,8 @@ import { UsuarioslistComponent } from './components/usuarios/usuarioslist/usuari
 import { UsuariosdetailsComponent } from './components/usuarios/usuariosdetails/usuariosdetails.component';
 import { SalaslistComponent } from './components/salas/salaslist/salaslist.component';
 import { SalasdetailsComponent } from './components/salas/salasdetails/salasdetails.component';
+import { CursoslistComponent } from './components/cursos/cursoslist/cursoslist.component';
+import { CursosdetailsComponent } from './components/cursos/cursosdetails/cursosdetails.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -19,7 +21,10 @@ export const routes: Routes = [
       { path: 'usuarios/edit/:id', component: UsuariosdetailsComponent },
       { path: 'salas', component: SalaslistComponent },
       { path: 'salas/new', component: SalasdetailsComponent },
-      { path: 'salas/edit/:id', component: SalasdetailsComponent }
+      { path: 'salas/edit/:id', component: SalasdetailsComponent },
+      { path: 'cursos', component: CursoslistComponent },
+      { path: 'cursos/new', component: CursosdetailsComponent },
+      { path: 'cursos/edit/:id', component: CursosdetailsComponent }
 
     ]
   }
