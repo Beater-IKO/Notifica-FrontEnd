@@ -1,12 +1,24 @@
-import { Routes } from '@angular/router';
+import { CriacaoTicketsComponent } from './components/criacao-tickets/criacao-tickets.component';
+import { HistoricoTicketsComponent } from './components/historico-tickets/historico-tickets.component';
 import { LoginComponent } from './components/layout/login/login.component';
 import { PrincipalComponent } from './components/layout/principal/principal.component';
-import { UsuarioslistComponent } from './components/usuarios/usuarioslist/usuarioslist.component';
-import { UsuariosdetailsComponent } from './components/usuarios/usuariosdetails/usuariosdetails.component';
-import { SalaslistComponent } from './components/salas/salaslist/salaslist.component';
 import { SalasdetailsComponent } from './components/salas/salasdetails/salasdetails.component';
+import { SalaslistComponent } from './components/salas/salaslist/salaslist.component';
+import { TicketsAndamentosComponent } from './components/tickets-andamentos/tickets-andamentos.component';
+import { TicketsFinalizadosComponent } from './components/tickets-finalizados/tickets-finalizados.component';
+import { Routes } from '@angular/router';
+import { UsuariosdetailsComponent } from './components/usuarios/usuariosdetails/usuariosdetails.component';
+import { UsuarioslistComponent } from './components/usuarios/usuarioslist/usuarioslist.component';
 
-export const routes: Routes = [
+export const routes: Routes = [  {
+    path: 'criacao-tickets',
+    component: CriacaoTicketsComponent,
+  },
+
+  { path: 'historico', component: HistoricoTicketsComponent },
+  { path: 'andamentos', component: TicketsAndamentosComponent },
+  { path: 'finalizados', component: TicketsFinalizadosComponent },
+
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
 
@@ -23,5 +35,4 @@ export const routes: Routes = [
 
     ]
   }
-
-]
+];
