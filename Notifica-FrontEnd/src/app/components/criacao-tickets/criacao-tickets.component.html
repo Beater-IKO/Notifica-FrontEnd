@@ -1,26 +1,42 @@
-<div class="container">
+<div class="container ">
 
     <div class="row">
 
 
-        <div class="col-lg-4"></div>
+        <div class="col-lg-3 centralizar topo">
+
+            <div class="card ">
+                <div class="card-body">
+                    <router-outlet></router-outlet>
+
+
+                    <div class="container-buttons">
+                        <button routerLink="/criacao-tickets" class="btn btn-light btn-rounded fs-5 border"
+                            data-mdb-ripple-init>
+                            Criar tickets
+                        </button>
+
+                        <button routerLink="/andamentos" class="btn btn-light btn-rounded fs-5 border"
+                            data-mdb-ripple-init>
+                            Tickets em andamentos
+                        </button>
+
+                        <button routerLink="/finalizados" class="btn btn-light btn-rounded fs-5 border"
+                            data-mdb-ripple-init>
+                            Tickets finalizados
+                        </button>
+
+                        <button routerLink="/historico" class="btn btn-light btn-rounded fs-5 border"
+                            data-mdb-ripple-init>
+                            Histórico de tickets
+                        </button>
+                    </div>
 
 
 
-        <div class="col-lg-4">
 
-            <div class="card">
-  <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <button type="button" class="btn btn-primary" data-mdb-ripple-init>Button</button>
-  </div>
-</div>
-
-
-
-
-
+                </div>
+            </div>
 
 
 
@@ -28,13 +44,277 @@
 
 
 
-        <div class="col-lg-4"></div>
+        <div class="col-lg-9 centralizar topo  ">
+
+            <div class="card cardDireita">
+                <div class="card-body ">
+
+
+                    <div class="titulo">
+
+
+
+                        <div class="selecao-andar">
+                            <h5>Salas</h5>
+
+                            <div class="row mt-3">
+
+
+                                <div class="col-6">
+
+
+                                    <select class="form-select mb-9 seletor-pequeno" [(ngModel)]="sala">
+                                        <option value="" disabled selected>Selecione uma sala</option>
+                                        <option *ngFor="let salaOpcao of salas" [value]="salaOpcao">{{ salaOpcao }}
+                                        </option>
+                                    </select>
+
+
+
+                                </div>
+
+
+
+                            </div>
+
+
+
+
+
+                        </div>
+                        <div class="area-faculdade">
+
+                            <h5>Área da faculdade</h5>
+
+                            <div class="row mt-3">
+
+                                <div class="col-6">
+
+
+                                    <button type="button" class="btn w-80" (click)="selecionarArea('INTERNA')"
+                                        [class.btn-warning]="area === 'INTERNA'"
+                                        [class.btn-outline-warning]="area !== 'INTERNA'">Interna</button>
+
+
+                                </div>
+
+                                <div class="col-6">
+                                    <button type="button" class="btn w-80" (click)="selecionarArea('EXTERNA')"
+                                        [class.btn-warning]="area === 'EXTERNA'"
+                                        [class.btn-outline-warning]="area !== 'EXTERNA'">Externa</button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="selecao-andar">
+                            <h5>Selecione o andar</h5>
+
+                            <div class="row mt-3">
+
+
+                                <div class="col-6">
+
+
+
+                                    <button type="button" class="btn w-80 d-block" (click)="selecionarAndar('1º Andar')"
+                                        [class.btn-secondary]="andar === '1º Andar'"
+                                        [class.btn-outline-secondary]="andar !== '1º Andar'">1º Andar</button>
+
+                                    <button type="button" class="btn mt-2 w-80 d-block"
+                                        (click)="selecionarAndar('2º Andar')"
+                                        [class.btn-secondary]="andar === '2º Andar'"
+                                        [class.btn-outline-secondary]="andar !== '2º Andar'">2º Andar</button>
+
+
+
+                                </div>
+                                <div class="col-6">
+
+                                    <button type="button" class="btn w-80 d-block" (click)="selecionarAndar('3º Andar')"
+                                        [class.btn-secondary]="andar === '3º Andar'"
+                                        [class.btn-outline-secondary]="andar !== '3º Andar'">3º Andar</button>
+
+                                    <button type="button" class="btn mt-2 w-80 d-block"
+                                        (click)="selecionarAndar('4º Andar')"
+                                        [class.btn-secondary]="andar === '4º Andar'"
+                                        [class.btn-outline-secondary]="andar !== '4º Andar'">4º Andar</button>
+
+
+
+                                </div>
+
+
+                            </div>
+
+
+
+
+
+                        </div>
+                        <div class="grau-prioridade">
+                            <h5>Grau de prioridade</h5>
+
+                            <div class="row mt-3">
+
+
+                                <div class="col-6">
+
+
+
+                                    <button type="button" class="btn w-100" (click)="selecionarPrioridade('LEVE')"
+                                        [class.btn-success]="prioridade === 'LEVE'"
+                                        [class.btn-outline-success]="prioridade !== 'LEVE'">Leve</button>
+
+
+                                    <button type="button" class="btn mt-2 w-100" (click)="selecionarPrioridade('MEDIO')"
+                                        [class.btn-info]="prioridade === 'MEDIO'"
+                                        [class.btn-outline-info]="prioridade !== 'MEDIO'">Médio</button>
+
+
+
+                                </div>
+                                <div class="col-6">
+
+                                    <button type="button" class="btn w-100" (click)="selecionarPrioridade('ALTO')"
+                                        [class.btn-warning]="prioridade === 'ALTO'"                                                                                                                                                                                                                                 
+                                        [class.btn-outline-warning]="prioridade !== 'ALTO'">Alto</button>
+
+                                    <button type="button" class="btn mt-2 w-100"
+                                        (click)="selecionarPrioridade('URGENTE')"
+                                        [class.btn-danger]="prioridade === 'URGENTE'"
+                                        [class.btn-outline-danger]="prioridade !== 'URGENTE'">Urgente</button>
+
+
+
+                                </div>
+
+
+                            </div>
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+                    </div>
+
+                    <div class="selecao-de-problemas">
+
+                        <div class="selecao-problemas">
+
+                            <div class="titulo-selecione-problema">
+                                <h5>Selecione o tipo do problema: </h5>
+                            </div>
+                            <div class="row mt-3">
+
+                                <select class="form-select mb-9 seletor-pequeno-problemas" [(ngModel)]="tipoSelecionado"
+                                    (change)="selecionarTipo($event)">
+                                    <option value="" disabled selected>Selecione o tipo de problema</option>
+                                    <option *ngFor="let tipo of tipoProblemas" [value]="tipo.nome">{{ tipo.nome }}
+                                    </option>
+                                </select>
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="selecao-subproblemas">
+
+                            <div class="titulo-selecione-subproblema">
+                                <h5>Selecione o subtipo do problema: </h5>
+                            </div>
+                            <div class="row mt-3">
+                                <select class="form-select mb-9 seletor-pequeno-subproblemas"
+                                    [(ngModel)]="subtipoSelecionado" [disabled]="!tipoSelecionado">
+                                    <option value="" disabled selected>Selecione o subtipo de problema</option>
+                                    <option *ngFor="let subtipo of subtiposDisponiveis" [value]="subtipo">{{ subtipo }}
+                                    </option>
+                                </select>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                    <div class="selecao-texto-adicional">
+
+                        <div class="selecao-adicional-texto">
+
+                            <div class="titulo-descricao-adicional">
+                                <h5>Descricão adicional: </h5>
+                            </div>
+                            <div class="row mt-3">
+
+                                <div class="area-adicional">
+                                    <div class="form-outline mb-4 texto-adicional border-3 rounded-3">
+                                        <textarea class="form-control" id="descricaoTicket" rows="4" maxlength="200"
+                                            [(ngModel)]="problema"></textarea>
+                                        <label class="form-label" for="descricaoTicket">Descrição</label>
+                                        <div class="char-counter">
+                                            {{ problema.length || 0 }}/200
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+
+
+                    <button type="button" class="btn btn-primary btn-enviar" (click)="criarTicket()"
+                        data-mdb-ripple-init>Enviar</button>
+
+
+                    <div class="imagem">
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Selecione uma imagem</label>
+                            <input class="form-control" type="file" id="formFile" accept="image/*">
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+        </div>
+
+
+
 
 
 
 
 
     </div>
+
+
+
 
 
 

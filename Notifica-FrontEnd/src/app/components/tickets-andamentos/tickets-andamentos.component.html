@@ -1,0 +1,90 @@
+<div class="container ">
+
+    <div class="row">
+
+
+        <div class="col-lg-3 centralizar topo">
+
+            <div class="card ">
+                <div class="card-body">
+                    <router-outlet></router-outlet>
+
+
+                   <div class="container-buttons">
+                        <button routerLink="/criacao-tickets" class="btn btn-light btn-rounded fs-5 border"
+                            data-mdb-ripple-init>
+                            Criar tickets
+                        </button>
+
+                        <button routerLink="/andamentos" class="btn btn-light btn-rounded fs-5 border"
+                            data-mdb-ripple-init>
+                            Tickets em andamentos
+                        </button>
+
+                        <button routerLink="/finalizados" class="btn btn-light btn-rounded fs-5 border"
+                            data-mdb-ripple-init>
+                            Tickets finalizados
+                        </button>
+
+                        <button routerLink="/historico" class="btn btn-light btn-rounded fs-5 border"
+                            data-mdb-ripple-init>
+                            Histórico de tickets
+                        </button>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+
+        <div class="col-lg-9 centralizar topo  ">
+
+            <div class="card cardDireita">
+                <div class="card-body ">
+
+                    <h3>Tickets em Andamento</h3>
+                    
+                    <div *ngIf="tickets.length === 0" class="alert alert-info">
+                        Nenhum ticket em andamento encontrado.
+                    </div>
+
+                    <div *ngFor="let ticket of tickets" class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Ticket #{{ ticket.id }}</h5>
+                            <p class="card-text">{{ ticket.problema }}</p>
+                            <span class="badge bg-warning">{{ ticket.prioridade }}</span>
+                            <span class="badge bg-info ms-2">{{ ticket.area }}</span>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+</div>

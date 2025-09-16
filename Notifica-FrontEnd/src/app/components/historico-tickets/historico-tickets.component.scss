@@ -1,0 +1,106 @@
+.topo {
+  top: 10vh;
+  position: relative;
+}
+.card {
+  height: 80vh;
+}
+
+.container-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10vh;
+}
+
+.seletor-pequeno {
+  width: 15vh;
+  margin-right: 2vh;
+}
+
+.titulo {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.cardDireita {
+  display: flex;
+  width: 155vh;
+}
+
+.container {
+  margin-right: 33vh;
+}
+
+.selecao-problemas {
+  width: 55vh;
+  display: flex;
+}
+.seletor-pequeno-problemas {
+  width: 20vh;
+  margin-left: 2vh;
+  margin-top: 10vh;
+}
+.titulo-selecione-problema {
+  margin-top: 13vh;
+}
+
+.selecao-subproblemas {
+  width: 60vh;
+  display: flex;
+}
+
+.titulo-selecione-subproblema {
+  margin-top: -8vh;
+}
+
+.seletor-pequeno-subproblemas {
+  margin-left: 2vh;
+  margin-top: -11vh;
+}
+
+.selecao-de-problemas {
+  margin-top: -10vh;
+}
+
+.texto-adicional {
+  width: 40vh;
+  background-color: rgba(211, 209, 209, 0.807);
+}
+
+textarea {
+  resize: none;
+}
+
+.area-adicional {
+    margin-left: 1vh;
+  
+}
+
+.selecao-texto-adicional {
+  margin-top: -10vh;
+}
+
+.selecao-adicional-texto {
+  width: 55vh;
+  display: flex;
+}
+
+.titulo-descricao-adicional {
+  margin-top: 2vh;
+  white-space: nowrap;
+}
+
+.btn-enviar{
+
+    display: flex;
+    margin-left: 0vh;
+    margin-top: 5vh;
+
+}
+
+.imagem{
+  display: flex;
+  margin-left: 95vh;
+margin-top: -10vh;
+width: 60vh;
+}
