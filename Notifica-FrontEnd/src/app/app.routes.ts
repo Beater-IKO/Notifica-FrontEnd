@@ -9,6 +9,8 @@ import { TicketsFinalizadosComponent } from './components/tickets-finalizados/ti
 import { Routes } from '@angular/router';
 import { UsuariosdetailsComponent } from './components/usuarios/usuariosdetails/usuariosdetails.component';
 import { UsuarioslistComponent } from './components/usuarios/usuarioslist/usuarioslist.component';
+import { CursosdetailsComponent } from './components/cursos/cursosdetails/cursosdetails.component';
+import { CursoslistComponent } from './components/cursos/cursoslist/cursoslist.component';
 
 export const routes: Routes = [  {
     path: 'criacao-tickets',
@@ -31,7 +33,10 @@ export const routes: Routes = [  {
       { path: 'usuarios/edit/:id', component: UsuariosdetailsComponent },
       { path: 'salas', component: SalaslistComponent },
       { path: 'salas/new', component: SalasdetailsComponent },
-      { path: 'salas/edit/:id', component: SalasdetailsComponent }
+      { path: 'salas/edit/:id', component: SalasdetailsComponent },
+      { path: 'cursos', component: CursoslistComponent },
+      { path: 'cursos/new', component: CursosdetailsComponent },
+      { path: 'cursos/edit/:id', component: CursosdetailsComponent }
 
     ]
   }
