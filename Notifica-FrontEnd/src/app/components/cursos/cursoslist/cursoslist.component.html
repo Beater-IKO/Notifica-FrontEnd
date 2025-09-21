@@ -27,7 +27,14 @@
                 <td>{{ curso.id }}</td>
                 <td>{{ curso.nome }}</td>
                 <td>{{ curso.duracao }}</td>
-                <td>{{ curso.sala || 0 }}</td>
+                <td>
+                  <ng-container *ngIf="curso.salas && curso.salas.length > 0; else semSala">
+                    <span *ngFor="let sala of curso.salas; let isLast = last">
+                      {{ sala.numero }}{{ !isLast ? ', ' : '' }}
+                    </span>
+                  </ng-container>
+                  <ng-template #semSala>N/A</ng-template>
+                </td>
                 <td class="">
                   <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="edit(curso)">
                     Editar

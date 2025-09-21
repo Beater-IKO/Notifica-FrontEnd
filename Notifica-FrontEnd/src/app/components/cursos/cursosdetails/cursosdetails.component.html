@@ -4,23 +4,18 @@
       <div class="card">
         <div class="card-body">
 
-          <mdb-form-control class="mb-4" *ngIf="curso.id">
-            <input mdbInput type="text" id="id" class="form-control" [(ngModel)]="cursos.id" [disabled]="true" />
-            <label mdbLabel class="form-label" for="id">ID</label>
-          </mdb-form-control>
-
           <mdb-form-control class="mb-4">
             <input mdbInput type="text" id="nome" class="form-control" [(ngModel)]="cursos.nome" required />
             <label mdbLabel class="form-label" for="nome">NOME</label>
           </mdb-form-control>
 
           <mdb-form-control class="mb-4">
-            <input mdbInput type="text" id="duracao" class="form-control" [(ngModel)]="cursos.duracao" [disabled]="true" />
+            <input mdbInput type="text" id="duracao" class="form-control" [(ngModel)]="cursos.duracao" required />
             <label mdbLabel class="form-label" for="duracao">DURAÇÃO</label>
           </mdb-form-control>
 
           <mdb-form-control class="mb-4">
-            <input mdbInput type="text" id="sala" class="form-control" [(ngModel)]="cursos.sala" [disabled]="true" />
+            <input mdbInput type="text" id="sala" class="form-control" [(ngModel)]="cursos.sala" required>
             <label mdbLabel class="form-label" for="sala">SALA</label>
           </mdb-form-control>
 

@@ -1,1 +1,52 @@
-<p>usuariosdetails works!</p>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+
+          <mdb-form-control class="mb-4" ngI>
+            <input mdbInput type="text" id="nome" class="form-control" [(ngModel)]="usuarios.nome" required />
+            <label mdbLabel class="form-label" for="nome">NOME</label>
+          </mdb-form-control>
+
+          <mdb-form-control class="mb-4">
+            <input mdbInput type="text" id="cpf" class="form-control" [(ngModel)]="usuarios.cpf" required />
+            <label mdbLabel class="form-label" for="cpf">CPF</label>
+          </mdb-form-control>
+
+          <mdb-form-control class="mb-4">
+            <input mdbInput type="email" id="email" class="form-control" [(ngModel)]="usuarios.email" required />
+            <label mdbLabel class="form-label" for="email">EMAIL</label>
+          </mdb-form-control>
+
+          <mdb-form-control class="mb-4">
+            <input mdbInput type="password" id="senha" class="form-control" [(ngModel)]="usuarios.senha" required />
+            <label mdbLabel class="form-label" for="email">SENHA</label>
+          </mdb-form-control>
+
+          <mdb-form-control class="mb-4">
+            <input mdbInput type="text" id="role" class="form-control" [(ngModel)]="usuarios.role" />
+            <label mdbLabel class="form-label" for="role">ROLE</label>
+          </mdb-form-control>
+
+          <mdb-form-control class="mb-4">
+            <label for="sala">Sala</label>
+            <select [(ngModel)]="salaSelecionadaId" name="sala" class="form-control">
+              <option [ngValue]="null">-- Nenhuma --</option>
+              <option *ngFor="let sala of listaDeSalas" [ngValue]="sala.id">
+                {{ sala.numero }} - {{ sala.andar }}
+              </option>
+            </select>
+
+          </mdb-form-control>
+
+
+
+          <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="save()">
+            Salvar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

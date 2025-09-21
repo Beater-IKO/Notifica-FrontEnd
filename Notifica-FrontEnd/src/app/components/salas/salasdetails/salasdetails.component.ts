@@ -21,8 +21,7 @@ export class SalasdetailsComponent {
   constructor() { }
 
   save() {
-    const isEdit = this.salas.id !== undefined && this.salas.id !== null;
-
+    const isEdit = !!this.salas.id;
 
     this.salaService.save(this.salas)?.subscribe({
       next: (salaSalva: Sala) => {

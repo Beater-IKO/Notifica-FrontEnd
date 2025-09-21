@@ -1,1 +1,66 @@
-<p>usuarioslist works!</p>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h3>Lista de Usuarios</h3>
+          <div class="direita">
+            <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="new()">
+              Nova Usuario
+            </button>
+          </div>
+          <br />
+
+          <table border="1" class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Cpf</th>
+                <th>Email</th>
+                <th>Senha</th>
+                <th>Role</th>
+                <th>Sala</th>
+                <th>Tickets</th>
+                <th>AÇÕES</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (usuario of lista; track $index) {
+              <tr>
+                <td>{{ usuario.id }}</td>
+                <td>{{ usuario.nome }}</td>
+                <td>{{ usuario.cpf }}</td>
+                <td>{{ usuario.email }}</td> <!-- Assumindo que Curso tem um campo 'nome' -->
+                <td>{{ usuario.senha }}</td>
+                <td>{{ usuario.role }}</td>
+                <td>{{ usuario.sala?.numero || 'N/A' }}</td>
+
+                <td>{{ usuario.tickets?.length }}</td>
+                <td class="">
+                  <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="edit(usuario)">
+                    Editar
+                  </button>
+                  <button type="button" class="btn btn-danger btn-rounded" mdbRipple (click)="deleteById(usuario)">
+                    Deletar
+                  </button>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #modalUsuarioDetalhe>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Cadastro</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef.close()"></button>
+  </div>
+  <div class="modal-body">
+    <app-usuariosdetails [usuarios]="UsuarioEdit" (retorno)="retornoDetalhe($event)"></app-usuariosdetails>
+  </div>
+</ng-template>
