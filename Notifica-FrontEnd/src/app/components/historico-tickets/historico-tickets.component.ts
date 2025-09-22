@@ -46,7 +46,7 @@ export class HistoricoTicketsComponent implements OnInit {
   carregarTickets() {
     this.http.get<any[]>('http://localhost:8080/api/tickets').subscribe({
       next: (response) => {
-        // Show all tickets for history
+        // Mostra todos os tickets para o histórico
         this.tickets = response;
       },
       error: (error) => {

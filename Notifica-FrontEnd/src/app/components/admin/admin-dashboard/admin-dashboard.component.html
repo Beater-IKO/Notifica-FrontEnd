@@ -1,8 +1,8 @@
 <app-header></app-header>
 
-<!-- Main Container -->
+<!-- Container Principal -->
 <div class="main-container">
-  <!-- Sidebar -->
+  <!-- Barra Lateral -->
   <aside class="sidebar">
     <nav class="sidebar-nav">
       <button 
@@ -18,9 +18,9 @@
     </div>
   </aside>
 
-  <!-- Content Area -->
+  <!-- Área de Conteúdo -->
   <main class="content-area">
-    <!-- Tickets Section -->
+    <!-- Seção de Tickets -->
     <div *ngIf="currentView !== 'usuarios'">
       <section class="tickets-section">
         <div class="section-header">
@@ -30,7 +30,7 @@
           </div>
         </div>
         
-        <!-- Advanced Filters -->
+        <!-- Filtros Avançados -->
         <div class="filters-section" *ngIf="currentView !== 'usuarios'">
           <div class="filter-group">
             <label>Sala:</label>
@@ -69,7 +69,7 @@
           </div>
         </div>
         
-        <!-- Salas Quick Access -->
+        <!-- Acesso Rápido às Salas -->
         <div class="salas-section" *ngIf="currentView === 'salas'">
           <h4>Selecione uma Sala:</h4>
           <div class="salas-grid">
@@ -124,7 +124,7 @@
 
     </div>
 
-    <!-- Users Management Section -->
+    <!-- Seção de Gerenciamento de Usuários -->
     <div *ngIf="currentView === 'usuarios'" class="users-section">
       <div class="section-header">
         <h2>{{ getCurrentViewTitle() }}</h2>

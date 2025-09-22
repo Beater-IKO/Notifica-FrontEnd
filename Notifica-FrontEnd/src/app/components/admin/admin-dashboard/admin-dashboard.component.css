@@ -1,6 +1,6 @@
-/* Admin Dashboard Specific Styles */
+/* Estilos Específicos do Dashboard do Admin */
 
-/* Section Header */
+/* Cabeçalho da Seção */
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -14,7 +14,7 @@
   align-items: center;
 }
 
-/* Users Section */
+/* Seção de Usuários */
 .users-section {
   padding: 20px;
 }
@@ -87,7 +87,7 @@
   font-size: 16px;
 }
 
-/* User Modal */
+/* Modal de Usuário */
 .user-modal {
   background: white;
   border-radius: 15px;
@@ -98,7 +98,7 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* Role Warning */
+/* Aviso de Função */
 .role-warning {
   color: #856404;
   font-size: 12px;
@@ -106,7 +106,7 @@
   display: block;
 }
 
-/* Filters Section */
+/* Seção de Filtros */
 .filters-section {
   display: flex;
   gap: 15px;
@@ -136,7 +136,7 @@
   font-size: 13px;
 }
 
-/* Salas Section */
+/* Seção de Salas */
 .salas-section {
   padding: 20px 25px;
   background: #f8f9fa;
@@ -184,7 +184,7 @@
   font-size: 13px;
 }
 
-/* User Photo in Table */
+/* Foto do Usuário na Tabela */
 .user-photo-cell {
   display: flex;
   justify-content: center;

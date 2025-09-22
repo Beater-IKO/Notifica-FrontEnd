@@ -1,4 +1,4 @@
-/* Global Styles */
+/* Estilos Globais */
 * {
   margin: 0;
   padding: 0;
@@ -164,14 +164,14 @@
   background: #cc3333;
 }
 
-/* Main Container */
+/* Container Principal */
 .main-container {
   display: flex;
   height: calc(100vh - 120px);
   background: #f5f5f5;
 }
 
-/* Sidebar */
+/* Barra Lateral */
 .sidebar {
   width: 300px;
   background: white;
@@ -235,7 +235,7 @@
   color: #666;
 }
 
-/* Content Area */
+/* Área de Conteúdo */
 .content-area {
   flex: 1;
   margin: 20px 20px 0 20px;
@@ -350,7 +350,7 @@
   border-color: #00bfa5;
 }
 
-/* Modal Styles */
+/* Estilos do Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -482,7 +482,7 @@
   color: #6c757d;
 }
 
-/* Responsive Design */
+/* Design Responsivo */
 @media (max-width: 1024px) {
   .main-container {
     flex-direction: column;
