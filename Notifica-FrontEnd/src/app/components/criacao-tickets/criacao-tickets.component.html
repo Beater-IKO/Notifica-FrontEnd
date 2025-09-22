@@ -1,322 +1,154 @@
-<div class="container ">
-
-    <div class="row">
-
-
-        <div class="col-lg-3 centralizar topo">
-
-            <div class="card ">
-                <div class="card-body">
-                    <router-outlet></router-outlet>
-
-
-                    <div class="container-buttons">
-                        <button routerLink="/criacao-tickets" class="btn btn-light btn-rounded fs-5 border"
-                            data-mdb-ripple-init>
-                            Criar tickets
-                        </button>
-
-                        <button routerLink="/andamentos" class="btn btn-light btn-rounded fs-5 border"
-                            data-mdb-ripple-init>
-                            Tickets em andamentos
-                        </button>
-
-                        <button routerLink="/finalizados" class="btn btn-light btn-rounded fs-5 border"
-                            data-mdb-ripple-init>
-                            Tickets finalizados
-                        </button>
-
-                        <button routerLink="/historico" class="btn btn-light btn-rounded fs-5 border"
-                            data-mdb-ripple-init>
-                            Histórico de tickets
-                        </button>
-                    </div>
-
-
-
-
-                </div>
-            </div>
-
-
-
-        </div>
-
-
-
-        <div class="col-lg-9 centralizar topo  ">
-
-            <div class="card cardDireita">
-                <div class="card-body ">
-
-
-                    <div class="titulo">
-
-
-
-                        <div class="selecao-andar">
-                            <h5>Salas</h5>
-
-                            <div class="row mt-3">
-
-
-                                <div class="col-6">
-
-
-                                    <select class="form-select mb-9 seletor-pequeno" [(ngModel)]="sala">
-                                        <option value="" disabled selected>Selecione uma sala</option>
-                                        <option *ngFor="let salaOpcao of salas" [value]="salaOpcao">{{ salaOpcao }}
-                                        </option>
-                                    </select>
-
-
-
-                                </div>
-
-
-
-                            </div>
-
-
-
-
-
-                        </div>
-                        <div class="area-faculdade">
-
-                            <h5>Área da faculdade</h5>
-
-                            <div class="row mt-3">
-
-                                <div class="col-6">
-
-
-                                    <button type="button" class="btn w-80" (click)="selecionarArea('INTERNA')"
-                                        [class.btn-warning]="area === 'INTERNA'"
-                                        [class.btn-outline-warning]="area !== 'INTERNA'">Interna</button>
-
-
-                                </div>
-
-                                <div class="col-6">
-                                    <button type="button" class="btn w-80" (click)="selecionarArea('EXTERNA')"
-                                        [class.btn-warning]="area === 'EXTERNA'"
-                                        [class.btn-outline-warning]="area !== 'EXTERNA'">Externa</button>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="selecao-andar">
-                            <h5>Selecione o andar</h5>
-
-                            <div class="row mt-3">
-
-
-                                <div class="col-6">
-
-
-
-                                    <button type="button" class="btn w-80 d-block" (click)="selecionarAndar('1º Andar')"
-                                        [class.btn-secondary]="andar === '1º Andar'"
-                                        [class.btn-outline-secondary]="andar !== '1º Andar'">1º Andar</button>
-
-                                    <button type="button" class="btn mt-2 w-80 d-block"
-                                        (click)="selecionarAndar('2º Andar')"
-                                        [class.btn-secondary]="andar === '2º Andar'"
-                                        [class.btn-outline-secondary]="andar !== '2º Andar'">2º Andar</button>
-
-
-
-                                </div>
-                                <div class="col-6">
-
-                                    <button type="button" class="btn w-80 d-block" (click)="selecionarAndar('3º Andar')"
-                                        [class.btn-secondary]="andar === '3º Andar'"
-                                        [class.btn-outline-secondary]="andar !== '3º Andar'">3º Andar</button>
-
-                                    <button type="button" class="btn mt-2 w-80 d-block"
-                                        (click)="selecionarAndar('4º Andar')"
-                                        [class.btn-secondary]="andar === '4º Andar'"
-                                        [class.btn-outline-secondary]="andar !== '4º Andar'">4º Andar</button>
-
-
-
-                                </div>
-
-
-                            </div>
-
-
-
-
-
-                        </div>
-                        <div class="grau-prioridade">
-                            <h5>Grau de prioridade</h5>
-
-                            <div class="row mt-3">
-
-
-                                <div class="col-6">
-
-
-
-                                    <button type="button" class="btn w-100" (click)="selecionarPrioridade('LEVE')"
-                                        [class.btn-success]="prioridade === 'LEVE'"
-                                        [class.btn-outline-success]="prioridade !== 'LEVE'">Leve</button>
-
-
-                                    <button type="button" class="btn mt-2 w-100" (click)="selecionarPrioridade('MEDIO')"
-                                        [class.btn-info]="prioridade === 'MEDIO'"
-                                        [class.btn-outline-info]="prioridade !== 'MEDIO'">Médio</button>
-
-
-
-                                </div>
-                                <div class="col-6">
-
-                                    <button type="button" class="btn w-100" (click)="selecionarPrioridade('ALTO')"
-                                        [class.btn-warning]="prioridade === 'ALTO'"                                                                                                                                                                                                                                 
-                                        [class.btn-outline-warning]="prioridade !== 'ALTO'">Alto</button>
-
-                                    <button type="button" class="btn mt-2 w-100"
-                                        (click)="selecionarPrioridade('URGENTE')"
-                                        [class.btn-danger]="prioridade === 'URGENTE'"
-                                        [class.btn-outline-danger]="prioridade !== 'URGENTE'">Urgente</button>
-
-
-
-                                </div>
-
-
-                            </div>
-
-
-
-
-
-                        </div>
-
-
-
-
-
-
-                    </div>
-
-                    <div class="selecao-de-problemas">
-
-                        <div class="selecao-problemas">
-
-                            <div class="titulo-selecione-problema">
-                                <h5>Selecione o tipo do problema: </h5>
-                            </div>
-                            <div class="row mt-3">
-
-                                <select class="form-select mb-9 seletor-pequeno-problemas" [(ngModel)]="tipoSelecionado"
-                                    (change)="selecionarTipo($event)">
-                                    <option value="" disabled selected>Selecione o tipo de problema</option>
-                                    <option *ngFor="let tipo of tipoProblemas" [value]="tipo.nome">{{ tipo.nome }}
-                                    </option>
-                                </select>
-
-                            </div>
-                        </div>
-
-
-
-                        <div class="selecao-subproblemas">
-
-                            <div class="titulo-selecione-subproblema">
-                                <h5>Selecione o subtipo do problema: </h5>
-                            </div>
-                            <div class="row mt-3">
-                                <select class="form-select mb-9 seletor-pequeno-subproblemas"
-                                    [(ngModel)]="subtipoSelecionado" [disabled]="!tipoSelecionado">
-                                    <option value="" disabled selected>Selecione o subtipo de problema</option>
-                                    <option *ngFor="let subtipo of subtiposDisponiveis" [value]="subtipo">{{ subtipo }}
-                                    </option>
-                                </select>
-
-
-
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-
-
-
-                    <div class="selecao-texto-adicional">
-
-                        <div class="selecao-adicional-texto">
-
-                            <div class="titulo-descricao-adicional">
-                                <h5>Descricão adicional: </h5>
-                            </div>
-                            <div class="row mt-3">
-
-                                <div class="area-adicional">
-                                    <div class="form-outline mb-4 texto-adicional border-3 rounded-3">
-                                        <textarea class="form-control" id="descricaoTicket" rows="4" maxlength="200"
-                                            [(ngModel)]="problema"></textarea>
-                                        <label class="form-label" for="descricaoTicket">Descrição</label>
-                                        <div class="char-counter">
-                                            {{ problema.length || 0 }}/200
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-
-
-
-                    </div>
-
-
-
-                    <button type="button" class="btn btn-primary btn-enviar" (click)="criarTicket()"
-                        data-mdb-ripple-init>Enviar</button>
-
-
-                    <div class="imagem">
-                        <div class="mb-3">
-                            <label for="formFile" class="form-label">Selecione uma imagem</label>
-                            <input class="form-control" type="file" id="formFile" accept="image/*">
-                        </div>
-
-
-                    </div>
-
-
-                </div>
-
-
-
-            </div>
-        </div>
-
-
-
-
-
-
-
-
+<!-- Cabeçalho -->
+<header class="header">
+  <div class="header-content">
+    <div class="logo-section">
+      <div class="logo">
+        <span class="logo-text">descomplica</span>
+      </div>
+      <div class="university-info">
+        <span class="plus-sign">+</span>
+        <span class="uni-text">UniAmérica</span>
+        <span class="subtitle">Centro Universitário</span>
+      </div>
     </div>
+    
+    <div class="user-info">
+      <span class="user-name">{{ currentUser }}</span>
+      <button class="logout-btn" (click)="logout()">Sair</button>
+    </div>
+  </div>
+</header>
 
+<!-- Container Principal -->
+<div class="main-container">
+  <!-- Barra Lateral -->
+  <aside class="sidebar">
+    <nav class="sidebar-nav">
+      <button routerLink="/criacao-tickets" class="nav-item active">
+        Criar Ticket
+      </button>
+      <button routerLink="/andamentos" class="nav-item">
+        Tickets em andamento
+      </button>
+      <button routerLink="/finalizados" class="nav-item">
+        Finalizados
+      </button>
+      <button routerLink="/historico" class="nav-item">
+        Histórico de tickets
+      </button>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <div class="user-avatar-small">
+        <i class="material-icons">account_circle</i>
+      </div>
+    </div>
+  </aside>
 
+  <!-- Área de Conteúdo -->
+  <main class="content-area">
+    <div class="form-container">
+      <h2>Criar Novo Ticket</h2>
+      
+      <div class="form-sections">
+        <!-- Seleção de Sala -->
+        <div class="form-section">
+          <h5>Salas</h5>
+          <select class="form-select" [(ngModel)]="sala">
+            <option value="" disabled selected>Selecione uma sala</option>
+            <option *ngFor="let salaOpcao of salas" [value]="salaOpcao">{{ salaOpcao }}</option>
+          </select>
+        </div>
 
+        <!-- Seleção de Área -->
+        <div class="form-section">
+          <h5>Área da faculdade</h5>
+          <div class="button-group">
+            <button type="button" class="btn" (click)="selecionarArea('INTERNA')"
+                    [class.btn-warning]="area === 'INTERNA'"
+                    [class.btn-outline-warning]="area !== 'INTERNA'">Interna</button>
+            <button type="button" class="btn" (click)="selecionarArea('EXTERNA')"
+                    [class.btn-warning]="area === 'EXTERNA'"
+                    [class.btn-outline-warning]="area !== 'EXTERNA'">Externa</button>
+          </div>
+        </div>
 
+        <!-- Seleção de Andar -->
+        <div class="form-section">
+          <h5>Selecione o andar</h5>
+          <div class="button-grid">
+            <button type="button" class="btn" (click)="selecionarAndar('1º Andar')"
+                    [class.btn-secondary]="andar === '1º Andar'"
+                    [class.btn-outline-secondary]="andar !== '1º Andar'">1º Andar</button>
+            <button type="button" class="btn" (click)="selecionarAndar('2º Andar')"
+                    [class.btn-secondary]="andar === '2º Andar'"
+                    [class.btn-outline-secondary]="andar !== '2º Andar'">2º Andar</button>
+            <button type="button" class="btn" (click)="selecionarAndar('3º Andar')"
+                    [class.btn-secondary]="andar === '3º Andar'"
+                    [class.btn-outline-secondary]="andar !== '3º Andar'">3º Andar</button>
+            <button type="button" class="btn" (click)="selecionarAndar('4º Andar')"
+                    [class.btn-secondary]="andar === '4º Andar'"
+                    [class.btn-outline-secondary]="andar !== '4º Andar'">4º Andar</button>
+          </div>
+        </div>
 
+        <!-- Seleção de Prioridade -->
+        <div class="form-section">
+          <h5>Grau de prioridade</h5>
+          <div class="button-grid">
+            <button type="button" class="btn" (click)="selecionarPrioridade('LEVE')"
+                    [class.btn-success]="prioridade === 'LEVE'"
+                    [class.btn-outline-success]="prioridade !== 'LEVE'">Leve</button>
+            <button type="button" class="btn" (click)="selecionarPrioridade('MEDIO')"
+                    [class.btn-info]="prioridade === 'MEDIO'"
+                    [class.btn-outline-info]="prioridade !== 'MEDIO'">Médio</button>
+            <button type="button" class="btn" (click)="selecionarPrioridade('ALTO')"
+                    [class.btn-warning]="prioridade === 'ALTO'"
+                    [class.btn-outline-warning]="prioridade !== 'ALTO'">Alto</button>
+            <button type="button" class="btn" (click)="selecionarPrioridade('URGENTE')"
+                    [class.btn-danger]="prioridade === 'URGENTE'"
+                    [class.btn-outline-danger]="prioridade !== 'URGENTE'">Urgente</button>
+          </div>
+        </div>
 
+        <!-- Seleção do Tipo de Problema -->
+        <div class="form-section">
+          <h5>Selecione o tipo do problema</h5>
+          <select class="form-select" [(ngModel)]="tipoSelecionado" (change)="selecionarTipo($event)">
+            <option value="" disabled selected>Selecione o tipo de problema</option>
+            <option *ngFor="let tipo of tipoProblemas" [value]="tipo.nome">{{ tipo.nome }}</option>
+          </select>
+        </div>
 
+        <!-- Seleção do Subtipo de Problema -->
+        <div class="form-section">
+          <h5>Selecione o subtipo do problema</h5>
+          <select class="form-select" [(ngModel)]="subtipoSelecionado" [disabled]="!tipoSelecionado">
+            <option value="" disabled selected>Selecione o subtipo de problema</option>
+            <option *ngFor="let subtipo of subtiposDisponiveis" [value]="subtipo">{{ subtipo }}</option>
+          </select>
+        </div>
+
+        <!-- Descrição -->
+        <div class="form-section">
+          <h5>Descrição adicional</h5>
+          <div class="form-outline">
+            <textarea class="form-control" rows="4" maxlength="200" [(ngModel)]="problema"></textarea>
+            <div class="char-counter">{{ problema.length || 0 }}/200</div>
+          </div>
+        </div>
+
+        <!-- Upload de Imagem -->
+        <div class="form-section">
+          <h5>Selecione uma imagem</h5>
+          <input class="form-control" type="file" accept="image/*">
+        </div>
+
+        <!-- Botão de Envio -->
+        <div class="form-section">
+          <button type="button" class="btn btn-primary btn-lg" (click)="criarTicket()">Enviar Ticket</button>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>

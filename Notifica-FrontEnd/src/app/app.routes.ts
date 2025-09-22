@@ -11,6 +11,7 @@ import { UsuariosdetailsComponent } from './components/usuarios/usuariosdetails/
 import { UsuarioslistComponent } from './components/usuarios/usuarioslist/usuarioslist.component';
 import { CursosdetailsComponent } from './components/cursos/cursosdetails/cursosdetails.component';
 import { CursoslistComponent } from './components/cursos/cursoslist/cursoslist.component';
+import { StudentDashboardComponent } from './components/student/student-dashboard/student-dashboard.component';
 
 export const routes: Routes = [  {
     path: 'criacao-tickets',
@@ -23,6 +24,7 @@ export const routes: Routes = [  {
 
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+  { path: 'dashboarddoestudante', component: StudentDashboardComponent },
 
   {
     path: 'admin',

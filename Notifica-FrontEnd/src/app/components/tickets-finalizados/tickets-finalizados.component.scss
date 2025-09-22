@@ -1,106 +1,72 @@
-.topo {
-  top: 10vh;
-  position: relative;
-}
-.card {
-  height: 80vh;
-}
+@import '../criacao-tickets/criacao-tickets.component.scss';
 
-.container-buttons {
+.tickets-list {
   display: flex;
   flex-direction: column;
-  gap: 10vh;
+  gap: 20px;
 }
 
-.seletor-pequeno {
-  width: 15vh;
-  margin-right: 2vh;
+.ticket-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-.titulo {
+.ticket-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.ticket-header {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
-.cardDireita {
+.ticket-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.ticket-badges {
   display: flex;
-  width: 155vh;
+  gap: 8px;
 }
 
-.container {
-  margin-right: 33vh;
+.badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
-.selecao-problemas {
-  width: 55vh;
-  display: flex;
-}
-.seletor-pequeno-problemas {
-  width: 20vh;
-  margin-left: 2vh;
-  margin-top: 10vh;
-}
-.titulo-selecione-problema {
-  margin-top: 13vh;
+.badge-success {
+  background: #d4edda;
+  color: #155724;
 }
 
-.selecao-subproblemas {
-  width: 60vh;
-  display: flex;
+.badge-area {
+  background: #d1ecf1;
+  color: #0c5460;
 }
 
-.titulo-selecione-subproblema {
-  margin-top: -8vh;
+.ticket-description {
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
 }
 
-.seletor-pequeno-subproblemas {
-  margin-left: 2vh;
-  margin-top: -11vh;
-}
-
-.selecao-de-problemas {
-  margin-top: -10vh;
-}
-
-.texto-adicional {
-  width: 40vh;
-  background-color: rgba(211, 209, 209, 0.807);
-}
-
-textarea {
-  resize: none;
-}
-
-.area-adicional {
-    margin-left: 1vh;
-  
-}
-
-.selecao-texto-adicional {
-  margin-top: -10vh;
-}
-
-.selecao-adicional-texto {
-  width: 55vh;
-  display: flex;
-}
-
-.titulo-descricao-adicional {
-  margin-top: 2vh;
-  white-space: nowrap;
-}
-
-.btn-enviar{
-
-    display: flex;
-    margin-left: 0vh;
-    margin-top: 5vh;
-
-}
-
-.imagem{
-  display: flex;
-  margin-left: 95vh;
-margin-top: -10vh;
-width: 60vh;
+.alert {
+  padding: 20px;
+  border-radius: 8px;
+  background: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+  text-align: center;
 }

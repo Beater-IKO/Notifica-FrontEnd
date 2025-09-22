@@ -93,12 +93,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.user-avatar:hover {
-  background: rgba(0, 0, 0, 0.2);
 }
 
 .user-avatar i {
@@ -161,14 +155,11 @@
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: center;
-  text-decoration: none;
-  color: #000;
 }
 
 .nav-item:hover {
   background: #f0f0f0;
   transform: translateY(-2px);
-  color: #000;
 }
 
 .nav-item.active {
@@ -199,154 +190,105 @@
 /* Content Area */
 .content-area {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   margin: 20px 20px 0 20px;
   background: white;
   border-radius: 20px;
-  overflow-y: auto;
+  overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-.form-container {
-  padding: 40px;
+/* Tickets Section */
+.tickets-section {
+  border-bottom: 1px solid #e0e0e0;
 }
 
-.form-container h2 {
-  margin-bottom: 30px;
-  color: #333;
-  font-size: 28px;
+.tickets-list {
+  max-height: 300px;
+  overflow-y: auto;
 }
 
-.form-sections {
+.ticket-item {
   display: flex;
-  flex-direction: column;
-  gap: 25px;
-}
-
-.form-section {
-  background: #f8f9fa;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid #e9ecef;
-}
-
-.form-section h5 {
-  margin-bottom: 15px;
-  color: #495057;
-  font-weight: 600;
-}
-
-.form-select {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid #dee2e6;
-  border-radius: 8px;
-  font-size: 16px;
-  background: white;
-}
-
-.form-select:focus {
-  border-color: #00d4aa;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
-}
-
-.button-group {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-.button-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 15px;
-}
-
-.btn {
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
+  align-items: center;
+  padding: 15px 25px;
+  border-bottom: 1px solid #f0f0f0;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 2px solid;
 }
 
-.form-control {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid #dee2e6;
-  border-radius: 8px;
-  font-size: 16px;
-  resize: vertical;
+.ticket-item:hover {
+  background: #f8f9fa;
 }
 
-.form-control:focus {
-  border-color: #00d4aa;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
+.ticket-item.selected {
+  background: #e3f2fd;
+  border-left: 4px solid #2196f3;
 }
 
-.char-counter {
-  text-align: right;
-  font-size: 12px;
-  color: #6c757d;
-  margin-top: 5px;
+.ticket-icon {
+  margin-right: 15px;
+  color: #666;
 }
 
-.btn-lg {
-  padding: 15px 30px;
-  font-size: 18px;
+.ticket-icon i {
+  font-size: 20px;
+}
+
+.ticket-info {
+  flex: 1;
+}
+
+.ticket-id {
   font-weight: 600;
+  color: #333;
+  margin-right: 10px;
 }
 
-.btn-primary {
-  background: #00d4aa;
-  border-color: #00d4aa;
-  color: white;
+.ticket-details {
+  color: #666;
+  font-size: 14px;
 }
 
-.btn-primary:hover {
-  background: #00bfa5;
-  border-color: #00bfa5;
+/* Ticket Details */
+.ticket-details {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
 }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .main-container {
-    flex-direction: column;
-  }
-  
-  .sidebar {
-    width: 100%;
-    margin: 10px;
-    border-radius: 15px;
-    padding: 20px;
-  }
-  
-  .sidebar-nav {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  
-  .nav-item {
-    flex: 1;
-    min-width: 120px;
-    padding: 12px 15px;
-    font-size: 14px;
-  }
-  
-  .content-area {
-    margin: 10px;
-    border-radius: 15px;
-  }
-  
-  .form-container {
-    padding: 20px;
-  }
-  
-  .button-grid {
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  }
+.details-content {
+  max-width: 100%;
+}
+
+.ticket-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 30px;
+  text-align: justify;
+}
+
+.ticket-images {
+  margin-top: 20px;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  max-width: 800px;
+}
+
+.image-placeholder {
+  height: 150px;
+  background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-size: 14px;
+  border: 2px dashed #ccc;
 }

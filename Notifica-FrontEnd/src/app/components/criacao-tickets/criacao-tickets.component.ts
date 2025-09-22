@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
-import { RouterModule, RouterOutlet } from "@angular/router";
+import { RouterModule, RouterOutlet, Router } from "@angular/router";
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
@@ -14,6 +14,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 })
 
 export class CriacaoTicketsComponent {
+  currentUser = localStorage.getItem('userName') || 'Usuário';
+  router = inject(Router);
+  
   problema: string = '';
   area: string = '';
   prioridade: string = '';
@@ -69,22 +72,42 @@ export class CriacaoTicketsComponent {
   }
 
   criarTicket() {
+    // Validar campos obrigatórios
+    if (!this.problema.trim()) {
+      alert('Por favor, preencha a descrição do problema.');
+      return;
+    }
+    if (!this.area) {
+      alert('Por favor, selecione a área da faculdade.');
+      return;
+    }
+    if (!this.prioridade) {
+      alert('Por favor, selecione a prioridade.');
+      return;
+    }
+
+    const userId = localStorage.getItem('userId');
     const ticket = {
-      problema: this.problema,
+      problema: this.problema.trim(),
       area: this.area,
       prioridade: this.prioridade,
-      status: 'ABERTO',
-      user: { id: this.userId },
-      categoria: { id: this.categoriaId }
+      status: 'INICIADO',
+      user: { id: userId ? parseInt(userId) : 1 }
     };
+
+    console.log('Enviando ticket:', ticket);
 
     this.http.post('http://localhost:8080/api/tickets', ticket).subscribe({
       next: (response) => {
+        console.log('Resposta do servidor:', response);
         alert('Ticket criado com sucesso!');
         this.limparFormulario();
       },
       error: (error) => {
-        alert('Erro ao criar ticket!');
+        console.error('Erro completo:', error);
+        console.error('Status:', error.status);
+        console.error('Error body:', error.error);
+        alert(`Erro ao criar ticket: Status ${error.status} - ${error.error?.message || error.message || 'Erro interno do servidor'}`);
       }
     });
   }
@@ -100,6 +123,16 @@ export class CriacaoTicketsComponent {
     this.subtipoSelecionado = '';
     this.subtiposDisponiveis = [];
   }
+
+  logout(): void {
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userName');
+    this.router.navigate(['/login']);
+  }
+
+
+
+
 }
 
 

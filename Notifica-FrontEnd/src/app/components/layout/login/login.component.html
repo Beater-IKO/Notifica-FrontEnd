@@ -1,26 +1,89 @@
 <div class="container">
   <div class="row">
-
     <div class="col-lg-4"></div>
 
-    <div class="col-lg-4 centralizar topo">
+    <div class="col-lg-4">
       <div class="card">
         <div class="card-body">
-          <h3>Autentique-se</h3>
-          <br>
-          <mdb-form-control>
-            <input mdbInput type="text" id="usuario" class="form-control" [(ngModel)]="usuario" />
-            <label mdbLabel class="form-label" for="usuario">Usuário</label>
-          </mdb-form-control>
-          <br>
-          <mdb-form-control>
-            <input mdbInput type="password" id="senha" class="form-control" [(ngModel)]="senha" />
-            <label mdbLabel class="form-label" for="senha">Senha</label>
-          </mdb-form-control>
-          <br>
-          <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="login()">
-            Acessar
-          </button>
+          <!-- Login Form -->
+          <div *ngIf="!isRegistering">
+            <h3>Autentique-se</h3>
+            <br>
+            <mdb-form-control>
+              <input mdbInput type="text" id="usuario" class="form-control" [(ngModel)]="usuario" />
+              <label mdbLabel class="form-label" for="usuario">Usuário</label>
+            </mdb-form-control>
+            <br>
+            <mdb-form-control>
+              <input mdbInput type="password" id="senha" class="form-control" [(ngModel)]="senha" />
+              <label mdbLabel class="form-label" for="senha">Senha</label>
+            </mdb-form-control>
+            <br>
+            <mdb-form-control>
+              <select class="form-control" [(ngModel)]="selectedRole">
+                <option *ngFor="let role of roles" [value]="role.value">{{ role.label }}</option>
+              </select>
+              <label mdbLabel class="form-label">Tipo de Usuário</label>
+            </mdb-form-control>
+            <br>
+            <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="login()">
+              Acessar
+            </button>
+            <br><br>
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="toggleMode()">
+              Criar Conta
+            </button>
+          </div>
+
+          <!-- Registration Form -->
+          <div *ngIf="isRegistering">
+            <h3>Criar Conta</h3>
+            <br>
+            <mdb-form-control>
+              <input mdbInput type="text" id="nome" class="form-control" [(ngModel)]="nome" />
+              <label mdbLabel class="form-label" for="nome">Nome Completo</label>
+            </mdb-form-control>
+            <br>
+            <mdb-form-control>
+              <input mdbInput type="email" id="email" class="form-control" [(ngModel)]="email" />
+              <label mdbLabel class="form-label" for="email">Email</label>
+            </mdb-form-control>
+            <br>
+            <mdb-form-control>
+              <input mdbInput type="text" id="cpf" class="form-control" [(ngModel)]="cpf" maxlength="14" placeholder="000.000.000-00" />
+              <label mdbLabel class="form-label" for="cpf">CPF</label>
+            </mdb-form-control>
+            <br>
+            <mdb-form-control>
+              <input mdbInput type="text" id="usuarioReg" class="form-control" [(ngModel)]="usuario" />
+              <label mdbLabel class="form-label" for="usuarioReg">Usuário</label>
+            </mdb-form-control>
+            <br>
+            <mdb-form-control>
+              <input mdbInput type="password" id="senhaReg" class="form-control" [(ngModel)]="senha" />
+              <label mdbLabel class="form-label" for="senhaReg">Senha</label>
+            </mdb-form-control>
+            <br>
+            <mdb-form-control>
+              <input mdbInput type="password" id="confirmSenha" class="form-control" [(ngModel)]="confirmSenha" />
+              <label mdbLabel class="form-label" for="confirmSenha">Confirmar Senha</label>
+            </mdb-form-control>
+            <br>
+            <mdb-form-control>
+              <select class="form-control" [(ngModel)]="selectedRole">
+                <option *ngFor="let role of roles" [value]="role.value">{{ role.label }}</option>
+              </select>
+              <label mdbLabel class="form-label">Tipo de Usuário</label>
+            </mdb-form-control>
+            <br>
+            <button type="button" class="btn btn-success btn-rounded" mdbRipple (click)="register()">
+              Criar Conta
+            </button>
+            <br><br>
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="toggleMode()">
+              Voltar ao Login
+            </button>
+          </div>
         </div>
       </div>
     </div>

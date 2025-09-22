@@ -1,90 +1,71 @@
-<div class="container ">
-
-    <div class="row">
-
-
-        <div class="col-lg-3 centralizar topo">
-
-            <div class="card ">
-                <div class="card-body">
-                    <router-outlet></router-outlet>
-
-
-                   <div class="container-buttons">
-                        <button routerLink="/criacao-tickets" class="btn btn-light btn-rounded fs-5 border"
-                            data-mdb-ripple-init>
-                            Criar tickets
-                        </button>
-
-                        <button routerLink="/andamentos" class="btn btn-light btn-rounded fs-5 border"
-                            data-mdb-ripple-init>
-                            Tickets em andamentos
-                        </button>
-
-                        <button routerLink="/finalizados" class="btn btn-light btn-rounded fs-5 border"
-                            data-mdb-ripple-init>
-                            Tickets finalizados
-                        </button>
-
-                        <button routerLink="/historico" class="btn btn-light btn-rounded fs-5 border"
-                            data-mdb-ripple-init>
-                            Histórico de tickets
-                        </button>
-                    </div>
-
-
-
-
-                </div>
-            </div>
-
-
-
-        </div>
-
-
-
-        <div class="col-lg-9 centralizar topo  ">
-
-            <div class="card cardDireita">
-                <div class="card-body ">
-
-                    <h3>Tickets em Andamento</h3>
-                    
-                    <div *ngIf="tickets.length === 0" class="alert alert-info">
-                        Nenhum ticket em andamento encontrado.
-                    </div>
-
-                    <div *ngFor="let ticket of tickets" class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">Ticket #{{ ticket.id }}</h5>
-                            <p class="card-text">{{ ticket.problema }}</p>
-                            <span class="badge bg-warning">{{ ticket.prioridade }}</span>
-                            <span class="badge bg-info ms-2">{{ ticket.area }}</span>
-                        </div>
-                    </div>
-
-
-                </div>
-
-
-
-            </div>
-        </div>
-
-
-
-
-
-
-
-
+<!-- Header -->
+<header class="header">
+  <div class="header-content">
+    <div class="logo-section">
+      <div class="logo">
+        <span class="logo-text">descomplica</span>
+      </div>
+      <div class="university-info">
+        <span class="plus-sign">+</span>
+        <span class="uni-text">UniAmérica</span>
+        <span class="subtitle">Centro Universitário</span>
+      </div>
     </div>
+    
+    <div class="user-info">
+      <span class="user-name">{{ currentUser }}</span>
+      <button class="logout-btn" (click)="logout()">Sair</button>
+    </div>
+  </div>
+</header>
 
+<!-- Main Container -->
+<div class="main-container">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <nav class="sidebar-nav">
+      <button routerLink="/criacao-tickets" class="nav-item">
+        Criar Ticket
+      </button>
+      <button routerLink="/andamentos" class="nav-item active">
+        Tickets em andamento
+      </button>
+      <button routerLink="/finalizados" class="nav-item">
+        Finalizados
+      </button>
+      <button routerLink="/historico" class="nav-item">
+        Histórico de tickets
+      </button>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <div class="user-avatar-small">
+        <i class="material-icons">account_circle</i>
+      </div>
+    </div>
+  </aside>
 
+  <!-- Content Area -->
+  <main class="content-area">
+    <div class="form-container">
+      <h2>Tickets em Andamento</h2>
+      
+      <div class="tickets-list">
+        <div *ngIf="tickets.length === 0" class="alert alert-info">
+          Nenhum ticket em andamento encontrado.
+        </div>
 
-
-
-
-
+        <div *ngFor="let ticket of tickets" class="ticket-card">
+          <div class="ticket-header">
+            <h5 class="ticket-title">Ticket #{{ ticket.id }}</h5>
+            <div class="ticket-badges">
+              <span class="badge badge-priority">{{ ticket.prioridade }}</span>
+              <span class="badge badge-area">{{ ticket.area }}</span>
+            </div>
+          </div>
+          <p class="ticket-description">{{ ticket.problema }}</p>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>
