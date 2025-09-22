@@ -1,34 +1,40 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
-import { RouterModule, RouterOutlet, Router } from "@angular/router";
+import { RouterModule, Router } from "@angular/router";
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HeaderComponent } from '../shared/header/header.component';
+import { UserService } from '../../services/user.service';
+import { TicketService } from '../../services/ticket.service';
+
 
 @Component({
   selector: 'app-criacao-tickets',
-  imports: [MdbFormsModule, MdbValidationModule, FormsModule, RouterOutlet, RouterModule, CommonModule, HttpClientModule],
+  imports: [MdbFormsModule, MdbValidationModule, FormsModule, RouterModule, CommonModule, HttpClientModule, HeaderComponent],
   templateUrl: './criacao-tickets.component.html',
   styleUrl: './criacao-tickets.component.scss',
 })
 
-export class CriacaoTicketsComponent {
-  currentUser = localStorage.getItem('userName') || 'Usuário';
+export class CriacaoTicketsComponent implements OnInit {
   router = inject(Router);
   
-  problema: string = '';
-  area: string = '';
-  prioridade: string = '';
-  sala: string = '';
-  andar: string = '';
+  // Campos do formulário de criação de ticket
+  problema: string = ''; // Descrição do problema
+  area: string = ''; // Área da faculdade (elétrica, hidráulica, etc)
+  prioridade: string = ''; // Nível de prioridade
+  sala: string = ''; // Sala onde está o problema
+  andar: string = ''; // Andar da sala
   categoriaId: number = 0;
   userId: number = 1;
-  tipoSelecionado: string = '';
-  subtipoSelecionado: string = '';
+  tipoSelecionado: string = ''; // Tipo de problema selecionado
+  subtipoSelecionado: string = ''; // Subtipo específico
 
+  // Lista de salas disponíveis
   salas = ['Sala 101', 'Sala 102', 'Sala 201', 'Sala 202', 'Laboratório 1', 'Laboratório 2'];
 
+  // Tipos de problemas e seus subtipos
   tipoProblemas = [
     {
       nome: 'Ar Condicionado',
@@ -48,31 +54,36 @@ export class CriacaoTicketsComponent {
     }
   ];
 
-  subtiposDisponiveis: string[] = [];
+  subtiposDisponiveis: string[] = []; // Subtipos do tipo selecionado
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private userService: UserService, private ticketService: TicketService) {}
 
+  // Quando seleciona um tipo de problema, carrega os subtipos
   selecionarTipo(event: any) {
     const tipoSelecionado = event.target.value;
     const tipo = this.tipoProblemas.find(t => t.nome === tipoSelecionado);
     this.subtiposDisponiveis = tipo ? tipo.subtipos : [];
-    this.subtipoSelecionado = '';
+    this.subtipoSelecionado = ''; // Limpa o subtipo selecionado
   }
 
+  // Define a área selecionada
   selecionarArea(areaEscolhida: string) {
     this.area = areaEscolhida;
   }
 
+  // Define o andar selecionado
   selecionarAndar(andarEscolhido: string) {
     this.andar = andarEscolhido;
   }
 
+  // Define a prioridade selecionada
   selecionarPrioridade(prioridadeEscolhida: string) {
     this.prioridade = prioridadeEscolhida;
   }
 
+  // Cria um novo ticket
   criarTicket() {
-    // Validar campos obrigatórios
+    // Valida se os campos obrigatórios estão preenchidos
     if (!this.problema.trim()) {
       alert('Por favor, preencha a descrição do problema.');
       return;
@@ -86,7 +97,10 @@ export class CriacaoTicketsComponent {
       return;
     }
 
+    // Pega o ID do usuário logado
     const userId = localStorage.getItem('userId');
+    
+    // Monta o objeto do ticket
     const ticket = {
       problema: this.problema.trim(),
       area: this.area,
@@ -95,23 +109,19 @@ export class CriacaoTicketsComponent {
       user: { id: userId ? parseInt(userId) : 1 }
     };
 
-    console.log('Enviando ticket:', ticket);
-
-    this.http.post('http://localhost:8080/api/tickets', ticket).subscribe({
+    // Envia o ticket para o servidor
+    this.ticketService.createTicket(ticket).subscribe({
       next: (response) => {
-        console.log('Resposta do servidor:', response);
         alert('Ticket criado com sucesso!');
         this.limparFormulario();
       },
       error: (error) => {
-        console.error('Erro completo:', error);
-        console.error('Status:', error.status);
-        console.error('Error body:', error.error);
-        alert(`Erro ao criar ticket: Status ${error.status} - ${error.error?.message || error.message || 'Erro interno do servidor'}`);
+        alert(`Erro ao criar ticket: ${error.error?.message || error.message || 'Erro interno do servidor'}`);
       }
     });
   }
 
+  // Limpa todos os campos do formulário
   limparFormulario() {
     this.problema = '';
     this.area = '';
@@ -124,15 +134,10 @@ export class CriacaoTicketsComponent {
     this.subtiposDisponiveis = [];
   }
 
-  logout(): void {
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userName');
-    this.router.navigate(['/login']);
+  // Função que executa quando o componente carrega
+  ngOnInit(): void {
+    // Não precisa fazer nada por enquanto
   }
 
 
-
-
 }
-
-

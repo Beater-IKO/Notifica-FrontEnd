@@ -1,0 +1,336 @@
+<app-header></app-header>
+
+<!-- Main Container -->
+<div class="main-container">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <nav class="sidebar-nav">
+      <button 
+        *ngFor="let item of menuItems" 
+        class="nav-item"
+        [class.active]="item.active"
+        (click)="onMenuItemClick(item)">
+        {{ item.label }}
+      </button>
+    </nav>
+    
+    <div class="sidebar-footer">
+    </div>
+  </aside>
+
+  <!-- Content Area -->
+  <main class="content-area">
+    <!-- Tickets Section -->
+    <div *ngIf="currentView !== 'usuarios'">
+      <section class="tickets-section">
+        <div class="section-header">
+          <h2>{{ getCurrentViewTitle() }}</h2>
+          <div class="header-actions">
+            <button class="btn btn-secondary" (click)="loadTickets()">Atualizar</button>
+          </div>
+        </div>
+        
+        <!-- Advanced Filters -->
+        <div class="filters-section" *ngIf="currentView !== 'usuarios'">
+          <div class="filter-group">
+            <label>Sala:</label>
+            <select class="form-control" [(ngModel)]="selectedSala" (change)="filterTickets()">
+              <option value="">Todas as Salas</option>
+              <option *ngFor="let sala of salas" [value]="sala">{{ sala }}</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label>Prioridade:</label>
+            <select class="form-control" [(ngModel)]="selectedPrioridade" (change)="filterTickets()">
+              <option value="">Todas as Prioridades</option>
+              <option *ngFor="let prioridade of prioridades" [value]="prioridade">{{ prioridade }}</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label>Andar:</label>
+            <select class="form-control" [(ngModel)]="selectedAndar" (change)="filterTickets()">
+              <option value="">Todos os Andares</option>
+              <option *ngFor="let andar of andares" [value]="andar">{{ andar }}</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label>Tipo:</label>
+            <select class="form-control" [(ngModel)]="selectedTipo" (change)="filterTickets()">
+              <option value="">Todos os Tipos</option>
+              <option *ngFor="let tipo of tipos" [value]="tipo">{{ tipo }}</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <button class="btn btn-warning filter-btn" (click)="clearFilters()">Limpar Filtros</button>
+          </div>
+        </div>
+        
+        <!-- Salas Quick Access -->
+        <div class="salas-section" *ngIf="currentView === 'salas'">
+          <h4>Selecione uma Sala:</h4>
+          <div class="salas-grid">
+            <button 
+              *ngFor="let sala of salas" 
+              class="sala-btn"
+              [class.active]="selectedSala === sala"
+              (click)="selectSala(sala)">
+              {{ sala }}
+            </button>
+          </div>
+        </div>
+        <div class="tickets-list">
+          <div 
+            *ngFor="let ticket of filteredTickets" 
+            class="ticket-item"
+            [class.selected]="selectedTicket?.id === ticket.id"
+            (click)="selectTicket(ticket)"
+            (dblclick)="openTicketModal(ticket)">
+            
+            <div class="ticket-icon">
+              📋
+            </div>
+            
+            <div class="ticket-info">
+              <div class="ticket-field">
+                <strong>ID:</strong> {{ ticket.id }}
+              </div>
+              <div class="ticket-field">
+                <strong>Usuário:</strong> {{ ticket.agent }}
+              </div>
+              <div class="ticket-field">
+                <strong>Descrição:</strong> {{ ticket.title }}
+              </div>
+              <div class="ticket-field">
+                <strong>Status:</strong> 
+                <span class="ticket-status" [class]="getTicketStatusClass(ticket.status)">
+                  {{ getStatusLabel(ticket.status) }}
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <div *ngIf="filteredTickets.length === 0" class="no-tickets">
+            <p>Nenhum ticket encontrado.</p>
+            <p><small>Crie um ticket usando a conta de estudante para vê-lo aqui.</small></p>
+            <button class="btn btn-primary" (click)="loadTickets()">Atualizar</button>
+          </div>
+        </div>
+      </section>
+
+
+    </div>
+
+    <!-- Users Management Section -->
+    <div *ngIf="currentView === 'usuarios'" class="users-section">
+      <div class="section-header">
+        <h2>{{ getCurrentViewTitle() }}</h2>
+        <div class="header-actions">
+          <button class="btn btn-secondary" (click)="loadUsers()">Atualizar</button>
+          <button class="btn btn-primary" (click)="openUserModal()">Novo Usuário</button>
+        </div>
+      </div>
+      
+      <div class="users-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Foto</th>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Email</th>
+              <th>CPF</th>
+              <th>Usuário</th>
+              <th>Função</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>
+                <div class="user-photo-cell">
+                  <img *ngIf="getUserPhoto(user)" [src]="getUserPhoto(user)" alt="Foto" class="user-photo-small">
+                  <div *ngIf="!getUserPhoto(user)" class="user-photo-placeholder">👤</div>
+                </div>
+              </td>
+              <td>{{ user.id }}</td>
+              <td>{{ user.nome }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.cpf }}</td>
+              <td>{{ user.usuario }}</td>
+              <td>{{ user.role }}</td>
+              <td>
+                <button class="btn-edit" (click)="openUserModal(user)">Editar</button>
+                <button class="btn-delete" (click)="deleteUser(user)">Excluir</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div *ngIf="users.length === 0" class="no-users">
+          <p>Nenhum usuário encontrado.</p>
+          <button class="btn btn-primary" (click)="loadUsers()">Tentar Novamente</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal de Configurações -->
+<div class="modal-overlay" *ngIf="showSettingsModal" (click)="closeSettings()">
+  <div class="settings-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Configurações do Usuário</h3>
+    </div>
+    
+    <div class="modal-content">
+      <div class="profile-section">
+        <div class="photo-upload">
+          <div class="current-photo">
+            <img *ngIf="userPhoto" [src]="userPhoto" alt="Foto do usuário">
+          </div>
+          <input type="file" #fileInput accept="image/*" (change)="onPhotoSelected($event)" style="display: none">
+          <button class="upload-btn" (click)="fileInput.click()">Alterar Foto</button>
+        </div>
+        
+        <div class="user-fields">
+          <div class="field-group">
+            <label>Nome</label>
+            <input type="text" class="form-control" [(ngModel)]="userSettings.nome" placeholder="Digite seu nome">
+          </div>
+          
+          <div class="field-group">
+            <label>Email</label>
+            <input type="email" class="form-control" [(ngModel)]="userSettings.email" placeholder="Digite seu email">
+          </div>
+          
+          <div class="field-group">
+            <label>CPF</label>
+            <input type="text" class="form-control" [(ngModel)]="userSettings.cpf" placeholder="Digite seu CPF" readonly>
+          </div>
+          
+          <div class="field-group">
+            <label>Telefone</label>
+            <input type="text" class="form-control" [(ngModel)]="userSettings.telefone" placeholder="Digite seu telefone">
+          </div>
+
+          <div class="field-group" *ngIf="canEditRole()">
+            <label>Função</label>
+            <select class="form-control" [(ngModel)]="userSettings.role">
+              <option value="ADMIN">Administrador</option>
+              <option value="ESTUDANTE">Estudante</option>
+              <option value="PROFESSOR">Professor</option>
+              <option value="FUNCIONARIO">Funcionário</option>
+              <option value="GESTOR">Gestor</option>
+            </select>
+            <small class="role-warning">Atenção: Alterar sua função pode redirecioná-lo para outra página.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeSettings()">Cancelar</button>
+      <button class="btn btn-primary" (click)="saveSettings()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Usuário -->
+<div class="modal-overlay" *ngIf="showUserModal" (click)="closeUserModal()">
+  <div class="user-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ selectedUser ? 'Editar Usuário' : 'Novo Usuário' }}</h3>
+    </div>
+    
+    <div class="modal-content">
+      <div class="field-group">
+        <label>Nome</label>
+        <input type="text" class="form-control" [(ngModel)]="userForm.nome" placeholder="Nome completo">
+      </div>
+      
+      <div class="field-group">
+        <label>Email</label>
+        <input type="email" class="form-control" [(ngModel)]="userForm.email" placeholder="Email">
+      </div>
+      
+      <div class="field-group">
+        <label>CPF</label>
+        <input type="text" class="form-control" [(ngModel)]="userForm.cpf" placeholder="CPF">
+      </div>
+      
+      <div class="field-group">
+        <label>Usuário</label>
+        <input type="text" class="form-control" [(ngModel)]="userForm.usuario" placeholder="Nome de usuário">
+      </div>
+      
+      <div class="field-group">
+        <label>Senha</label>
+        <input type="password" class="form-control" [(ngModel)]="userForm.senha" placeholder="Senha">
+      </div>
+      
+      <div class="field-group">
+        <label>Função</label>
+        <select class="form-control" [(ngModel)]="userForm.role">
+          <option value="ADMIN">Administrador</option>
+          <option value="ESTUDANTE">Estudante</option>
+          <option value="PROFESSOR">Professor</option>
+          <option value="FUNCIONARIO">Funcionário</option>
+          <option value="GESTOR">Gestor</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeUserModal()">Cancelar</button>
+      <button class="btn btn-primary" (click)="saveUser()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Detalhes do Ticket -->
+<div class="modal-overlay" *ngIf="showTicketModal" (click)="closeTicketModal()">
+  <div class="ticket-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Detalhes do Ticket #{{ selectedTicket?.id }}</h3>
+    </div>
+    
+    <div class="modal-content" *ngIf="selectedTicket">
+      <div class="detail-row">
+        <strong>ID:</strong> {{ selectedTicket.id }}
+      </div>
+      <div class="detail-row">
+        <strong>Usuário:</strong> {{ selectedTicket.agent }}
+      </div>
+      <div class="detail-row">
+        <strong>Sala:</strong> {{ selectedTicket.room }}
+      </div>
+      <div class="detail-row">
+        <strong>Área:</strong> {{ selectedTicket.type }}
+      </div>
+      <div class="detail-row">
+        <strong>Prioridade:</strong> {{ selectedTicket.priority }}
+      </div>
+      <div class="detail-row">
+        <strong>Status:</strong> 
+        <span class="ticket-status" [class]="getTicketStatusClass(selectedTicket.status)">
+          {{ getStatusLabel(selectedTicket.status) }}
+        </span>
+      </div>
+      <div class="detail-row">
+        <strong>Descrição:</strong>
+        <p class="description">{{ selectedTicket.description }}</p>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="btn btn-danger" (click)="updateTicketStatus('VISTO')">Negar</button>
+      <button class="btn btn-warning" (click)="updateTicketStatus('EM_ANDAMENTO')">Em Andamento</button>
+      <button class="btn btn-success" (click)="updateTicketStatus('FINALIZADOS')">Finalizar</button>
+      <button class="btn btn-secondary" (click)="closeTicketModal()">Fechar</button>
+    </div>
+  </div>
+</div>

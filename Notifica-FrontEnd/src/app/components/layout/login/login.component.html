@@ -19,13 +19,6 @@
               <label mdbLabel class="form-label" for="senha">Senha</label>
             </mdb-form-control>
             <br>
-            <mdb-form-control>
-              <select class="form-control" [(ngModel)]="selectedRole">
-                <option *ngFor="let role of roles" [value]="role.value">{{ role.label }}</option>
-              </select>
-              <label mdbLabel class="form-label">Tipo de Usuário</label>
-            </mdb-form-control>
-            <br>
             <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="login()">
               Acessar
             </button>

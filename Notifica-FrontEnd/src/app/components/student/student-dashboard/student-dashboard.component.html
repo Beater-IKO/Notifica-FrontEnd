@@ -1,26 +1,4 @@
-<!-- Header -->
-<header class="header">
-  <div class="header-content">
-    <div class="logo-section">
-      <div class="logo">
-        <span class="logo-text">descomplica</span>
-      </div>
-      <div class="university-info">
-        <span class="plus-sign">+</span>
-        <span class="uni-text">UniAmérica</span>
-        <span class="subtitle">Centro Universitário</span>
-      </div>
-    </div>
-    
-    <div class="user-info">
-      <div class="user-avatar">
-        <i class="material-icons">account_circle</i>
-      </div>
-      <span class="user-name">{{ currentUser }}</span>
-      <button class="logout-btn" (click)="logout()">Sair</button>
-    </div>
-  </div>
-</header>
+<app-header></app-header>
 
 <!-- Main Container -->
 <div class="main-container">
@@ -49,21 +27,38 @@
     <section class="tickets-section">
       <div class="tickets-list">
         <div 
-          *ngFor="let ticket of tickets" 
+          *ngFor="let ticket of filteredTickets" 
           class="ticket-item"
           [class.selected]="selectedTicket?.id === ticket.id"
-          (click)="selectTicket(ticket)">
+          (click)="selectTicket(ticket)"
+          (dblclick)="openTicketModal(ticket)">
           
           <div class="ticket-icon">
-            <i class="material-icons">home</i>
+            📋
           </div>
           
           <div class="ticket-info">
-            <span class="ticket-id">Id = {{ ticket.id }}</span>
-            <span class="ticket-details">
-              {{ ticket.title }} - {{ ticket.room }} - {{ ticket.floor }} - {{ ticket.type }} - {{ ticket.agent }}
-            </span>
+            <div class="ticket-field">
+              <strong>ID:</strong> {{ ticket.id }}
+            </div>
+            <div class="ticket-field">
+              <strong>Usuário:</strong> {{ ticket.agent }}
+            </div>
+            <div class="ticket-field">
+              <strong>Descrição:</strong> {{ ticket.title }}
+            </div>
+            <div class="ticket-field">
+              <strong>Status:</strong> 
+              <span class="ticket-status" [class]="getTicketStatusClass(ticket.status)">
+                {{ getStatusLabel(ticket.status) }}
+              </span>
+            </div>
           </div>
+        </div>
+        
+        <div *ngIf="filteredTickets.length === 0" class="no-tickets">
+          <p>Nenhum ticket encontrado para esta categoria.</p>
+          <button class="btn btn-primary" (click)="loadTickets()">Atualizar</button>
         </div>
       </div>
     </section>
@@ -87,4 +82,41 @@
       </div>
     </section>
   </main>
+</div>
+
+
+
+<!-- Modal de Detalhes do Ticket -->
+<div class="modal-overlay" *ngIf="showTicketModal" (click)="closeTicketModal()">
+  <div class="ticket-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Detalhes do Ticket #{{ selectedTicket?.id }}</h3>
+    </div>
+    
+    <div class="modal-content" *ngIf="selectedTicket">
+      <div class="detail-row">
+        <strong>ID:</strong> {{ selectedTicket.id }}
+      </div>
+      <div class="detail-row">
+        <strong>Usuário:</strong> {{ selectedTicket.agent }}
+      </div>
+      <div class="detail-row">
+        <strong>Área:</strong> {{ selectedTicket.type }}
+      </div>
+      <div class="detail-row">
+        <strong>Status:</strong> 
+        <span class="ticket-status" [class]="getTicketStatusClass(selectedTicket.status)">
+          {{ getStatusLabel(selectedTicket.status) }}
+        </span>
+      </div>
+      <div class="detail-row">
+        <strong>Descrição:</strong>
+        <p class="description">{{ selectedTicket.description }}</p>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeTicketModal()">Fechar</button>
+    </div>
+  </div>
 </div>

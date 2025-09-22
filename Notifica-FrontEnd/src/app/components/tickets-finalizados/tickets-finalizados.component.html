@@ -1,23 +1,4 @@
-<!-- Header -->
-<header class="header">
-  <div class="header-content">
-    <div class="logo-section">
-      <div class="logo">
-        <span class="logo-text">descomplica</span>
-      </div>
-      <div class="university-info">
-        <span class="plus-sign">+</span>
-        <span class="uni-text">UniAmérica</span>
-        <span class="subtitle">Centro Universitário</span>
-      </div>
-    </div>
-    
-    <div class="user-info">
-      <span class="user-name">{{ currentUser }}</span>
-      <button class="logout-btn" (click)="logout()">Sair</button>
-    </div>
-  </div>
-</header>
+<app-header></app-header>
 
 <!-- Main Container -->
 <div class="main-container">
@@ -39,9 +20,6 @@
     </nav>
     
     <div class="sidebar-footer">
-      <div class="user-avatar-small">
-        <i class="material-icons">account_circle</i>
-      </div>
     </div>
   </aside>
 
@@ -55,7 +33,7 @@
           Nenhum ticket finalizado encontrado.
         </div>
 
-        <div *ngFor="let ticket of tickets" class="ticket-card">
+        <div *ngFor="let ticket of tickets" class="ticket-card" (dblclick)="openTicketModal(ticket)">
           <div class="ticket-header">
             <h5 class="ticket-title">Ticket #{{ ticket.id }}</h5>
             <div class="ticket-badges">
@@ -68,4 +46,36 @@
       </div>
     </div>
   </main>
+</div>
+
+<!-- Modal de Detalhes do Ticket -->
+<div class="modal-overlay" *ngIf="showTicketModal" (click)="closeTicketModal()">
+  <div class="ticket-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Detalhes do Ticket #{{ selectedTicket?.id }}</h3>
+    </div>
+    
+    <div class="modal-content" *ngIf="selectedTicket">
+      <div class="detail-row">
+        <strong>ID:</strong> {{ selectedTicket.id }}
+      </div>
+      <div class="detail-row">
+        <strong>Área:</strong> {{ selectedTicket.area }}
+      </div>
+      <div class="detail-row">
+        <strong>Prioridade:</strong> {{ selectedTicket.prioridade }}
+      </div>
+      <div class="detail-row">
+        <strong>Status:</strong> {{ getStatusLabel(selectedTicket.status) }}
+      </div>
+      <div class="detail-row">
+        <strong>Descrição:</strong>
+        <p class="description">{{ selectedTicket.problema }}</p>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeTicketModal()">Fechar</button>
+    </div>
+  </div>
 </div>

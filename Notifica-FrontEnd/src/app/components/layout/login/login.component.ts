@@ -1,29 +1,33 @@
 import { Component, inject } from '@angular/core';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
+import { MdbRippleModule } from 'mdb-angular-ui-kit/ripple';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
+
 @Component({
   selector: 'app-login',
-  imports: [MdbFormsModule, FormsModule, CommonModule, HttpClientModule],
+  imports: [MdbFormsModule, MdbRippleModule, FormsModule, CommonModule, HttpClientModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
 
+  // Campos do formulário de login
   usuario!: string;
   senha!: string;
   selectedRole: string = 'ESTUDANTE';
   
-  // Campos de cadastro
-  isRegistering: boolean = false;
+  // Campos do formulário de cadastro
+  isRegistering: boolean = false; // Controla se está na tela de cadastro ou login
   nome!: string;
   email!: string;
   cpf!: string;
   confirmSenha!: string;
 
+  // Lista de roles disponíveis no sistema
   roles = [
     { value: 'ADMIN', label: 'Administrador' },
     { value: 'ESTUDANTE', label: 'Estudante' },
@@ -36,11 +40,13 @@ export class LoginComponent {
 
   constructor(private http: HttpClient) {}
 
+  // Alterna entre tela de login e cadastro
   toggleMode() {
     this.isRegistering = !this.isRegistering;
     this.clearForm();
   }
 
+  // Limpa todos os campos do formulário
   clearForm() {
     this.usuario = '';
     this.senha = '';
@@ -51,24 +57,28 @@ export class LoginComponent {
     this.selectedRole = 'ESTUDANTE';
   }
 
+  // Cria uma nova conta de usuário
   register() {
+    // Valida se todos os campos estão preenchidos
     if (!this.nome || !this.email || !this.cpf || !this.usuario || !this.senha || !this.confirmSenha) {
       alert('Por favor, preencha todos os campos.');
       return;
     }
 
+    // Verifica se as senhas coincidem
     if (this.senha !== this.confirmSenha) {
       alert('As senhas não coincidem.');
       return;
     }
 
-    // Formatar CPF apenas com números
+    // Formata o CPF removendo caracteres especiais
     const cpfFormatted = this.cpf.replace(/[^0-9]/g, '');
     if (cpfFormatted.length !== 11) {
       alert('CPF deve ter 11 dígitos.');
       return;
     }
 
+    // Monta o objeto com os dados do novo usuário
     const newUser = {
       nome: this.nome,
       email: this.email,
@@ -78,21 +88,15 @@ export class LoginComponent {
       role: this.selectedRole
     };
 
-    console.log('Enviando dados do usuário:', newUser);
-
+    // Envia os dados para o servidor
     this.http.post('http://localhost:8080/api/users', newUser).subscribe({
       next: (response: any) => {
-        console.log('Resposta do servidor:', response);
         alert('Conta criada com sucesso! Faça login agora.');
         this.isRegistering = false;
         this.clearForm();
       },
       error: (error) => {
-        console.error('Erro completo:', error);
-        console.error('Status:', error.status);
-        console.error('Error body:', error.error);
-        console.error('Response text:', error.error);
-        
+        // Trata os erros do servidor
         let errorMessage = 'Erro desconhecido';
         if (error.error && typeof error.error === 'string') {
           errorMessage = error.error;
@@ -107,52 +111,16 @@ export class LoginComponent {
     });
   }
 
+  // Faz login do usuário
   login() {
+    // Verifica se é o usuário root (admin padrão)
     if (this.usuario == 'root' && this.senha == 'root') {
-      localStorage.setItem('userRole', this.selectedRole);
-      
-      // Definir nome de exibição baseado no papel
-      let displayName = '';
-      switch(this.selectedRole) {
-        case 'ADMIN':
-          displayName = 'Administrador';
-          break;
-        case 'ESTUDANTE':
-          displayName = 'Estudante';
-          break;
-        case 'PROFESSOR':
-          displayName = 'Professor';
-          break;
-        case 'FUNCIONARIO':
-          displayName = 'Funcionário';
-          break;
-        case 'GESTOR':
-          displayName = 'Gestor';
-          break;
-        default:
-          displayName = 'Usuário';
-      }
-      localStorage.setItem('userName', displayName);
-      
-      switch(this.selectedRole) {
-        case 'ADMIN':
-          this.router.navigate(['admin/usuarios']);
-          break;
-        case 'ESTUDANTE':
-          this.router.navigate(['dashboarddoestudante']);
-          break;
-        case 'PROFESSOR':
-        case 'FUNCIONARIO':
-          this.router.navigate(['criacao-tickets']);
-          break;
-        case 'GESTOR':
-          this.router.navigate(['admin/usuarios']);
-          break;
-        default:
-          this.router.navigate(['login']);
-      }
+      localStorage.setItem('userRole', 'ADMIN');
+      localStorage.setItem('userName', 'Administrador Root');
+      localStorage.setItem('userId', '0');
+      this.router.navigate(['/admin-dashboard']);
     } else {
-      // Tentar autenticar com o backend
+      // Tenta fazer login com o servidor
       const loginData = {
         usuario: this.usuario,
         senha: this.senha
@@ -160,13 +128,15 @@ export class LoginComponent {
 
       this.http.post<any>('http://localhost:8080/api/auth/login', loginData).subscribe({
         next: (response) => {
+          // Salva os dados do usuário no localStorage
           localStorage.setItem('userRole', response.role);
           localStorage.setItem('userName', response.nome);
           localStorage.setItem('userId', response.id);
           
+          // Redireciona baseado no role do usuário
           switch(response.role) {
             case 'ADMIN':
-              this.router.navigate(['admin/usuarios']);
+              this.router.navigate(['/admin-dashboard']);
               break;
             case 'ESTUDANTE':
               this.router.navigate(['dashboarddoestudante']);
@@ -176,7 +146,7 @@ export class LoginComponent {
               this.router.navigate(['criacao-tickets']);
               break;
             case 'GESTOR':
-              this.router.navigate(['admin/usuarios']);
+              this.router.navigate(['/admin-dashboard']);
               break;
             default:
               this.router.navigate(['login']);

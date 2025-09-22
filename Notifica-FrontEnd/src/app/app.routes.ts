@@ -1,45 +1,39 @@
+// Importações dos componentes das páginas
 import { CriacaoTicketsComponent } from './components/criacao-tickets/criacao-tickets.component';
 import { HistoricoTicketsComponent } from './components/historico-tickets/historico-tickets.component';
 import { LoginComponent } from './components/layout/login/login.component';
-import { PrincipalComponent } from './components/layout/principal/principal.component';
-import { SalasdetailsComponent } from './components/salas/salasdetails/salasdetails.component';
-import { SalaslistComponent } from './components/salas/salaslist/salaslist.component';
 import { TicketsAndamentosComponent } from './components/tickets-andamentos/tickets-andamentos.component';
 import { TicketsFinalizadosComponent } from './components/tickets-finalizados/tickets-finalizados.component';
 import { Routes } from '@angular/router';
-import { UsuariosdetailsComponent } from './components/usuarios/usuariosdetails/usuariosdetails.component';
-import { UsuarioslistComponent } from './components/usuarios/usuarioslist/usuarioslist.component';
-import { CursosdetailsComponent } from './components/cursos/cursosdetails/cursosdetails.component';
-import { CursoslistComponent } from './components/cursos/cursoslist/cursoslist.component';
 import { StudentDashboardComponent } from './components/student/student-dashboard/student-dashboard.component';
+import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
+// Importações dos guards que protegem as rotas
+import { adminGuard } from './guards/admin.guard';
+import { studentGuard } from './guards/student.guard';
+import { staffGuard } from './guards/staff.guard';
 
-export const routes: Routes = [  {
+// Configuração das rotas do sistema
+export const routes: Routes = [
+  // Página para criar tickets (só staff pode acessar)
+  {
     path: 'criacao-tickets',
     component: CriacaoTicketsComponent,
+    canActivate: [staffGuard]
   },
 
-  { path: 'historico', component: HistoricoTicketsComponent },
-  { path: 'andamentos', component: TicketsAndamentosComponent },
-  { path: 'finalizados', component: TicketsFinalizadosComponent },
+  // Páginas de tickets (só staff pode acessar)
+  { path: 'historico', component: HistoricoTicketsComponent, canActivate: [staffGuard] },
+  { path: 'andamentos', component: TicketsAndamentosComponent, canActivate: [staffGuard] },
+  { path: 'finalizados', component: TicketsFinalizadosComponent, canActivate: [staffGuard] },
 
+  // Rota padrão redireciona para login
   { path: '', redirectTo: 'login', pathMatch: 'full' },
+  // Página de login (todos podem acessar)
   { path: 'login', component: LoginComponent },
-  { path: 'dashboarddoestudante', component: StudentDashboardComponent },
+  // Dashboard do estudante (só estudantes podem acessar)
+  { path: 'dashboarddoestudante', component: StudentDashboardComponent, canActivate: [studentGuard] },
+  // Dashboard do admin (só admins podem acessar)
+  { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [adminGuard] },
 
-  {
-    path: 'admin',
-    component: PrincipalComponent,
-    children: [
-      { path: 'usuarios', component: UsuarioslistComponent },
-      { path: 'usuarios/new', component: UsuariosdetailsComponent },
-      { path: 'usuarios/edit/:id', component: UsuariosdetailsComponent },
-      { path: 'salas', component: SalaslistComponent },
-      { path: 'salas/new', component: SalasdetailsComponent },
-      { path: 'salas/edit/:id', component: SalasdetailsComponent },
-      { path: 'cursos', component: CursoslistComponent },
-      { path: 'cursos/new', component: CursosdetailsComponent },
-      { path: 'cursos/edit/:id', component: CursosdetailsComponent }
 
-    ]
-  }
 ];

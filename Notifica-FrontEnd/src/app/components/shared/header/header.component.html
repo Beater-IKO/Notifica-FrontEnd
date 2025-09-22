@@ -1,0 +1,88 @@
+<header class="header">
+  <div class="header-content">
+    <div class="logo-section">
+      <div class="logo">
+        <span class="logo-text">descomplica</span>
+      </div>
+      <div class="university-info">
+        <span class="plus-sign">+</span>
+        <span class="uni-text">UniAmérica</span>
+        <span class="subtitle">Centro Universitário</span>
+      </div>
+    </div>
+    
+    <div class="user-info">
+      <span class="user-name">{{ currentUser }}</span>
+      <div class="user-avatar">
+        <img *ngIf="userPhoto" [src]="userPhoto" alt="Foto do usuário">
+      </div>
+      <button class="icon-btn notification-btn" title="Notificações" (click)="openNotifications()">
+        🔔
+      </button>
+      <button class="icon-btn settings-btn" title="Configurações" (click)="openSettings()">
+        ⚙️
+      </button>
+      <button class="logout-btn" (click)="logout()">Sair</button>
+    </div>
+  </div>
+</header>
+
+<!-- Modal de Configurações -->
+<div class="modal-overlay" *ngIf="showSettingsModal" (click)="closeSettings()">
+  <div class="settings-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Configurações do Usuário</h3>
+    </div>
+    
+    <div class="modal-content">
+      <div class="profile-section">
+        <div class="photo-upload">
+          <div class="current-photo">
+            <img *ngIf="userPhoto" [src]="userPhoto" alt="Foto do usuário">
+          </div>
+          <input type="file" #fileInput accept="image/*" (change)="onPhotoSelected($event)" style="display: none">
+          <button class="upload-btn" (click)="fileInput.click()">Alterar Foto</button>
+        </div>
+        
+        <div class="user-fields">
+          <div class="field-group">
+            <label>Nome</label>
+            <input type="text" class="form-control" [(ngModel)]="userSettings.nome" placeholder="Digite seu nome">
+          </div>
+          
+          <div class="field-group">
+            <label>Email</label>
+            <input type="email" class="form-control" [(ngModel)]="userSettings.email" placeholder="Digite seu email">
+          </div>
+          
+          <div class="field-group">
+            <label>CPF</label>
+            <input type="text" class="form-control" [(ngModel)]="userSettings.cpf" placeholder="Digite seu CPF" readonly>
+          </div>
+          
+          <div class="field-group">
+            <label>Telefone</label>
+            <input type="text" class="form-control" [(ngModel)]="userSettings.telefone" placeholder="Digite seu telefone">
+          </div>
+
+          <div class="field-group" *ngIf="canEditRole()">
+            <label>Função</label>
+            <select class="form-control" [(ngModel)]="userSettings.role">
+              <option value="ADMIN">Administrador</option>
+              <option value="ESTUDANTE">Estudante</option>
+              <option value="PROFESSOR">Professor</option>
+              <option value="FUNCIONARIO">Funcionário</option>
+              <option value="GESTOR">Gestor</option>
+            </select>
+            <small class="role-warning">Atenção: Alterar sua função pode redirecioná-lo para outra página.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeSettings()">Cancelar</button>
+      <button class="btn btn-primary" (click)="saveSettings()">Salvar</button>
+    </div>
+  </div>
+</div>
