@@ -341,7 +341,7 @@ export class AdminDashboardComponent implements OnInit {
 
   // Carrega a lista de usuários do servidor
   loadUsers(): void {
-    this.http.get<any[]>('http://localhost:8080/api/users').subscribe({
+    this.http.get<any[]>('http://localhost:8080/usuarios/findAll').subscribe({
       next: (response) => {
         const rootAdmin = {
           id: 0,
@@ -425,7 +425,7 @@ export class AdminDashboardComponent implements OnInit {
     }
     
     if (confirm(`Deseja excluir o usuário ${user.nome}?`)) {
-      this.http.delete(`http://localhost:8080/api/users/${user.id}`).subscribe({
+      this.http.delete(`http://localhost:8080/usuarios/${user.id}`).subscribe({
         next: () => {
           alert('Usuário excluído!');
           this.loadUsers();
