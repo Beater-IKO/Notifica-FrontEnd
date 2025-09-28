@@ -1,7 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MdbRippleModule } from 'mdb-angular-ui-kit/ripple';
+import { AuthService } from '../../../services/auth.service';
+import { TicketService, Ticket as ServiceTicket } from '../../../services/ticket.service';
 
 export interface Ticket {
   id: string;
@@ -24,24 +26,28 @@ export interface Ticket {
 })
 export class StudentDashboardComponent implements OnInit {
   
-  currentUser = localStorage.getItem('userName') || 'Usuário';
+  currentUser: string;
   selectedTicket: Ticket | null = null;
-  router = inject(Router);
   
   tickets: Ticket[] = [];
 
   menuItems = [
     { label: 'Criar Ticket', icon: 'add', active: false, route: '/criacao-tickets' },
-    { label: 'Ticket em andamento', icon: 'pending', active: true, route: null },
-    { label: 'Finalizados', icon: 'check_circle', active: false, route: null },
-    { label: 'Históricos de tickets', icon: 'history', active: false, route: null }
+    { label: 'Ticket em andamento', icon: 'pending', active: true, route: '/andamentos' },
+    { label: 'Finalizados', icon: 'check_circle', active: false, route: '/finalizados' },
+    { label: 'Históricos de tickets', icon: 'history', active: false, route: '/historico' }
   ];
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private ticketService: TicketService
+  ) {
+    this.currentUser = this.authService.getCurrentUser();
+  }
 
   ngOnInit(): void {
-    // Load tickets from backend when implemented
-    // For now, tickets array is empty
+    this.carregarTicketsDoUsuario();
     this.selectedTicket = null;
   }
 
@@ -58,10 +64,40 @@ export class StudentDashboardComponent implements OnInit {
     }
   }
 
+  carregarTicketsDoUsuario(): void {
+    this.ticketService.obterTickets().subscribe({
+      next: (tickets: ServiceTicket[]) => {
+        const userId = this.authService.getUserId();
+        const ticketsDoUsuario = tickets.filter(ticket => ticket.user.id === userId);
+        
+        this.tickets = ticketsDoUsuario.map(ticket => ({
+          id: ticket.id?.toString() || '0',
+          title: ticket.problema,
+          room: ticket.area,
+          floor: '',
+          type: ticket.prioridade,
+          agent: 'Sistema',
+          status: this.mapearStatus(ticket.status),
+          description: ticket.problema
+        }));
+      },
+      error: (error) => {
+        console.log('Erro ao carregar tickets:', error);
+        this.tickets = [];
+      }
+    });
+  }
+
+  private mapearStatus(status: string): 'open' | 'in-progress' | 'closed' {
+    switch(status) {
+      case 'INICIADO': return 'in-progress';
+      case 'FINALIZADOS': return 'closed';
+      default: return 'open';
+    }
+  }
+
   logout(): void {
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userName');
-    this.router.navigate(['/login']);
+    this.authService.logout();
   }
 
   getTicketStatusClass(status: string): string {

@@ -1,7 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { TicketService } from '../../services/ticket.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-tickets-finalizados',
@@ -10,20 +12,25 @@ import { CommonModule } from '@angular/common';
   styleUrl: './tickets-finalizados.component.scss'
 })
 export class TicketsFinalizadosComponent implements OnInit {
-  currentUser = localStorage.getItem('userName') || 'Usuário';
+  currentUser: string;
   router = inject(Router);
   tickets: any[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private ticketService: TicketService,
+    private authService: AuthService
+  ) {
+    this.currentUser = this.authService.getCurrentUser();
+  }
 
   ngOnInit() {
     this.carregarTickets();
   }
 
   carregarTickets() {
-    this.http.get<any[]>('http://localhost:8080/api/tickets').subscribe({
+    this.ticketService.obterTicketsPorStatus('FINALIZADOS').subscribe({
       next: (response) => {
-        this.tickets = response.filter(ticket => ticket.status === 'FINALIZADOS');
+        this.tickets = response;
       },
       error: (error) => {
         console.log('Erro ao carregar tickets:', error);
@@ -33,8 +40,6 @@ export class TicketsFinalizadosComponent implements OnInit {
   }
 
   logout(): void {
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userName');
-    this.router.navigate(['/login']);
+    this.authService.logout();
   }
 }

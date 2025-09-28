@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { Curso } from '../../../models/curso';
 import { CursoService } from '../../../services/curso.service';
 import { CursosdetailsComponent } from "../cursosdetails/cursosdetails.component";
@@ -8,7 +9,7 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cursoslist',
-  imports: [FormsModule, CursosdetailsComponent, MdbModalModule],
+  imports: [FormsModule, CommonModule, CursosdetailsComponent, MdbModalModule],
   templateUrl: './cursoslist.component.html',
   styleUrl: './cursoslist.component.scss'
 })

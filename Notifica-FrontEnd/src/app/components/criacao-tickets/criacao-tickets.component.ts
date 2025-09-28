@@ -1,21 +1,23 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
-import { RouterModule, RouterOutlet, Router } from "@angular/router";
+import { RouterModule } from "@angular/router";
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import { TicketService, Ticket } from '../../services/ticket.service';
+import { AuthService } from '../../services/auth.service';
+import { ProblemaService, TipoProblema } from '../../services/problema.service';
 
 @Component({
   selector: 'app-criacao-tickets',
-  imports: [MdbFormsModule, MdbValidationModule, FormsModule, RouterOutlet, RouterModule, CommonModule, HttpClientModule],
+  imports: [MdbFormsModule, MdbValidationModule, FormsModule, RouterModule, CommonModule, HttpClientModule],
   templateUrl: './criacao-tickets.component.html',
   styleUrl: './criacao-tickets.component.scss',
 })
 
 export class CriacaoTicketsComponent {
-  currentUser = localStorage.getItem('userName') || 'Usuário';
-  router = inject(Router);
+  currentUser: string;
   
   problema: string = '';
   area: string = '';
@@ -23,39 +25,26 @@ export class CriacaoTicketsComponent {
   sala: string = '';
   andar: string = '';
   categoriaId: number = 0;
-  userId: number = 1;
   tipoSelecionado: string = '';
   subtipoSelecionado: string = '';
 
-  salas = ['Sala 101', 'Sala 102', 'Sala 201', 'Sala 202', 'Laboratório 1', 'Laboratório 2'];
-
-  tipoProblemas = [
-    {
-      nome: 'Ar Condicionado',
-      subtipos: ['Não liga', 'Não gela', 'Vazamento', 'Ruído excessivo', 'Controle não funciona']
-    },
-    {
-      nome: 'Elétrica',
-      subtipos: ['Tomada não funciona', 'Lâmpada queimada', 'Disjuntor desarmado', 'Falta de energia']
-    },
-    {
-      nome: 'Hidráulica',
-      subtipos: ['Vazamento', 'Entupimento', 'Torneira quebrada', 'Vaso sanitário com problema']
-    },
-    {
-      nome: 'Mobiliário',
-      subtipos: ['Mesa quebrada', 'Cadeira com defeito', 'Armário danificado', 'Gaveta emperrada']
-    }
-  ];
-
+  salas: string[] = [];
+  tipoProblemas: TipoProblema[] = [];
   subtiposDisponiveis: string[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private ticketService: TicketService,
+    private authService: AuthService,
+    private problemaService: ProblemaService
+  ) {
+    this.currentUser = this.authService.getCurrentUser();
+    this.salas = this.problemaService.getSalas();
+    this.tipoProblemas = this.problemaService.getTipoProblemas();
+  }
 
   selecionarTipo(event: any) {
     const tipoSelecionado = event.target.value;
-    const tipo = this.tipoProblemas.find(t => t.nome === tipoSelecionado);
-    this.subtiposDisponiveis = tipo ? tipo.subtipos : [];
+    this.subtiposDisponiveis = this.problemaService.getSubtiposPorTipo(tipoSelecionado);
     this.subtipoSelecionado = '';
   }
 
@@ -72,44 +61,43 @@ export class CriacaoTicketsComponent {
   }
 
   criarTicket() {
-    // Validar campos obrigatórios
-    if (!this.problema.trim()) {
-      alert('Por favor, preencha a descrição do problema.');
-      return;
-    }
-    if (!this.area) {
-      alert('Por favor, selecione a área da faculdade.');
-      return;
-    }
-    if (!this.prioridade) {
-      alert('Por favor, selecione a prioridade.');
+    if (!this.validarFormulario()) {
       return;
     }
 
-    const userId = localStorage.getItem('userId');
-    const ticket = {
+    const ticket: Ticket = {
       problema: this.problema.trim(),
       area: this.area,
       prioridade: this.prioridade,
       status: 'INICIADO',
-      user: { id: userId ? parseInt(userId) : 1 }
+      user: { id: this.authService.getUserId() }
     };
 
-    console.log('Enviando ticket:', ticket);
-
-    this.http.post('http://localhost:8080/api/tickets', ticket).subscribe({
+    this.ticketService.criarTicket(ticket).subscribe({
       next: (response) => {
-        console.log('Resposta do servidor:', response);
         alert('Ticket criado com sucesso!');
         this.limparFormulario();
       },
       error: (error) => {
-        console.error('Erro completo:', error);
-        console.error('Status:', error.status);
-        console.error('Error body:', error.error);
-        alert(`Erro ao criar ticket: Status ${error.status} - ${error.error?.message || error.message || 'Erro interno do servidor'}`);
+        alert(`Erro ao criar ticket: ${error.error?.message || error.message || 'Erro interno do servidor'}`);
       }
     });
+  }
+
+  private validarFormulario(): boolean {
+    if (!this.problema.trim()) {
+      alert('Por favor, preencha a descrição do problema.');
+      return false;
+    }
+    if (!this.area) {
+      alert('Por favor, selecione a área da faculdade.');
+      return false;
+    }
+    if (!this.prioridade) {
+      alert('Por favor, selecione a prioridade.');
+      return false;
+    }
+    return true;
   }
 
   limparFormulario() {
@@ -125,9 +113,7 @@ export class CriacaoTicketsComponent {
   }
 
   logout(): void {
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userName');
-    this.router.navigate(['/login']);
+    this.authService.logout();
   }
 
 

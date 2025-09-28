@@ -1,7 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { TicketService, Ticket } from '../../services/ticket.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-tickets-andamentos',
@@ -10,20 +12,24 @@ import { CommonModule } from '@angular/common';
   styleUrl: './tickets-andamentos.component.scss'
 })
 export class TicketsAndamentosComponent implements OnInit {
-  currentUser = localStorage.getItem('userName') || 'Usuário';
-  router = inject(Router);
-  tickets: any[] = [];
+  currentUser: string;
+  tickets: Ticket[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private ticketService: TicketService,
+    private authService: AuthService
+  ) {
+    this.currentUser = this.authService.getCurrentUser();
+  }
 
   ngOnInit() {
     this.carregarTickets();
   }
 
   carregarTickets() {
-    this.http.get<any[]>('http://localhost:8080/api/tickets').subscribe({
+    this.ticketService.obterTicketsPorStatus('INICIADO').subscribe({
       next: (response) => {
-        this.tickets = response.filter(ticket => ticket.status === 'INICIADO');
+        this.tickets = response;
       },
       error: (error) => {
         console.log('Erro ao carregar tickets:', error);
@@ -33,8 +39,6 @@ export class TicketsAndamentosComponent implements OnInit {
   }
 
   logout(): void {
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userName');
-    this.router.navigate(['/login']);
+    this.authService.logout();
   }
 }

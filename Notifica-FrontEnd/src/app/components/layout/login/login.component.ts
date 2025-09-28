@@ -3,7 +3,12 @@ import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import { ConfigService } from '../../../services/config.service';
+import { UsuariosService } from '../../../services/usuarios.service';
+import { Usuario } from '../../../models/usuario';
+import { Role } from '../../../models/enums/role.enum';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,16 +18,23 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 })
 export class LoginComponent {
 
-  usuario!: string;
-  senha!: string;
-  selectedRole: string = 'ESTUDANTE';
+  // Dados específicos para LOGIN
+  dadosLogin = {
+    email: '',
+    senha: ''
+  };
   
-  // Campos de cadastro
+  // Dados específicos para CADASTRO
   isRegistering: boolean = false;
-  nome!: string;
-  email!: string;
-  cpf!: string;
-  confirmSenha!: string;
+  dadosCadastro = {
+    nome: '',
+    email: '',
+    cpf: '',
+    usuario: '',
+    senha: '',
+    confirmSenha: '',
+    role: 'ESTUDANTE'
+  };
 
   roles = [
     { value: 'ADMIN', label: 'Administrador' },
@@ -34,7 +46,11 @@ export class LoginComponent {
 
   router = inject(Router);
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private configService: ConfigService,
+    private usuariosService: UsuariosService,
+    private authService: AuthService
+  ) {}
 
   toggleMode() {
     this.isRegistering = !this.isRegistering;
@@ -42,150 +58,73 @@ export class LoginComponent {
   }
 
   clearForm() {
-    this.usuario = '';
-    this.senha = '';
-    this.nome = '';
-    this.email = '';
-    this.cpf = '';
-    this.confirmSenha = '';
-    this.selectedRole = 'ESTUDANTE';
+    this.dadosLogin = { email: '', senha: '' };
+    this.dadosCadastro = {
+      nome: '',
+      email: '',
+      cpf: '',
+      usuario: '',
+      senha: '',
+      confirmSenha: '',
+      role: 'ESTUDANTE'
+    };
   }
 
   register() {
-    if (!this.nome || !this.email || !this.cpf || !this.usuario || !this.senha || !this.confirmSenha) {
+    if (!this.dadosCadastro.nome || !this.dadosCadastro.email || !this.dadosCadastro.cpf || !this.dadosCadastro.usuario || !this.dadosCadastro.senha || !this.dadosCadastro.confirmSenha) {
       alert('Por favor, preencha todos os campos.');
       return;
     }
 
-    if (this.senha !== this.confirmSenha) {
+    if (this.dadosCadastro.senha !== this.dadosCadastro.confirmSenha) {
       alert('As senhas não coincidem.');
       return;
     }
 
-    // Formatar CPF apenas com números
-    const cpfFormatted = this.cpf.replace(/[^0-9]/g, '');
+    const cpfFormatted = this.dadosCadastro.cpf.replace(/[^0-9]/g, '');
     if (cpfFormatted.length !== 11) {
       alert('CPF deve ter 11 dígitos.');
       return;
     }
 
-    const newUser = {
-      nome: this.nome,
-      email: this.email,
+    const newUser: Usuario = {
+      nome: this.dadosCadastro.nome,
+      email: this.dadosCadastro.email,
       cpf: cpfFormatted,
-      usuario: this.usuario,
-      senha: this.senha,
-      role: this.selectedRole
-    };
+      senha: this.dadosCadastro.senha,
+      role: this.dadosCadastro.role as Role
+    } as Usuario;
 
     console.log('Enviando dados do usuário:', newUser);
 
-    this.http.post('http://localhost:8080/api/users', newUser).subscribe({
+    this.usuariosService.save(newUser).subscribe({
       next: (response: any) => {
-        console.log('Resposta do servidor:', response);
         alert('Conta criada com sucesso! Faça login agora.');
         this.isRegistering = false;
         this.clearForm();
       },
       error: (error) => {
-        console.error('Erro completo:', error);
-        console.error('Status:', error.status);
-        console.error('Error body:', error.error);
-        console.error('Response text:', error.error);
-        
-        let errorMessage = 'Erro desconhecido';
-        if (error.error && typeof error.error === 'string') {
-          errorMessage = error.error;
-        } else if (error.error && error.error.message) {
-          errorMessage = error.error.message;
-        } else if (error.message) {
-          errorMessage = error.message;
-        }
-        
-        alert(`Erro ao criar conta (${error.status}): ${errorMessage}`);
+        alert(`Erro ao criar conta: ${error.error?.message || 'Erro interno'}`);
       }
     });
   }
 
   login() {
-    if (this.usuario == 'root' && this.senha == 'root') {
-      localStorage.setItem('userRole', this.selectedRole);
-      
-      // Definir nome de exibição baseado no papel
-      let displayName = '';
-      switch(this.selectedRole) {
-        case 'ADMIN':
-          displayName = 'Administrador';
-          break;
-        case 'ESTUDANTE':
-          displayName = 'Estudante';
-          break;
-        case 'PROFESSOR':
-          displayName = 'Professor';
-          break;
-        case 'FUNCIONARIO':
-          displayName = 'Funcionário';
-          break;
-        case 'GESTOR':
-          displayName = 'Gestor';
-          break;
-        default:
-          displayName = 'Usuário';
-      }
-      localStorage.setItem('userName', displayName);
-      
-      switch(this.selectedRole) {
-        case 'ADMIN':
-          this.router.navigate(['admin/usuarios']);
-          break;
-        case 'ESTUDANTE':
-          this.router.navigate(['dashboarddoestudante']);
-          break;
-        case 'PROFESSOR':
-        case 'FUNCIONARIO':
-          this.router.navigate(['criacao-tickets']);
-          break;
-        case 'GESTOR':
-          this.router.navigate(['admin/usuarios']);
-          break;
-        default:
-          this.router.navigate(['login']);
-      }
-    } else {
-      // Tentar autenticar com o backend
-      const loginData = {
-        usuario: this.usuario,
-        senha: this.senha
-      };
-
-      this.http.post<any>('http://localhost:8080/api/auth/login', loginData).subscribe({
-        next: (response) => {
-          localStorage.setItem('userRole', response.role);
-          localStorage.setItem('userName', response.nome);
-          localStorage.setItem('userId', response.id);
-          
-          switch(response.role) {
-            case 'ADMIN':
-              this.router.navigate(['admin/usuarios']);
-              break;
-            case 'ESTUDANTE':
-              this.router.navigate(['dashboarddoestudante']);
-              break;
-            case 'PROFESSOR':
-            case 'FUNCIONARIO':
-              this.router.navigate(['criacao-tickets']);
-              break;
-            case 'GESTOR':
-              this.router.navigate(['admin/usuarios']);
-              break;
-            default:
-              this.router.navigate(['login']);
-          }
-        },
-        error: (error) => {
-          alert('Usuário ou senha estão incorretos!');
-        }
-      });
+    if (!this.dadosLogin.email || !this.dadosLogin.senha) {
+      alert('Por favor, preencha email e senha.');
+      return;
     }
+
+    console.log('Enviando para o login:', this.dadosLogin);
+
+    this.authService.login(this.dadosLogin).subscribe({
+      next: (response) => {
+        console.log('Login realizado com sucesso!', response);
+      },
+      error: (error) => {
+        console.error('Falha na autenticação:', error);
+        alert('Email ou senha incorretos!');
+      }
+    });
   }
 }

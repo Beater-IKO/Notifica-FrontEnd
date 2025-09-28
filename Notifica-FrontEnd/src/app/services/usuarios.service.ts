@@ -2,16 +2,21 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Usuario } from '../models/usuario';
 import { Observable } from 'rxjs';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuariosService {
 
+  private API: string;
 
-  private API = 'http://localhost:8080/usuarios';
-
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private configService: ConfigService
+  ) {
+    this.API = `${this.configService.getApiUrl()}/usuarios`;
+  }
 
   save(usuario: Usuario): Observable<Usuario> {
     if (usuario.id) {

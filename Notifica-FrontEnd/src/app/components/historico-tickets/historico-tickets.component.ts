@@ -1,7 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { TicketService } from '../../services/ticket.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-historico-tickets',
@@ -10,20 +12,24 @@ import { CommonModule } from '@angular/common';
   styleUrl: './historico-tickets.component.scss'
 })
 export class HistoricoTicketsComponent implements OnInit {
-  currentUser = localStorage.getItem('userName') || 'Usuário';
+  currentUser: string;
   router = inject(Router);
   tickets: any[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private ticketService: TicketService,
+    private authService: AuthService
+  ) {
+    this.currentUser = this.authService.getCurrentUser();
+  }
 
   ngOnInit() {
     this.carregarTickets();
   }
 
   carregarTickets() {
-    this.http.get<any[]>('http://localhost:8080/api/tickets').subscribe({
+    this.ticketService.obterTickets().subscribe({
       next: (response) => {
-        // Show all tickets for history
         this.tickets = response;
       },
       error: (error) => {
@@ -34,8 +40,6 @@ export class HistoricoTicketsComponent implements OnInit {
   }
 
   logout(): void {
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userName');
-    this.router.navigate(['/login']);
+    this.authService.logout();
   }
 }

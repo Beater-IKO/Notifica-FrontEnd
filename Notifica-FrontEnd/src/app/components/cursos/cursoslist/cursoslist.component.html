@@ -28,10 +28,8 @@
                 <td>{{ curso.nome }}</td>
                 <td>{{ curso.duracao }}</td>
                 <td>
-                  <ng-container *ngIf="curso.salas && curso.salas.length > 0; else semSala">
-                    <span *ngFor="let sala of curso.salas; let isLast = last">
-                      {{ sala.numero }}{{ !isLast ? ', ' : '' }}
-                    </span>
+                  <ng-container *ngIf="curso.sala; else semSala">
+                    {{ curso.sala.numero }}
                   </ng-container>
                   <ng-template #semSala>N/A</ng-template>
                 </td>

@@ -12,23 +12,26 @@ import { UsuarioslistComponent } from './components/usuarios/usuarioslist/usuari
 import { CursosdetailsComponent } from './components/cursos/cursosdetails/cursosdetails.component';
 import { CursoslistComponent } from './components/cursos/cursoslist/cursoslist.component';
 import { StudentDashboardComponent } from './components/student/student-dashboard/student-dashboard.component';
+import { RoleGuard } from './guards/role.guard';
 
-export const routes: Routes = [  {
-    path: 'criacao-tickets',
-    component: CriacaoTicketsComponent,
-  },
-
-  { path: 'historico', component: HistoricoTicketsComponent },
-  { path: 'andamentos', component: TicketsAndamentosComponent },
-  { path: 'finalizados', component: TicketsFinalizadosComponent },
-
+export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'dashboarddoestudante', component: StudentDashboardComponent },
+  
+  // Rotas para ESTUDANTE
+  { path: 'student', component: StudentDashboardComponent, canActivate: [RoleGuard] },
+  
+  // Rotas para PROFESSOR/FUNCIONARIO
+  { path: 'criacao-tickets', component: CriacaoTicketsComponent, canActivate: [RoleGuard] },
+  { path: 'historico', component: HistoricoTicketsComponent, canActivate: [RoleGuard] },
+  { path: 'andamentos', component: TicketsAndamentosComponent, canActivate: [RoleGuard] },
+  { path: 'finalizados', component: TicketsFinalizadosComponent, canActivate: [RoleGuard] },
 
+  // Rotas para ADMIN/GESTOR
   {
     path: 'admin',
     component: PrincipalComponent,
+    canActivate: [RoleGuard],
     children: [
       { path: 'usuarios', component: UsuarioslistComponent },
       { path: 'usuarios/new', component: UsuariosdetailsComponent },
@@ -39,7 +42,6 @@ export const routes: Routes = [  {
       { path: 'cursos', component: CursoslistComponent },
       { path: 'cursos/new', component: CursosdetailsComponent },
       { path: 'cursos/edit/:id', component: CursosdetailsComponent }
-
     ]
   }
 ];
