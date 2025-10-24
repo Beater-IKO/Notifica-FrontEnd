@@ -1,0 +1,66 @@
+<!-- Cabeçalho -->
+<header class="header">
+  <div class="header-content">
+    <div class="logo-section">
+      <div class="logo">
+        <span class="logo-text">descomplica</span>
+      </div>
+      <div class="university-info">
+        <span class="plus-sign">+</span>
+        <span class="uni-text">UniAmérica</span>
+        <span class="subtitle">Centro Universitário</span>
+      </div>
+    </div>
+    
+    <div class="user-info">
+      <span class="user-name">{{ currentUser }}</span>
+      <button class="logout-btn" (click)="logout()">Sair</button>
+    </div>
+  </div>
+</header>
+
+<!-- Container Principal -->
+<div class="main-container">
+  <!-- Barra Lateral -->
+  <aside class="sidebar">
+    <nav class="sidebar-nav">
+      <button routerLink="/criacao-tickets" class="nav-item">
+        Criar Ticket
+      </button>
+      <button routerLink="/andamentos" class="nav-item">
+        Tickets em andamento
+      </button>
+      <button routerLink="/finalizados" class="nav-item">
+        Finalizados
+      </button>
+      <button routerLink="/historico" class="nav-item">
+        Histórico de tickets
+      </button>
+      
+      <div class="dropdown-container">
+        <button class="nav-item dropdown-toggle" (click)="toggleDropdown()">
+          Mais Opções
+          <span class="arrow" [class.rotated]="showDropdown">▼</span>
+        </button>
+        <div class="dropdown-menu" [class.show]="showDropdown">
+          <button routerLink="/admin/usuarios" class="dropdown-item">Usuários</button>
+          <button routerLink="/admin/salas" class="dropdown-item">Salas</button>
+          <button routerLink="/admin/cursos" class="dropdown-item">Cursos</button>
+        </div>
+      </div>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <div class="user-avatar-small">
+        <i class="material-icons">account_circle</i>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Área de Conteúdo -->
+  <main class="content-area">
+    <div class="form-container">
+      <!-- Container em branco -->
+    </div>
+  </main>
+</div>

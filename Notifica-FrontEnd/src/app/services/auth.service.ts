@@ -43,9 +43,10 @@ export class AuthService {
         this.router.navigate(['/student']);
         break;
       case 'PROFESSOR':
-      case 'FUNCIONARIO':
-        this.router.navigate(['/criacao-tickets']);
-        break;
+     case 'FUNCIONARIO':
+  this.router.navigate(['/tela-funcionarios']);
+  break;
+
       default:
         this.router.navigate(['/student']);
     }

@@ -13,6 +13,8 @@ import { CursosdetailsComponent } from './components/cursos/cursosdetails/cursos
 import { CursoslistComponent } from './components/cursos/cursoslist/cursoslist.component';
 import { StudentDashboardComponent } from './components/student/student-dashboard/student-dashboard.component';
 import { RoleGuard } from './guards/role.guard';
+import { TelaFuncionariosComponent } from './components/tela-de-funcionarios/tela-de-funcionarios.component';
+import { VisualizarChamadosComponent } from './components/visualizar-chamados/visualizar-chamados.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -26,6 +28,10 @@ export const routes: Routes = [
   { path: 'historico', component: HistoricoTicketsComponent, canActivate: [RoleGuard] },
   { path: 'andamentos', component: TicketsAndamentosComponent, canActivate: [RoleGuard] },
   { path: 'finalizados', component: TicketsFinalizadosComponent, canActivate: [RoleGuard] },
+{ path: 'tela-de-funcionarios', component: TelaFuncionariosComponent }, // removido canActivate temporariamente
+{ path: 'visualizar-chamados', component: VisualizarChamadosComponent },
+
+
 
   // Rotas para ADMIN/GESTOR
   {
