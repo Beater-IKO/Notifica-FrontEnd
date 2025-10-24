@@ -317,3 +317,190 @@
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   }
 }
+
+.visualizar-chamados-container {
+  display: flex;
+  height: 70vh;
+  background: #f8f8f8;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Lista à esquerda */
+.lista-chamados {
+  width: 35%;
+  background: #e6e6e6;
+  overflow-y: auto;
+  padding: 10px;
+  border-right: 2px solid #ccc;
+}
+
+.card-chamado {
+  background: white;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &.selecionado {
+    border: 2px solid #7b61ff;
+  }
+
+  .cabecalho {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+  }
+
+  .conteudo {
+    margin-top: 5px;
+
+    p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    small {
+      color: #666;
+    }
+  }
+
+  .prioridade {
+    margin-top: 8px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+
+    &.leve { background: #b7f5b7; }
+    &.médio { background: #fff59d; }
+    &.grave { background: #ffcc80; }
+    &.urgência { background: #ff8a80; }
+  }
+}
+
+/* Detalhes à direita */
+.detalhes-chamado {
+  flex: 1;
+  padding: 30px;
+  background: white;
+
+  h2 {
+    color: #7b61ff;
+  }
+
+  .info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 10px;
+  }
+
+  .descricao {
+    margin-top: 15px;
+    background: #f0f0f0;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .checkboxes {
+    margin-top: 20px;
+
+    label {
+      display: inline-block;
+      margin-right: 20px;
+      background: orange;
+      padding: 10px;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+
+      input {
+        margin-right: 6px;
+      }
+    }
+  }
+
+  .btn-material {
+    margin-top: 20px;
+    background: #4285f4;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+}
+
+/* Fundo escuro */
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 50%; /* começa na metade da tela, onde está o painel da direita */
+  width: 50%; /* cobre só o lado direito */
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+
+/* Caixa principal */
+.modal {
+  position: relative;
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  width: 350px;
+  height: 300px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  z-index: 11; /* maior que o overlay */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  label {
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    outline: none;
+  }
+
+  .btn-enviar {
+    background-color: #00e676;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+    padding: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      background-color: #00c853;
+    }
+  }
+}
+
+
+/* Animação */
+@keyframes slideIn {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+

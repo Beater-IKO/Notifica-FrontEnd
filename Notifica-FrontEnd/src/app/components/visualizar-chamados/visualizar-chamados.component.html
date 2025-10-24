@@ -49,8 +49,72 @@
 
   <!-- Área de Conteúdo -->
   <main class="content-area">
-    <div class="form-container">
-      <!-- Container em branco -->
+   <div class="form-container">
+  <div class="visualizar-chamados-container">
+    <!-- Lado esquerdo - lista de chamados -->
+    <div class="lista-chamados">
+      <div 
+        class="card-chamado" 
+        *ngFor="let chamado of chamados" 
+        [class.selecionado]="chamado === chamadoSelecionado"
+        (click)="selecionarChamado(chamado)"
+      >
+        <div class="cabecalho">
+          <span class="usuario">{{ chamado.usuario }}</span>
+          <span class="id">#{{ chamado.id }}</span>
+        </div>
+        <div class="conteudo">
+          <p>{{ chamado.problema }}</p>
+          <small>{{ chamado.andar }} • {{ chamado.local }} • {{ chamado.sala }}</small>
+        </div>
+        <div class="prioridade" [ngClass]="chamado.prioridade.toLowerCase()">
+          {{ chamado.prioridade }}
+        </div>
+      </div>
     </div>
+
+    <!-- Lado direito - detalhes -->
+    <div class="detalhes-chamado" *ngIf="chamadoSelecionado">
+      <h2>{{ chamadoSelecionado.problema }}</h2>
+
+      <div class="info">
+        <div><strong>Sala:</strong> {{ chamadoSelecionado.sala }}</div>
+        <div><strong>Andar:</strong> {{ chamadoSelecionado.andar }}</div>
+        <div><strong>Área:</strong> {{ chamadoSelecionado.area }}</div>
+        <div><strong>Prioridade:</strong> {{ chamadoSelecionado.prioridade }}</div>
+      </div>
+
+      <div class="descricao">
+        <p>{{ chamadoSelecionado.descricao }}</p>
+      </div>
+
+      <div class="checkboxes">
+        <label><input type="checkbox" [(ngModel)]="chamadoSelecionado.estouCiente"> Estou Ciente</label>
+        <label><input type="checkbox" [(ngModel)]="chamadoSelecionado.aFazer"> A Fazer</label>
+        <label><input type="checkbox" [(ngModel)]="chamadoSelecionado.finalizado"> Finalizado</label>
+      </div>
+
+      <button class="btn-material" (click)="abrirModal()">Requerir materiais</button>
+
+      <!-- Modal -->
+<div class="modal-overlay" *ngIf="mostrarModal" (click)="fecharModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h2>Requerer materiais</h2>
+    
+    <label>Quantidade</label>
+    <input type="number" [(ngModel)]="quantidade" min="0" />
+
+    <label>Material necessário</label>
+    <input type="text" placeholder="Digite ou grave um áudio" />
+
+    <button class="btn-enviar" (click)="fecharModal()">Enviar Requisição</button>
+  </div>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
   </main>
 </div>
