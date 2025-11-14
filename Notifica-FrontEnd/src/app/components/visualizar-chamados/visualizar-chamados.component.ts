@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
-import { RouterModule } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
@@ -35,7 +35,7 @@ export class VisualizarChamadosComponent implements OnInit {
   chamados: Chamado[] = [];
   chamadoSelecionado?: Chamado;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
     this.currentUser = this.authService.getCurrentUser();
   }
 
@@ -88,6 +88,10 @@ export class VisualizarChamadosComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  voltar(): void {
+    this.router.navigate(['/tela-de-funcionarios']);
   }
 
   mostrarModal: boolean = false;
