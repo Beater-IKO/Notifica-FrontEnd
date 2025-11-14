@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
-import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { Router, RouterModule } from "@angular/router";
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 
 interface Chamado {
@@ -17,30 +15,35 @@ interface Chamado {
   area: string;
   prioridade: string;
   descricao: string;
-  estouCiente?: boolean;
-  aFazer?: boolean;
-  finalizado?: boolean;
 }
 
 @Component({
   selector: 'app-visualizar-chamados',
   standalone: true,
-  imports: [MdbFormsModule, MdbValidationModule, FormsModule, RouterModule, CommonModule, HttpClientModule],
+  imports: [FormsModule, RouterModule, CommonModule, HttpClientModule],
   templateUrl: './visualizar-chamados.component.html',
   styleUrl: './visualizar-chamados.component.scss',
 })
 export class VisualizarChamadosComponent implements OnInit {
   currentUser: string;
-  showDropdown: boolean = false;
   chamados: Chamado[] = [];
   chamadoSelecionado?: Chamado;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private http: HttpClient,
+    private router: Router
+  ) {
     this.currentUser = this.authService.getCurrentUser();
   }
 
   ngOnInit() {
-    // Chamados simulados - depois você pode buscar do backend
+    this.carregarPresets();
+    this.carregarTicketsBackend();
+  }
+
+  /** 🎨 Presets já estilizados */
+  carregarPresets() {
     this.chamados = [
       {
         id: 1,
@@ -51,7 +54,7 @@ export class VisualizarChamadosComponent implements OnInit {
         sala: 'Sala 310',
         area: 'Infraestrutura',
         prioridade: 'Médio',
-        descricao: 'O piso da sala está cheio de fissuras e buracos, causando riscos de acidentes e distrações nas aulas.'
+        descricao: 'O piso da sala está cheio de fissuras e buracos, causando riscos de acidentes.'
       },
       {
         id: 2,
@@ -73,36 +76,48 @@ export class VisualizarChamadosComponent implements OnInit {
         sala: 'Sala 120',
         area: 'Infraestrutura',
         prioridade: 'Grave',
-        descricao: 'Há infiltrações no teto que podem causar danos elétricos e estruturais.'
+        descricao: 'Há infiltrações no teto que podem causar danos elétricos.'
       }
     ];
+  }
+
+  /** 🔗 Busca do backend e adiciona ao array */
+  carregarTicketsBackend() {
+    this.http.get<any[]>("http://localhost:8080/api/tickets/findAll")
+      .subscribe({
+        next: (tickets) => {
+          const convertidos = tickets.map(t => ({
+            id: t.id,
+            usuario: t.user?.nome ?? "Admin",
+            problema: t.problema,
+            local: "Interno",
+            andar: t.area?.andar ?? "Não informado",
+            sala: t.area?.sala ?? "Não informado",
+            area: t.area?.nome ?? "Desconhecida",
+            prioridade: t.prioridade,
+            descricao: t.problema
+          }));
+
+          this.chamados = [...this.chamados, ...convertidos]; // Mantém os presets
+        },
+        error: (err) => console.error("Erro ao carregar tickets:", err)
+      });
   }
 
   selecionarChamado(chamado: Chamado) {
     this.chamadoSelecionado = chamado;
   }
 
-  toggleDropdown(): void {
-    this.showDropdown = !this.showDropdown;
-  }
-
-  logout(): void {
+  logout() {
     this.authService.logout();
   }
 
-  voltar(): void {
+  voltar() {
     this.router.navigate(['/tela-de-funcionarios']);
   }
 
-  mostrarModal: boolean = false;
-quantidade: number = 0;
-
-abrirModal() {
-  this.mostrarModal = true;
-}
-
-fecharModal() {
-  this.mostrarModal = false;
-}
-
+  abrirModal() {
+    // Implementar lógica do modal aqui
+    console.log('Modal aberto');
+  }
 }
