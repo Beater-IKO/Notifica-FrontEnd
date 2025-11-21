@@ -10,23 +10,27 @@ import { Token } from '../models/token.model';
   providedIn: 'root'
 })
 export class AuthService {
-  
+
   constructor(
     private router: Router,
     private http: HttpClient,
     private configService: ConfigService
-  ) {}
+  ) { }
 
   login(dados: any): Observable<any> {
     return this.http.post<any>(`${this.configService.getApiUrl()}/auth/login`, dados).pipe(
       tap(response => {
+        console.log('Resposta completa do login:', response);
         if (response.token) {
           localStorage.setItem('jwt-token', response.token);
           localStorage.setItem('userName', response.nome || response.usuario || 'Usuário');
           localStorage.setItem('userRole', response.role || 'ESTUDANTE');
           localStorage.setItem('userId', response.id || '1');
-          
-          console.log('Login bem-sucedido, dados salvos!');
+
+          console.log('Dados salvos no localStorage:');
+          console.log('Role:', localStorage.getItem('userRole'));
+          console.log('Nome:', localStorage.getItem('userName'));
+
           this.redirectByRole(response.role || 'ESTUDANTE');
         }
       })
@@ -34,7 +38,8 @@ export class AuthService {
   }
 
   private redirectByRole(role: string): void {
-    switch(role) {
+    console.log('Redirecionando usuário com role:', role);
+    switch (role) {
       case 'ADMIN':
       case 'GESTOR':
         this.router.navigate(['/admin/usuarios']);
@@ -43,10 +48,10 @@ export class AuthService {
         this.router.navigate(['/student']);
         break;
       case 'PROFESSOR':
-     case 'FUNCIONARIO':
-  this.router.navigate(['/tela-funcionarios']);
-  break;
-
+      case 'FUNCIONARIO':
+        // rota no arquivo de rotas é `tela-de-funcionarios`
+        this.router.navigate(['/tela-de-funcionarios']);
+        break;
       default:
         this.router.navigate(['/student']);
     }
