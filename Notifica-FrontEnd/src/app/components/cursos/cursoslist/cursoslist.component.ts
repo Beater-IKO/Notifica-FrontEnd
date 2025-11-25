@@ -115,4 +115,11 @@ export class CursoslistComponent implements OnInit{
       this.modalRef.close();
     }
 
+    trackByFn(index: number, item: Curso): any {
+      return item.id;
+    }
+
+    logout(): void {
+      // Implementar logout se necessário
+    }
 }

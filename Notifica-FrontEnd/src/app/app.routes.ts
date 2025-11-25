@@ -15,6 +15,7 @@ import { StudentDashboardComponent } from './components/student/student-dashboar
 import { RoleGuard } from './guards/role.guard';
 import { TelaFuncionariosComponent } from './components/tela-de-funcionarios/tela-de-funcionarios.component';
 import { VisualizarChamadosComponent } from './components/visualizar-chamados/visualizar-chamados.component';
+import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -22,6 +23,9 @@ export const routes: Routes = [
   
   // Rotas para ESTUDANTE
   { path: 'student', component: StudentDashboardComponent, canActivate: [RoleGuard] },
+  
+  // Rota para ADMIN
+  { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [RoleGuard] },
   
   // Rotas para PROFESSOR/FUNCIONARIO
   { path: 'criacao-tickets', component: CriacaoTicketsComponent, canActivate: [RoleGuard] },
@@ -39,6 +43,7 @@ export const routes: Routes = [
     component: PrincipalComponent,
     canActivate: [RoleGuard],
     children: [
+      { path: '', redirectTo: 'usuarios', pathMatch: 'full' },
       { path: 'usuarios', component: UsuarioslistComponent },
       { path: 'usuarios/new', component: UsuariosdetailsComponent },
       { path: 'usuarios/edit/:id', component: UsuariosdetailsComponent },

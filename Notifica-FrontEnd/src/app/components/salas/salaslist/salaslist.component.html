@@ -1,53 +1,76 @@
-<div class="container">
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="card">
-        <div class="card-body">
-          <h3>Lista de Salas</h3>
-          <div class="direita">
-            <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="new()">
-              Nova Sala
+<!-- Header -->
+<header class="header">
+  <div class="header-content">
+    <div class="logo-section">
+      <div class="logo">
+        <span class="logo-text">descomplica</span>
+      </div>
+      <div class="university-info">
+        <span class="plus-sign">+</span>
+        <span class="uni-text">UniAmérica</span>
+        <span class="subtitle">Centro Universitário</span>
+      </div>
+    </div>
+    
+    <div class="user-info">
+      <span class="user-name">Administrador</span>
+      <button class="logout-btn" (click)="logout()">Sair</button>
+    </div>
+  </div>
+</header>
+
+<!-- Main Container -->
+<div class="main-container">
+  <!-- Content Area -->
+  <main class="content-area">
+    <div class="form-container">
+      <div class="page-header">
+        <h2>🏫 Gerenciar Salas</h2>
+        <button type="button" class="btn btn-primary btn-lg" (click)="new()">
+          <i class="fas fa-plus"></i> Nova Sala
+        </button>
+      </div>
+      
+      <div class="salas-grid">
+        <div *ngIf="lista.length === 0" class="empty-state">
+          <i class="fas fa-door-open"></i>
+          <h3>Nenhuma sala encontrada</h3>
+          <p>Clique em "Nova Sala" para adicionar a primeira sala</p>
+        </div>
+
+        <div *ngFor="let sala of lista; trackBy: trackByFn" class="sala-card">
+          <div class="sala-icon">
+            <i class="fas fa-door-open"></i>
+          </div>
+          <div class="sala-info">
+            <h4 class="sala-number">Sala {{ sala.numero }}</h4>
+            <p class="sala-floor">{{ getAndarLabel(sala.andar) }}</p>
+            <div class="sala-details">
+              <span class="sala-course">{{ sala.curso?.nome || 'Sem curso' }}</span>
+            </div>
+            <div class="sala-stats">
+              <span class="stat-item">
+                <i class="fas fa-users"></i>
+                {{ sala.alunos?.length || 0 }} alunos
+              </span>
+              <span class="stat-item">
+                <i class="fas fa-chalkboard-teacher"></i>
+                {{ sala.professores?.length || 0 }} professores
+              </span>
+            </div>
+          </div>
+          <div class="sala-actions">
+            <button class="action-btn edit-btn" (click)="edit(sala)" title="Editar">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="action-btn delete-btn" (click)="deleteById(sala)" title="Excluir">
+              <i class="fas fa-trash"></i>
             </button>
           </div>
-          <br />
-
-          <table border="1" class="table table-striped">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Número</th>
-                <th>Andar</th>
-                <th>Curso</th>
-                <th>Quantidade de Alunos</th>
-                <th>Quantidade de Professores</th>
-                <th>AÇÕES</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (sala of lista; track $index) {
-              <tr>
-                <td>{{ sala.id }}</td>
-                <td>{{ sala.numero }}</td>
-                <td>{{ sala.andar }}</td>
-                <td>{{ sala.curso.nome }}</td> <!-- Assumindo que Curso tem um campo 'nome' -->
-                <td>{{ sala.alunos.length || 0 }}</td>
-                <td>{{ sala.professores.length || 0 }}</td>
-                <td class="">
-                  <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="edit(sala)">
-                    Editar
-                  </button>
-                  <button type="button" class="btn btn-danger btn-rounded" mdbRipple (click)="deleteById(sala)">
-                    Deletar
-                  </button>
-                </td>
-              </tr>
-              }
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
-  </div>
+  </main>
 </div>
 
 <ng-template #modalSalaDetalhe>

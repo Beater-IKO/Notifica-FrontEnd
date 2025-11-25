@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Usuario } from '../models/usuario';
 import { Observable } from 'rxjs';
@@ -18,11 +18,21 @@ export class UsuariosService {
     this.API = `${this.configService.getApiUrl()}/usuarios`;
   }
 
+  private getHttpOptions() {
+    return {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+  }
+
   save(usuario: Usuario): Observable<Usuario> {
     if (usuario.id) {
-      return this.http.put<Usuario>(`${this.API}/update/${usuario.id}`, usuario);
+      return this.http.put<Usuario>(`${this.API}/update/${usuario.id}`, usuario, this.getHttpOptions());
     } else {
-      return this.http.post<Usuario>(`${this.API}/save`, usuario);
+      // Usando endpoint público de registro
+      const registerUrl = `${this.configService.getApiUrl()}/auth/register`;
+      return this.http.post<Usuario>(registerUrl, usuario, this.getHttpOptions());
     }
   }
 

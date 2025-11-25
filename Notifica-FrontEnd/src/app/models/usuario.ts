@@ -8,6 +8,7 @@ export class Usuario {
   nome!: string;
   cpf!: string;
   email!: string;
+  usuario!: string;
   senha!: string;
   role!: Role;
   sala?: Sala | null;

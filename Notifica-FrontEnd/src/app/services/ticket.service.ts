@@ -12,6 +12,11 @@ export interface Ticket {
   prioridade: string;
   status: string;
   user: { id: number };
+  categoria?: {
+    id: number;
+    nome: string;
+  };
+  mensagens?: any[];
 }
 
 @Injectable({

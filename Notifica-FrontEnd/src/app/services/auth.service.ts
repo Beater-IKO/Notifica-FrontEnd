@@ -38,23 +38,39 @@ export class AuthService {
   }
 
   private redirectByRole(role: string): void {
-    console.log('Redirecionando usuário com role:', role);
+    console.log('=== REDIRECIONAMENTO ===');
+    console.log('Role recebido:', role);
+    console.log('Tipo do role:', typeof role);
+    
     switch (role) {
       case 'ADMIN':
+        console.log('Redirecionando para ADMIN: /admin-dashboard');
+        setTimeout(() => {
+          this.router.navigate(['/admin-dashboard']);
+        }, 100);
+        break;
       case 'GESTOR':
-        this.router.navigate(['/admin/usuarios']);
+        console.log('Redirecionando para GESTOR: /admin-dashboard');
+        this.router.navigate(['/admin-dashboard']);
         break;
       case 'ESTUDANTE':
+        console.log('Redirecionando para ESTUDANTE: /student');
         this.router.navigate(['/student']);
         break;
       case 'PROFESSOR':
+        console.log('Redirecionando para PROFESSOR: /tela-de-funcionarios');
+        this.router.navigate(['/tela-de-funcionarios']);
+        break;
       case 'FUNCIONARIO':
-        // rota no arquivo de rotas é `tela-de-funcionarios`
+        console.log('Redirecionando para FUNCIONARIO: /tela-de-funcionarios');
         this.router.navigate(['/tela-de-funcionarios']);
         break;
       default:
+        console.log('Role não reconhecido, redirecionando para /student. Role:', role);
         this.router.navigate(['/student']);
     }
+    
+    console.log('=== FIM REDIRECIONAMENTO ===');
   }
 
   getToken(): string | null {

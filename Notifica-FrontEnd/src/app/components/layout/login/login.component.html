@@ -62,12 +62,12 @@
               <label mdbLabel class="form-label" for="confirmSenha">Confirmar Senha</label>
             </mdb-form-control>
             <br>
-            <mdb-form-control>
-              <select class="form-control" [(ngModel)]="dadosCadastro.role">
+            <div class="form-outline">
+              <select class="form-select" [(ngModel)]="dadosCadastro.role" id="roleSelect">
                 <option *ngFor="let role of roles" [value]="role.value">{{ role.label }}</option>
               </select>
-              <label mdbLabel class="form-label">Tipo de Usuário</label>
-            </mdb-form-control>
+              <label class="form-label" for="roleSelect">Tipo de Usuário</label>
+            </div>
             <br>
             <button type="button" class="btn btn-success btn-rounded" mdbRipple (click)="register()">
               Criar Conta

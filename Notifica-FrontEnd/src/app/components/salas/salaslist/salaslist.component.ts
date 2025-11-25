@@ -113,4 +113,23 @@ export class SalaslistComponent implements OnInit {
     this.findAll();
     this.modalRef.close();
   }
+
+  trackByFn(index: number, item: Sala): any {
+    return item.id;
+  }
+
+  getAndarLabel(andar: string): string {
+    const andarLabels: { [key: string]: string } = {
+      'TERREO': 'Térreo',
+      'PRIMEIRO': '1º Andar',
+      'SEGUNDO': '2º Andar',
+      'TERCEIRO': '3º Andar',
+      'QUARTO': '4º Andar'
+    };
+    return andarLabels[andar] || andar;
+  }
+
+  logout(): void {
+    // Implementar logout se necessário
+  }
 }

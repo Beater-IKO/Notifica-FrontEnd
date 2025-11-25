@@ -1,0 +1,157 @@
+<!-- Header -->
+<header class="header">
+  <div class="header-content">
+    <div class="logo-section">
+      <div class="logo">
+        <span class="logo-text">descomplica</span>
+      </div>
+      <div class="university-info">
+        <span class="plus-sign">+</span>
+        <span class="uni-text">UniAmérica</span>
+        <span class="subtitle">Centro Universitário</span>
+      </div>
+    </div>
+    
+    <div class="user-info">
+      <span class="user-name">{{ currentUser }}</span>
+      <button class="logout-btn" (click)="logout()">Sair</button>
+    </div>
+  </div>
+</header>
+
+<div class="admin-dashboard">
+
+  <!-- Main Content -->
+  <div class="container-fluid mt-4">
+    <!-- Quick Actions Row -->
+    <div class="row g-4 mb-5">
+      <!-- Tickets em Andamento -->
+      <div class="col-lg-3 col-md-6">
+        <div class="admin-card gradient-orange" (click)="navigateTo('/andamentos')">
+          <div class="card-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="card-content">
+            <h3>Tickets em Andamento</h3>
+            <p>Monitore e gerencie tickets ativos</p>
+            <div class="card-stats">
+              <span class="stat-number">12</span>
+              <span class="stat-label">Ativos</span>
+            </div>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Usuários -->
+      <div class="col-lg-3 col-md-6">
+        <div class="admin-card gradient-blue" (click)="navigateTo('/admin/usuarios')">
+          <div class="card-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="card-content">
+            <h3>Usuários</h3>
+            <p>Gerencie contas e permissões</p>
+            <div class="card-stats">
+              <span class="stat-number">156</span>
+              <span class="stat-label">Usuários</span>
+            </div>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Salas -->
+      <div class="col-lg-3 col-md-6">
+        <div class="admin-card gradient-green" (click)="navigateTo('/admin/salas')">
+          <div class="card-icon">
+            <i class="fas fa-door-open"></i>
+          </div>
+          <div class="card-content">
+            <h3>Salas</h3>
+            <p>Administre salas e laboratórios</p>
+            <div class="card-stats">
+              <span class="stat-number">24</span>
+              <span class="stat-label">Salas</span>
+            </div>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cursos -->
+      <div class="col-lg-3 col-md-6">
+        <div class="admin-card gradient-purple" (click)="navigateTo('/admin/cursos')">
+          <div class="card-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <div class="card-content">
+            <h3>Cursos</h3>
+            <p>Configure cursos disponíveis</p>
+            <div class="card-stats">
+              <span class="stat-number">8</span>
+              <span class="stat-label">Cursos</span>
+            </div>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Secondary Actions Row -->
+    <div class="row g-4">
+      <!-- Histórico -->
+      <div class="col-lg-4 col-md-6">
+        <div class="admin-card-secondary" (click)="navigateTo('/historico')">
+          <div class="card-header-secondary">
+            <i class="fas fa-history"></i>
+            <h4>Histórico de Tickets</h4>
+          </div>
+          <p>Consulte o histórico completo de todos os tickets do sistema</p>
+          <div class="card-footer-secondary">
+            <span>Ver histórico</span>
+            <i class="fas fa-external-link-alt"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Finalizados -->
+      <div class="col-lg-4 col-md-6">
+        <div class="admin-card-secondary" (click)="navigateTo('/finalizados')">
+          <div class="card-header-secondary">
+            <i class="fas fa-check-circle"></i>
+            <h4>Tickets Finalizados</h4>
+          </div>
+          <p>Visualize todos os tickets que foram concluídos com sucesso</p>
+          <div class="card-footer-secondary">
+            <span>Ver finalizados</span>
+            <i class="fas fa-external-link-alt"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visualizar Chamados -->
+      <div class="col-lg-4 col-md-6">
+        <div class="admin-card-secondary" (click)="navigateTo('/visualizar-chamados')">
+          <div class="card-header-secondary">
+            <i class="fas fa-eye"></i>
+            <h4>Visualizar Chamados</h4>
+          </div>
+          <p>Acesse uma visão geral de todos os chamados do sistema</p>
+          <div class="card-footer-secondary">
+            <span>Ver chamados</span>
+            <i class="fas fa-external-link-alt"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
