@@ -14,10 +14,13 @@
             <label mdbLabel class="form-label" for="duracao">DURAÇÃO</label>
           </mdb-form-control>
 
-          <mdb-form-control class="mb-4">
-            <input mdbInput type="text" id="sala" class="form-control" [(ngModel)]="cursos.sala" required>
-            <label mdbLabel class="form-label" for="sala">SALA</label>
-          </mdb-form-control>
+          <div class="mb-4">
+            <label class="form-label">SALA (Opcional)</label>
+            <select class="form-select" [(ngModel)]="cursos.sala" id="sala" [compareWith]="compareSalas">
+              <option [ngValue]="null">Selecione uma sala (opcional)</option>
+              <option *ngFor="let sala of salas" [ngValue]="sala">Sala {{sala.numero}} - {{sala.andar}}</option>
+            </select>
+          </div>
 
           <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="save()">
             Salvar

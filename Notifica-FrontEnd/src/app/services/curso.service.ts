@@ -8,11 +8,11 @@ import { Curso } from '../models/curso';
 })
 export class CursoService {
 
-  private API = 'http://localhost:8080/cursos';
+  private API = 'http://localhost:8080/api/cursos';
 
   constructor(private http: HttpClient) { }
 
-  save(curso: Curso): Observable<Curso> {
+  save(curso: any): Observable<Curso> {
     if (curso.id) {
       return this.http.put<Curso>(`${this.API}/update/${curso.id}`, curso);
     } else {

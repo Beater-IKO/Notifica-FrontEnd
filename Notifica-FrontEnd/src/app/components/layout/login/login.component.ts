@@ -91,6 +91,7 @@ export class LoginComponent {
       nome: this.dadosCadastro.nome,
       email: this.dadosCadastro.email,
       cpf: cpfFormatted,
+      usuario: this.dadosCadastro.usuario,
       senha: this.dadosCadastro.senha,
       role: this.dadosCadastro.role as Role
     } as Usuario;
@@ -99,12 +100,35 @@ export class LoginComponent {
 
     this.usuariosService.save(newUser).subscribe({
       next: (response: any) => {
+        console.log('Resposta do servidor:', response);
         alert('Conta criada com sucesso! Faça login agora.');
         this.isRegistering = false;
         this.clearForm();
       },
       error: (error) => {
-        alert(`Erro ao criar conta: ${error.error?.message || 'Erro interno'}`);
+        // Status 201 é sucesso, mas Angular trata como erro se não for JSON válido
+        if (error.status === 201) {
+          alert('Conta criada com sucesso! Faça login agora.');
+          this.isRegistering = false;
+          this.clearForm();
+          return;
+        }
+        
+        // Status 409 - Usuário já existe
+        if (error.status === 409) {
+          alert('Este email ou CPF já está cadastrado. Tente fazer login ou use dados diferentes.');
+          return;
+        }
+        
+        // Status 403 - Acesso negado
+        if (error.status === 403) {
+          alert('Acesso negado. Verifique se o servidor está configurado corretamente.');
+          return;
+        }
+        
+        console.error('Erro completo:', error);
+        let errorMessage = error.error?.message || error.message || 'Erro interno';
+        alert(`Erro ao criar conta: ${errorMessage}`);
       }
     });
   }

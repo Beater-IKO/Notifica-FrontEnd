@@ -1,0 +1,89 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <h2>Painel Administrativo</h2>
+      <p class="text-muted">Bem-vindo ao sistema de administração</p>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <!-- Card Tickets em Andamento -->
+    <div class="col-md-3 mb-3">
+      <div class="card text-white bg-warning">
+        <div class="card-body">
+          <h5 class="card-title">Tickets em Andamento</h5>
+          <p class="card-text">Visualizar e gerenciar tickets</p>
+          <a routerLink="/andamentos" class="btn btn-light">Acessar</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Usuários -->
+    <div class="col-md-3 mb-3">
+      <div class="card text-white bg-primary">
+        <div class="card-body">
+          <h5 class="card-title">Usuários</h5>
+          <p class="card-text">Gerenciar usuários do sistema</p>
+          <a routerLink="/admin/usuarios" class="btn btn-light">Acessar</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Salas -->
+    <div class="col-md-3 mb-3">
+      <div class="card text-white bg-success">
+        <div class="card-body">
+          <h5 class="card-title">Salas</h5>
+          <p class="card-text">Gerenciar salas e laboratórios</p>
+          <a routerLink="/admin/salas" class="btn btn-light">Acessar</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Cursos -->
+    <div class="col-md-3 mb-3">
+      <div class="card text-white bg-info">
+        <div class="card-body">
+          <h5 class="card-title">Cursos</h5>
+          <p class="card-text">Gerenciar cursos disponíveis</p>
+          <a routerLink="/admin/cursos" class="btn btn-light">Acessar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <!-- Card Histórico -->
+    <div class="col-md-4 mb-3">
+      <div class="card text-white bg-secondary">
+        <div class="card-body">
+          <h5 class="card-title">Histórico de Tickets</h5>
+          <p class="card-text">Visualizar histórico completo</p>
+          <a routerLink="/historico" class="btn btn-light">Acessar</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Tickets Finalizados -->
+    <div class="col-md-4 mb-3">
+      <div class="card text-white bg-dark">
+        <div class="card-body">
+          <h5 class="card-title">Tickets Finalizados</h5>
+          <p class="card-text">Tickets concluídos</p>
+          <a routerLink="/finalizados" class="btn btn-light">Acessar</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Relatórios -->
+    <div class="col-md-4 mb-3">
+      <div class="card text-white bg-danger">
+        <div class="card-body">
+          <h5 class="card-title">Visualizar Chamados</h5>
+          <p class="card-text">Todos os chamados do sistema</p>
+          <a routerLink="/visualizar-chamados" class="btn btn-light">Acessar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

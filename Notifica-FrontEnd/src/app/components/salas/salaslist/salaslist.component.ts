@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { Sala } from '../../../models/sala';
 import { SalaService } from '../../../services/sala.service';
 import { SalasdetailsComponent } from "../salasdetails/salasdetails.component";
@@ -9,7 +10,7 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-salaslist',
-  imports: [FormsModule, SalasdetailsComponent, MdbModalModule],
+  imports: [FormsModule, CommonModule, SalasdetailsComponent, MdbModalModule],
   templateUrl: './salaslist.component.html',
   styleUrl: './salaslist.component.scss'
 })
@@ -100,8 +101,14 @@ export class SalaslistComponent implements OnInit {
           this.modalRef = this.modalService.open(this.modalSalaDetalhe);
         },
         error: (erro) => {
-          console.error(erro);
-          Swal.fire('Erro!', 'Não foi possível carrega os dados para edição.', 'error');
+          console.error('Erro ao buscar sala por ID:', erro);
+          // Se der erro 403, usa a sala da lista mesmo
+          if (erro.status === 403) {
+            this.salaEdit = { ...sala }; // Clona a sala
+            this.modalRef = this.modalService.open(this.modalSalaDetalhe);
+          } else {
+            Swal.fire('Erro!', 'Não foi possível carregar os dados para edição.', 'error');
+          }
         }
       });
     } else {
@@ -113,4 +120,20 @@ export class SalaslistComponent implements OnInit {
     this.findAll();
     this.modalRef.close();
   }
+
+  trackByFn(index: number, item: Sala): any {
+    return item.id;
+  }
+
+  getAndarLabel(andar: string): string {
+    const andarLabels: { [key: string]: string } = {
+      'Subsolo': 'Subsolo',
+      'Terreo': 'Térreo',
+      'PrimeiroAndar': '1º Andar',
+      'SegundoAndar': '2º Andar'
+    };
+    return andarLabels[andar] || andar;
+  }
+
+
 }

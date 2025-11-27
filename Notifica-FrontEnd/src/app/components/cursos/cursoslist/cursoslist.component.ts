@@ -98,11 +98,25 @@ export class CursoslistComponent implements OnInit{
         this.cursoService.findById(curso.id).subscribe({
           next: (cursoEncontrada) => {
             this.cursoEdit = cursoEncontrada;
+            // Mapear a última sala do array para a propriedade sala (mais recente)
+            if (cursoEncontrada.salas && cursoEncontrada.salas.length > 0) {
+              this.cursoEdit.sala = cursoEncontrada.salas[cursoEncontrada.salas.length - 1];
+            }
             this.modalRef = this.modalService.open(this.modalCursoDetalhe);
           },
           error: (erro) => {
-            console.error(erro);
-            Swal.fire('Erro!', 'Não foi possível carrega os dados para edição.', 'error');
+            console.error('Erro ao buscar curso por ID:', erro);
+            // Se der erro 403, usa o curso da lista mesmo
+            if (erro.status === 403) {
+              this.cursoEdit = { ...curso }; // Clona o curso
+              // Mapear a última sala do array para a propriedade sala (mais recente)
+              if (curso.salas && curso.salas.length > 0) {
+                this.cursoEdit.sala = curso.salas[curso.salas.length - 1];
+              }
+              this.modalRef = this.modalService.open(this.modalCursoDetalhe);
+            } else {
+              Swal.fire('Erro!', 'Não foi possível carregar os dados para edição.', 'error');
+            }
           }
         });
       } else {
@@ -111,8 +125,37 @@ export class CursoslistComponent implements OnInit{
     }
   
     retornoDetalhe(curso: Curso) {
-      this.findAll();
+      // Salvar a sala selecionada no localStorage
+      if (this.cursoEdit.sala && this.cursoEdit.sala.id) {
+        localStorage.setItem(`curso_${curso.id}_sala_selecionada`, this.cursoEdit.sala.id.toString());
+      }
+      
       this.modalRef.close();
+      this.findAll();
     }
+
+    trackByFn(index: number, item: Curso): any {
+      return item.id;
+    }
+
+    getSalaAtual(curso: Curso): string {
+      if (!curso.salas || curso.salas.length === 0) {
+        return 'Sem sala definida';
+      }
+      
+      // Verificar se há uma sala selecionada salva no localStorage
+      const salaSelecionadaId = localStorage.getItem(`curso_${curso.id}_sala_selecionada`);
+      if (salaSelecionadaId) {
+        const salaEncontrada = curso.salas.find(sala => sala.id.toString() === salaSelecionadaId);
+        if (salaEncontrada) {
+          return `Sala ${salaEncontrada.numero}`;
+        }
+      }
+      
+      // Caso contrário, mostrar a última sala (mais recente)
+      const ultimaSala = curso.salas[curso.salas.length - 1];
+      return `Sala ${ultimaSala.numero}`;
+    }
+
 
 }

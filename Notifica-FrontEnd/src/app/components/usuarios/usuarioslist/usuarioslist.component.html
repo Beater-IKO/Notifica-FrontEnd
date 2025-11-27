@@ -1,58 +1,80 @@
-<div class="container">
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="card">
-        <div class="card-body">
-          <h3>Lista de Usuarios</h3>
-          <div class="direita">
-            <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="new()">
-              Nova Usuario
+<!-- Header -->
+<header class="header">
+  <div class="header-content">
+    <div class="logo-section">
+      <div class="logo">
+        <span class="logo-text">descomplica</span>
+      </div>
+      <div class="university-info">
+        <span class="plus-sign">+</span>
+        <span class="uni-text">UniAmérica</span>
+        <span class="subtitle">Centro Universitário</span>
+      </div>
+    </div>
+    
+    <div class="user-info">
+      <button class="profile-btn" (click)="openUserProfile()" title="Meu Perfil">
+        <i class="fas fa-user-circle"></i>
+      </button>
+      <span class="user-name">{{ currentUserName }}</span>
+      <button class="logout-btn" (click)="logout()">Sair</button>
+    </div>
+  </div>
+</header>
+
+<!-- Main Container -->
+<div class="main-container">
+  <!-- Content Area -->
+  <main class="content-area">
+    <div class="form-container">
+      <div class="page-header">
+        <h2>👥 Gerenciar Usuários</h2>
+        <button type="button" class="btn btn-primary btn-lg" (click)="new()">
+          <i class="fas fa-plus"></i> Novo Usuário
+        </button>
+      </div>
+      
+      <div class="users-grid">
+        <div *ngIf="lista.length === 0" class="empty-state">
+          <i class="fas fa-users"></i>
+          <h3>Nenhum usuário encontrado</h3>
+          <p>Clique em "Novo Usuário" para adicionar o primeiro usuário</p>
+        </div>
+
+        <div *ngFor="let usuario of lista; trackBy: trackByFn" class="user-card">
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="user-info">
+            <h4 class="user-name">{{ usuario.nome }}</h4>
+            <p class="user-email">{{ usuario.email }}</p>
+            <div class="user-details">
+              <span class="user-role" [class]="getRoleClass(usuario.role)">{{ getRoleLabel(usuario.role) }}</span>
+              <span class="user-cpf">CPF: {{ formatCpf(usuario.cpf) }}</span>
+            </div>
+            <div class="user-stats">
+              <span class="stat-item">
+                <i class="fas fa-door-open"></i>
+                {{ usuario.sala?.numero || 'Sem sala' }}
+              </span>
+              <span class="stat-item">
+                <i class="fas fa-ticket-alt"></i>
+                {{ usuario.tickets?.length || 0 }} tickets
+              </span>
+            </div>
+          </div>
+          <div class="user-actions">
+            <button class="action-btn edit-btn" (click)="edit(usuario)" title="Editar">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="action-btn delete-btn" (click)="deleteById(usuario)" title="Excluir">
+              <i class="fas fa-trash"></i>
             </button>
           </div>
-          <br />
-
-          <table border="1" class="table table-striped">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Cpf</th>
-                <th>Email</th>
-                <th>Senha</th>
-                <th>Role</th>
-                <th>Sala</th>
-                <th>Tickets</th>
-                <th>AÇÕES</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (usuario of lista; track $index) {
-              <tr>
-                <td>{{ usuario.id }}</td>
-                <td>{{ usuario.nome }}</td>
-                <td>{{ usuario.cpf }}</td>
-                <td>{{ usuario.email }}</td> <!-- Assumindo que Curso tem um campo 'nome' -->
-                <td>{{ usuario.senha }}</td>
-                <td>{{ usuario.role }}</td>
-                <td>{{ usuario.sala?.numero || 'N/A' }}</td>
-
-                <td>{{ usuario.tickets?.length }}</td>
-                <td class="">
-                  <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="edit(usuario)">
-                    Editar
-                  </button>
-                  <button type="button" class="btn btn-danger btn-rounded" mdbRipple (click)="deleteById(usuario)">
-                    Deletar
-                  </button>
-                </td>
-              </tr>
-              }
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
-  </div>
+  </main>
 </div>
 
 <ng-template #modalUsuarioDetalhe>
@@ -62,5 +84,64 @@
   </div>
   <div class="modal-body">
     <app-usuariosdetails [usuarios]="UsuarioEdit" (retorno)="retornoDetalhe($event)"></app-usuariosdetails>
+  </div>
+</ng-template>
+
+<ng-template #modalUserProfile>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      <i class="fas fa-user-circle"></i> Meu Perfil
+    </h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef.close()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="profile-container">
+      <div class="profile-avatar">
+        <i class="fas fa-user-circle"></i>
+      </div>
+      
+      <div class="profile-form">
+        <div class="form-group">
+          <label>Nome Completo</label>
+          <input type="text" class="form-control" [(ngModel)]="currentUser.nome" placeholder="Digite seu nome">
+        </div>
+        
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" class="form-control" [(ngModel)]="currentUser.email" placeholder="Digite seu email">
+        </div>
+        
+        <div class="form-group">
+          <label>CPF</label>
+          <input type="text" class="form-control" [value]="formatCpf(currentUser.cpf)" readonly>
+        </div>
+        
+        <div class="form-group">
+          <label>Tipo de Usuário</label>
+          <input type="text" class="form-control" [value]="getRoleLabel(currentUser.role)" readonly>
+        </div>
+        
+        <div class="form-group" *ngIf="currentUser.sala">
+          <label>Sala</label>
+          <input type="text" class="form-control" [value]="currentUser.sala.numero" readonly>
+        </div>
+        
+        <div class="profile-stats">
+          <div class="stat-card">
+            <i class="fas fa-ticket-alt"></i>
+            <div class="stat-info">
+              <span class="stat-number">{{ currentUser.tickets?.length || 0 }}</span>
+              <span class="stat-label">Tickets</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.close()">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="updateCurrentUser()">
+      <i class="fas fa-save"></i> Salvar Alterações
+    </button>
   </div>
 </ng-template>

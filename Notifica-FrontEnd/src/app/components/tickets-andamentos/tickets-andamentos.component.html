@@ -64,6 +64,30 @@
             </div>
           </div>
           <p class="ticket-description">{{ ticket.problema }}</p>
+          
+          <div class="ticket-assignment" *ngIf="isAdmin()">
+            <div class="assignment-info">
+              <span class="assignment-label">
+                <i class="fas fa-user-tie"></i>
+                Responsável:
+              </span>
+              <span class="no-assignment">Sistema em desenvolvimento - Atribuição será implementada</span>
+            </div>
+            
+            <div class="assignment-actions">
+              <select class="form-select" [(ngModel)]="selectedFuncionario[ticket.id!]" (change)="onFuncionarioChange(ticket.id!)">
+                <option value="">Selecionar funcionário...</option>
+                <option *ngFor="let funcionario of funcionarios" [value]="funcionario.id">
+                  {{ funcionario.nome }} ({{ getRoleLabel(funcionario.role) }})
+                </option>
+              </select>
+              
+              <button class="btn btn-assign" (click)="assignTicket(ticket)" [disabled]="!selectedFuncionario[ticket.id!]">
+                <i class="fas fa-user-plus"></i>
+                Atribuir
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
