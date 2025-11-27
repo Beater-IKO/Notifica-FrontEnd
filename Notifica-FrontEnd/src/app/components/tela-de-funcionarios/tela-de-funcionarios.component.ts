@@ -16,6 +16,7 @@ import { AuthService } from '../../services/auth.service';
 export class TelaFuncionariosComponent {
   currentUser: string;
   showDropdown: boolean = false;
+  tickets: any[] = [];
 
   constructor(private authService: AuthService) {
     this.currentUser = this.authService.getCurrentUser();

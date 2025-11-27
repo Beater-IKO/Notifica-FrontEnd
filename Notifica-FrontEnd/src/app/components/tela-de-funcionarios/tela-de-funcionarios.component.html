@@ -62,6 +62,11 @@
   <main class="content-area">
     <div class="form-container">
       <!-- Container em branco -->
+        <div class="tickets-list">
+        <div *ngIf="tickets.length === 0" class="alert alert-info">
+          Nenhum ticket encontrado no histórico.
+        </div>
+      </div>
     </div>
   </main>
 </div>
