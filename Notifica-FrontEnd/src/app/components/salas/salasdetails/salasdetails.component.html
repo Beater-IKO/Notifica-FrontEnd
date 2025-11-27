@@ -9,15 +9,24 @@
             <label mdbLabel class="form-label" for="numero">NÚMERO</label>
           </mdb-form-control>
 
-          <mdb-form-control class="mb-4">
-            <input mdbInput type="text" id="andar" class="form-control" [(ngModel)]="salas.andar" />
-            <label mdbLabel class="form-label" for="andar">ANDAR</label>
-          </mdb-form-control>
+          <div class="mb-4">
+            <label class="form-label">ANDAR</label>
+            <select class="form-select" [(ngModel)]="salas.andar" id="andar" required>
+              <option value="">Selecione o andar</option>
+              <option value="Subsolo">Subsolo</option>
+              <option value="Terreo">Térreo</option>
+              <option value="PrimeiroAndar">1º Andar</option>
+              <option value="SegundoAndar">2º Andar</option>
+            </select>
+          </div>
 
-          <mdb-form-control class="mb-4">
-            <input mdbInput type="text" id="curso" class="form-control" [(ngModel)]="salas.curso" />
-            <label mdbLabel class="form-label" for="curso">CURSO</label>
-          </mdb-form-control>
+          <div class="mb-4">
+            <label class="form-label">CURSO (Opcional)</label>
+            <select class="form-select" [(ngModel)]="salas.curso" id="curso">
+              <option [ngValue]="undefined">Selecione um curso (opcional)</option>
+              <option *ngFor="let curso of cursos" [ngValue]="curso">{{curso.nome}}</option>
+            </select>
+          </div>
 
           <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="save()">
             Salvar

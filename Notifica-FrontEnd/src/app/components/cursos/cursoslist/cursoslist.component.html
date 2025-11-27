@@ -14,7 +14,6 @@
     
     <div class="user-info">
       <span class="user-name">Administrador</span>
-      <button class="logout-btn" (click)="logout()">Sair</button>
     </div>
   </div>
 </header>
@@ -51,7 +50,7 @@
               </span>
               <span class="curso-sala">
                 <i class="fas fa-door-open"></i>
-                {{ curso.sala?.numero || 'Sem sala definida' }}
+                {{ getSalaAtual(curso) }}
               </span>
             </div>
           </div>

@@ -1,24 +1,36 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, OnInit } from '@angular/core';
 import { MdbFormsModule } from "mdb-angular-ui-kit/forms";
 import { Sala } from '../../../models/sala';
 import { SalaService } from '../../../services/sala.service';
+import { CursoService } from '../../../services/curso.service';
+import { Curso } from '../../../models/curso';
 import { FormsModule } from "@angular/forms";
+import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-salasdetails',
-  imports: [MdbFormsModule, FormsModule],
+  imports: [MdbFormsModule, FormsModule, CommonModule],
   templateUrl: './salasdetails.component.html',
   styleUrl: './salasdetails.component.scss'
 })
-export class SalasdetailsComponent {
+export class SalasdetailsComponent implements OnInit {
 
   @Input() salas: Sala = new Sala();
   @Output() retorno = new EventEmitter<Sala>();
+  cursos: Curso[] = [];
 
   salaService = inject(SalaService);
+  cursoService = inject(CursoService);
 
   constructor() { }
+
+  ngOnInit() {
+    this.cursoService.findAll().subscribe({
+      next: (cursos: Curso[]) => this.cursos = cursos,
+      error: (error) => console.error('Erro ao carregar cursos:', error)
+    });
+  }
 
   save() {
     const isEdit = !!this.salas.id;
