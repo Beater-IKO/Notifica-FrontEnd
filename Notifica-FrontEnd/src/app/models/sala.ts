@@ -7,6 +7,7 @@ export class Sala {
   numero!: number;
   andar!: Andar;
   curso?: Curso;  // Opcional para resolver dependência circular
+  cursos?: Curso[];  // Array de múltiplos cursos
   alunos: Usuarios[] = [];      // todos usuários com role ALUNO
   professores: Usuarios[] = [];
 }

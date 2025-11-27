@@ -13,7 +13,11 @@
     </div>
     
     <div class="user-info">
-      <span class="user-name">Administrador</span>
+      <div class="user-avatar">
+        <i class="material-icons"></i>
+      </div>
+      <span class="user-name">{{ currentUser }}</span>
+      <button class="logout-btn" (click)="logout()">Sair</button>
     </div>
   </div>
 </header>

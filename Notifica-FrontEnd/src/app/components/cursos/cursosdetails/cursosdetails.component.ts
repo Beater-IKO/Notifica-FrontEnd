@@ -37,6 +37,18 @@ export class CursosdetailsComponent implements OnInit {
   }
 
   save() {
+    // Check if user is authenticated
+    const token = localStorage.getItem('jwt-token');
+    if (!token) {
+      Swal.fire({
+        title: 'Erro de autenticação',
+        text: 'Você precisa fazer login novamente.',
+        icon: 'error',
+        confirmButtonText: 'Ok'
+      });
+      return;
+    }
+    
     const isEdit = this.cursos.id !== undefined && this.cursos.id !== null;
     
     // Log para debug

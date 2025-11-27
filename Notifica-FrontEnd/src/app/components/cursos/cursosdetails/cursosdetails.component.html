@@ -11,11 +11,11 @@
 
           <mdb-form-control class="mb-4">
             <input mdbInput type="text" id="duracao" class="form-control" [(ngModel)]="cursos.duracao" required />
-            <label mdbLabel class="form-label" for="duracao">DURAÇÃO</label>
+            <label mdbLabel class="form-label" for="duracao">DURAÇÃO POR PERÍODO</label>
           </mdb-form-control>
 
           <div class="mb-4">
-            <label class="form-label">SALA (Opcional)</label>
+            <label class="form-label">SALA</label>
             <select class="form-select" [(ngModel)]="cursos.sala" id="sala" [compareWith]="compareSalas">
               <option [ngValue]="null">Selecione uma sala (opcional)</option>
               <option *ngFor="let sala of salas" [ngValue]="sala">Sala {{sala.numero}} - {{sala.andar}}</option>

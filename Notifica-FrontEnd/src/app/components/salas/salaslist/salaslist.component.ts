@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 export class SalaslistComponent implements OnInit {
   lista: Sala[] = [];
   salaEdit: Sala = new Sala();
+  currentUser: string = 'Administrador';
 
   modalService = inject(MdbModalService);
   @ViewChild('modalSalaDetalhe') modalSalaDetalhe!: TemplateRef<any>;
@@ -135,5 +136,26 @@ export class SalaslistComponent implements OnInit {
     return andarLabels[andar] || andar;
   }
 
+  getUniqueCursos(sala: Sala): string[] {
+    const cursos = new Set<string>();
+    
+    if (sala.curso?.nome) {
+      cursos.add(sala.curso.nome);
+    }
+    
+    if (sala.cursos && Array.isArray(sala.cursos)) {
+      sala.cursos.forEach(curso => {
+        if (curso?.nome) {
+          cursos.add(curso.nome);
+        }
+      });
+    }
+    
+    return Array.from(cursos);
+  }
+
+  logout() {
+    // Implementar lógica de logout
+  }
 
 }

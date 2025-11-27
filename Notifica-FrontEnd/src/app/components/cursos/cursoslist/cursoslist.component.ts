@@ -17,6 +17,7 @@ export class CursoslistComponent implements OnInit{
 
   lista: Curso[] = [];
     cursoEdit: Curso = new Curso();
+    currentUser: string = 'Administrador';
   
     modalService = inject(MdbModalService);
     @ViewChild('modalCursoDetalhe') modalCursoDetalhe!: TemplateRef<any>;
@@ -157,5 +158,8 @@ export class CursoslistComponent implements OnInit{
       return `Sala ${ultimaSala.numero}`;
     }
 
+    logout() {
+      // Implementar lógica de logout
+    }
 
 }

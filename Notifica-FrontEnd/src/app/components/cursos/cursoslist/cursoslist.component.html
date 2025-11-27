@@ -13,7 +13,8 @@
     </div>
     
     <div class="user-info">
-      <span class="user-name">Administrador</span>
+      <span class="user-name">{{ currentUser }}</span>
+      <button class="logout-btn" (click)="logout()">Sair</button>
     </div>
   </div>
 </header>
@@ -43,15 +44,15 @@
           </div>
           <div class="curso-info">
             <h4 class="curso-name">{{ curso.nome }}</h4>
-            <div class="curso-details">
-              <span class="curso-duration">
+            <div class="curso-details"> 
+              <span class="curso-duration"> 
                 <i class="fas fa-clock"></i>
-                {{ curso.duracao }}
+                {{ curso.duracao }} Períodos  
               </span>
-              <span class="curso-sala">
+              <!-- <span class="curso-sala">
                 <i class="fas fa-door-open"></i>
                 {{ getSalaAtual(curso) }}
-              </span>
+              </span> -->
             </div>
           </div>
           <div class="curso-actions">
