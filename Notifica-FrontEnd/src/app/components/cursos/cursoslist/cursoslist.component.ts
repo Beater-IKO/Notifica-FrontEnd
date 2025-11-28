@@ -5,6 +5,7 @@ import { Curso } from '../../../models/curso';
 import { CursoService } from '../../../services/curso.service';
 import { CursosdetailsComponent } from "../cursosdetails/cursosdetails.component";
 import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
+import { AuthService } from '../../../services/auth.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -17,16 +18,18 @@ export class CursoslistComponent implements OnInit{
 
   lista: Curso[] = [];
     cursoEdit: Curso = new Curso();
-    currentUser: string = 'Administrador';
+    currentUser: string = '';
   
     modalService = inject(MdbModalService);
     @ViewChild('modalCursoDetalhe') modalCursoDetalhe!: TemplateRef<any>;
     modalRef!: MdbModalRef<any>;
   
     cursoService = inject(CursoService);
+    authService = inject(AuthService);
   
     ngOnInit() {
       this.findAll();
+      this.currentUser = this.authService.getCurrentUser();
     }
   
     constructor() { }
@@ -159,7 +162,7 @@ export class CursoslistComponent implements OnInit{
     }
 
     logout() {
-      // Implementar lógica de logout
+      this.authService.logout();
     }
 
 }

@@ -5,6 +5,7 @@ import { Sala } from '../../../models/sala';
 import { SalaService } from '../../../services/sala.service';
 import { SalasdetailsComponent } from "../salasdetails/salasdetails.component";
 import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
+import { AuthService } from '../../../services/auth.service';
 import Swal from 'sweetalert2';
 
 
@@ -17,16 +18,18 @@ import Swal from 'sweetalert2';
 export class SalaslistComponent implements OnInit {
   lista: Sala[] = [];
   salaEdit: Sala = new Sala();
-  currentUser: string = 'Administrador';
+  currentUser: string = '';
 
   modalService = inject(MdbModalService);
   @ViewChild('modalSalaDetalhe') modalSalaDetalhe!: TemplateRef<any>;
   modalRef!: MdbModalRef<any>;
 
   salaService = inject(SalaService);
+  authService = inject(AuthService);
 
   ngOnInit() {
     this.findAll();
+     this.currentUser = this.authService.getCurrentUser();
   }
 
   constructor() { }
@@ -155,7 +158,7 @@ export class SalaslistComponent implements OnInit {
   }
 
   logout() {
-    // Implementar lógica de logout
+    this.authService.logout();
   }
 
 }

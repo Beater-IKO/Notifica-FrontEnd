@@ -41,7 +41,7 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: PrincipalComponent,
-    canActivate: [RoleGuard],
+    // canActivate: [RoleGuard],
     children: [
       { path: '', redirectTo: 'usuarios', pathMatch: 'full' },
       { path: 'usuarios', component: UsuarioslistComponent },
