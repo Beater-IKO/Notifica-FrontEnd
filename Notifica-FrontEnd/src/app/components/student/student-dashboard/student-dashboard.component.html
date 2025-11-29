@@ -11,7 +11,7 @@
         <span class="subtitle">Centro Universitário</span>
       </div>
     </div>
-    
+
     <div class="user-info">
       <div class="user-avatar">
         <i class="material-icons"></i>
@@ -27,15 +27,12 @@
   <!-- Sidebar -->
   <aside class="sidebar">
     <nav class="sidebar-nav">
-      <button 
-        *ngFor="let item of menuItems" 
-        class="nav-item"
-        [class.active]="item.active"
+      <button *ngFor="let item of menuItems" class="nav-item" [class.active]="item.active"
         (click)="onMenuItemClick(item)">
         {{ item.label }}
       </button>
     </nav>
-    
+
     <div class="sidebar-footer">
       <div class="user-avatar-small">
         <i class="material-icons">account_circle</i>
@@ -48,20 +45,17 @@
     <!-- Tickets List -->
     <section class="tickets-section">
       <div class="tickets-list">
-        <div 
-          *ngFor="let ticket of tickets" 
-          class="ticket-item"
-          [class.selected]="selectedTicket?.id === ticket.id"
+        <div *ngFor="let ticket of tickets" class="ticket-item" [class.selected]="selectedTicket?.id === ticket.id"
           (click)="selectTicket(ticket)">
-          
+
           <div class="ticket-icon">
             <i class="material-icons">home</i>
           </div>
-          
+
           <div class="ticket-info">
             <span class="ticket-id">Id = {{ ticket.id }}</span>
             <span class="ticket-details">
-              {{ ticket.title }} - {{ ticket.room }} - {{ ticket.floor }} - {{ ticket.type }} - {{ ticket.agent }}
+              {{ ticket.title }} - {{ ticket.sala }} - {{ ticket.type }} - {{ ticket.agent }}
             </span>
           </div>
         </div>
@@ -74,12 +68,10 @@
         <p class="ticket-description">
           {{ selectedTicket.description }}
         </p>
-        
+
         <div class="ticket-images" *ngIf="selectedTicket.images && selectedTicket.images.length > 0">
           <div class="image-grid">
-            <div 
-              *ngFor="let image of selectedTicket.images" 
-              class="image-placeholder">
+            <div *ngFor="let image of selectedTicket.images" class="image-placeholder">
               <!-- Placeholder para imagens -->
             </div>
           </div>

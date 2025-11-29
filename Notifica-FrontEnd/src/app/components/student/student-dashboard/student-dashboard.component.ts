@@ -8,8 +8,7 @@ import { TicketService, Ticket as ServiceTicket } from '../../../services/ticket
 export interface Ticket {
   id: string;
   title: string;
-  room: string;
-  floor: string;
+  sala: string;
   type: string;
   agent: string;
   status: 'open' | 'in-progress' | 'closed';
@@ -25,10 +24,10 @@ export interface Ticket {
   styleUrls: ['./student-dashboard.component.css']
 })
 export class StudentDashboardComponent implements OnInit {
-  
+
   currentUser: string;
   selectedTicket: Ticket | null = null;
-  
+
   tickets: Ticket[] = [];
 
   menuItems = [
@@ -58,7 +57,7 @@ export class StudentDashboardComponent implements OnInit {
   onMenuItemClick(item: any): void {
     this.menuItems.forEach(menuItem => menuItem.active = false);
     item.active = true;
-    
+
     if (item.route) {
       this.router.navigate([item.route]);
     }
@@ -69,13 +68,12 @@ export class StudentDashboardComponent implements OnInit {
       next: (tickets: ServiceTicket[]) => {
         const userId = this.authService.getUserId();
         const ticketsDoUsuario = tickets.filter(ticket => ticket.user.id === userId);
-        
+
         this.tickets = ticketsDoUsuario.map(ticket => ({
           id: ticket.id?.toString() || '0',
           title: ticket.problema,
-          room: ticket.area,
-          floor: '',
           type: ticket.prioridade,
+          sala: ticket.sala,
           agent: 'Sistema',
           status: this.mapearStatus(ticket.status),
           description: ticket.problema
@@ -89,7 +87,7 @@ export class StudentDashboardComponent implements OnInit {
   }
 
   private mapearStatus(status: string): 'open' | 'in-progress' | 'closed' {
-    switch(status) {
+    switch (status) {
       case 'INICIADO': return 'in-progress';
       case 'FINALIZADOS': return 'closed';
       default: return 'open';

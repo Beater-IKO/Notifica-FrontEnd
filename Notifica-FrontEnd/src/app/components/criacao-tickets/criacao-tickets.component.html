@@ -11,7 +11,7 @@
         <span class="subtitle">Centro Universitário</span>
       </div>
     </div>
-    
+
     <div class="user-info">
       <span class="user-name">{{ currentUser }}</span>
       <button class="logout-btn" (click)="logout()">Sair</button>
@@ -37,7 +37,7 @@
         Histórico de tickets
       </button>
     </nav>
-    
+
     <div class="sidebar-footer">
       <div class="user-avatar-small">
         <i class="material-icons">account_circle</i>
@@ -49,47 +49,15 @@
   <main class="content-area">
     <div class="form-container">
       <h2>Criar Novo Ticket</h2>
-      
+
       <div class="form-sections">
         <!-- Seleção de Sala -->
         <div class="form-section">
           <h5>Salas</h5>
           <select class="form-select" [(ngModel)]="sala">
             <option value="" disabled selected>Selecione uma sala</option>
-            <option *ngFor="let salaOpcao of salas" [value]="salaOpcao">{{ salaOpcao }}</option>
+            <option *ngFor="let salaOpcao of salas" [value]="salaOpcao.numero">Sala {{ salaOpcao.numero }}</option>
           </select>
-        </div>
-
-        <!-- Seleção de Área -->
-        <div class="form-section">
-          <h5>Área da faculdade</h5>
-          <div class="button-group">
-            <button type="button" class="btn" (click)="selecionarArea('INTERNA')"
-                    [class.btn-warning]="area === 'INTERNA'"
-                    [class.btn-outline-warning]="area !== 'INTERNA'">Interna</button>
-            <button type="button" class="btn" (click)="selecionarArea('EXTERNA')"
-                    [class.btn-warning]="area === 'EXTERNA'"
-                    [class.btn-outline-warning]="area !== 'EXTERNA'">Externa</button>
-          </div>
-        </div>
-
-        <!-- Seleção de Andar -->
-        <div class="form-section">
-          <h5>Selecione o andar</h5>
-          <div class="button-grid">
-            <button type="button" class="btn" (click)="selecionarAndar('1º Andar')"
-                    [class.btn-secondary]="andar === '1º Andar'"
-                    [class.btn-outline-secondary]="andar !== '1º Andar'">1º Andar</button>
-            <button type="button" class="btn" (click)="selecionarAndar('2º Andar')"
-                    [class.btn-secondary]="andar === '2º Andar'"
-                    [class.btn-outline-secondary]="andar !== '2º Andar'">2º Andar</button>
-            <button type="button" class="btn" (click)="selecionarAndar('3º Andar')"
-                    [class.btn-secondary]="andar === '3º Andar'"
-                    [class.btn-outline-secondary]="andar !== '3º Andar'">3º Andar</button>
-            <button type="button" class="btn" (click)="selecionarAndar('4º Andar')"
-                    [class.btn-secondary]="andar === '4º Andar'"
-                    [class.btn-outline-secondary]="andar !== '4º Andar'">4º Andar</button>
-          </div>
         </div>
 
         <!-- Seleção de Prioridade -->
@@ -97,17 +65,16 @@
           <h5>Grau de prioridade</h5>
           <div class="button-grid">
             <button type="button" class="btn" (click)="selecionarPrioridade('LEVE')"
-                    [class.btn-success]="prioridade === 'LEVE'"
-                    [class.btn-outline-success]="prioridade !== 'LEVE'">Leve</button>
+              [class.btn-success]="prioridade === 'LEVE'"
+              [class.btn-outline-success]="prioridade !== 'LEVE'">Leve</button>
             <button type="button" class="btn" (click)="selecionarPrioridade('MEDIO')"
-                    [class.btn-info]="prioridade === 'MEDIO'"
-                    [class.btn-outline-info]="prioridade !== 'MEDIO'">Médio</button>
+              [class.btn-info]="prioridade === 'MEDIO'" [class.btn-outline-info]="prioridade !== 'MEDIO'">Médio</button>
             <button type="button" class="btn" (click)="selecionarPrioridade('ALTO')"
-                    [class.btn-warning]="prioridade === 'ALTO'"
-                    [class.btn-outline-warning]="prioridade !== 'ALTO'">Alto</button>
+              [class.btn-warning]="prioridade === 'ALTO'"
+              [class.btn-outline-warning]="prioridade !== 'ALTO'">Alto</button>
             <button type="button" class="btn" (click)="selecionarPrioridade('URGENTE')"
-                    [class.btn-danger]="prioridade === 'URGENTE'"
-                    [class.btn-outline-danger]="prioridade !== 'URGENTE'">Urgente</button>
+              [class.btn-danger]="prioridade === 'URGENTE'"
+              [class.btn-outline-danger]="prioridade !== 'URGENTE'">Urgente</button>
           </div>
         </div>
 
@@ -117,15 +84,6 @@
           <select class="form-select" [(ngModel)]="tipoSelecionado" (change)="selecionarTipo($event)">
             <option value="" disabled selected>Selecione o tipo de problema</option>
             <option *ngFor="let tipo of tipoProblemas" [value]="tipo.nome">{{ tipo.nome }}</option>
-          </select>
-        </div>
-
-        <!-- Seleção do Subtipo de Problema -->
-        <div class="form-section">
-          <h5>Selecione o subtipo do problema</h5>
-          <select class="form-select" [(ngModel)]="subtipoSelecionado" [disabled]="!tipoSelecionado">
-            <option value="" disabled selected>Selecione o subtipo de problema</option>
-            <option *ngFor="let subtipo of subtiposDisponiveis" [value]="subtipo">{{ subtipo }}</option>
           </select>
         </div>
 

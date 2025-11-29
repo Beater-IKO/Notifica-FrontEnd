@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
@@ -8,6 +8,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { TicketService, Ticket } from '../../services/ticket.service';
 import { AuthService } from '../../services/auth.service';
 import { ProblemaService, TipoProblema } from '../../services/problema.service';
+import { SalaService } from '../../services/sala.service';
+import { Sala } from '../../models/sala';
 
 @Component({
   selector: 'app-criacao-tickets',
@@ -16,30 +18,45 @@ import { ProblemaService, TipoProblema } from '../../services/problema.service';
   styleUrl: './criacao-tickets.component.scss',
 })
 
-export class CriacaoTicketsComponent {
+export class CriacaoTicketsComponent implements OnInit {
   currentUser: string;
-  
+
   problema: string = '';
-  area: string = '';
   prioridade: string = '';
-  sala: string = '';
-  andar: string = '';
+  sala: any = '';
   categoriaId: number = 0;
   tipoSelecionado: string = '';
   subtipoSelecionado: string = '';
 
-  salas: string[] = [];
+  salas: Sala[] = [];
   tipoProblemas: TipoProblema[] = [];
   subtiposDisponiveis: string[] = [];
 
   constructor(
     private ticketService: TicketService,
     private authService: AuthService,
-    private problemaService: ProblemaService
+    private problemaService: ProblemaService,
+    private salaService: SalaService
   ) {
     this.currentUser = this.authService.getCurrentUser();
-    this.salas = this.problemaService.getSalas();
     this.tipoProblemas = this.problemaService.getTipoProblemas();
+  }
+
+  ngOnInit(): void {
+    this.salaService.findAll().subscribe({
+      next: (resultado) => {
+        this.salas = resultado || [];
+      },
+      error: (err) => {
+        console.error('Erro ao carregar salas:', err);
+        // fallback simples: usar lista estática do ProblemaService (map para Sala)
+        const fallback = this.problemaService.getSalas();
+        this.salas = fallback.map(s => {
+          const numeroStr = (s || '').toString().replace(/[^0-9]/g, '');
+          return { numero: numeroStr ? Number(numeroStr) : s } as unknown as Sala;
+        });
+      }
+    });
   }
 
   selecionarTipo(event: any) {
@@ -48,13 +65,7 @@ export class CriacaoTicketsComponent {
     this.subtipoSelecionado = '';
   }
 
-  selecionarArea(areaEscolhida: string) {
-    this.area = areaEscolhida;
-  }
 
-  selecionarAndar(andarEscolhido: string) {
-    this.andar = andarEscolhido;
-  }
 
   selecionarPrioridade(prioridadeEscolhida: string) {
     this.prioridade = prioridadeEscolhida;
@@ -67,10 +78,11 @@ export class CriacaoTicketsComponent {
 
     const ticket: Ticket = {
       problema: this.problema.trim(),
-      area: this.area,
       prioridade: this.prioridade,
+      sala: this.sala,
       status: 'INICIADO',
-      user: { id: this.authService.getUserId() }
+      user: { id: this.authService.getUserId() },
+      room: undefined
     };
 
     this.ticketService.criarTicket(ticket).subscribe({
@@ -89,10 +101,6 @@ export class CriacaoTicketsComponent {
       alert('Por favor, preencha a descrição do problema.');
       return false;
     }
-    if (!this.area) {
-      alert('Por favor, selecione a área da faculdade.');
-      return false;
-    }
     if (!this.prioridade) {
       alert('Por favor, selecione a prioridade.');
       return false;
@@ -102,10 +110,8 @@ export class CriacaoTicketsComponent {
 
   limparFormulario() {
     this.problema = '';
-    this.area = '';
     this.prioridade = '';
     this.sala = '';
-    this.andar = '';
     this.categoriaId = 0;
     this.tipoSelecionado = '';
     this.subtipoSelecionado = '';

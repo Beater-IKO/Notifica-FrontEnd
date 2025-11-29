@@ -11,7 +11,7 @@
         <span class="subtitle">Centro Universitário</span>
       </div>
     </div>
-    
+
     <div class="user-info">
       <span class="user-name">{{ currentUser }}</span>
       <button class="logout-btn" (click)="logout()">Sair</button>
@@ -37,7 +37,7 @@
         Histórico de tickets
       </button>
     </nav>
-    
+
     <div class="sidebar-footer">
       <div class="user-avatar-small">
         <i class="material-icons">account_circle</i>
@@ -49,7 +49,7 @@
   <main class="content-area">
     <div class="form-container">
       <h2>Tickets em Andamento</h2>
-      
+
       <div class="tickets-list">
         <div *ngIf="tickets.length === 0" class="alert alert-info">
           Nenhum ticket em andamento encontrado.
@@ -60,11 +60,10 @@
             <h5 class="ticket-title">Ticket #{{ ticket.id }}</h5>
             <div class="ticket-badges">
               <span class="badge badge-priority">{{ ticket.prioridade }}</span>
-              <span class="badge badge-area">{{ ticket.area }}</span>
             </div>
           </div>
           <p class="ticket-description">{{ ticket.problema }}</p>
-          
+
           <div class="ticket-assignment" *ngIf="isAdmin()">
             <div class="assignment-info">
               <span class="assignment-label">
@@ -73,16 +72,18 @@
               </span>
               <span class="no-assignment">Sistema em desenvolvimento - Atribuição será implementada</span>
             </div>
-            
+
             <div class="assignment-actions">
-              <select class="form-select" [(ngModel)]="selectedFuncionario[ticket.id!]" (change)="onFuncionarioChange(ticket.id!)">
+              <select class="form-select" [(ngModel)]="selectedFuncionario[ticket.id!]"
+                (change)="onFuncionarioChange(ticket.id!)">
                 <option value="">Selecionar funcionário...</option>
                 <option *ngFor="let funcionario of funcionarios" [value]="funcionario.id">
                   {{ funcionario.nome }} ({{ getRoleLabel(funcionario.role) }})
                 </option>
               </select>
-              
-              <button class="btn btn-assign" (click)="assignTicket(ticket)" [disabled]="!selectedFuncionario[ticket.id!]">
+
+              <button class="btn btn-assign" (click)="assignTicket(ticket)"
+                [disabled]="!selectedFuncionario[ticket.id!]">
                 <i class="fas fa-user-plus"></i>
                 Atribuir
               </button>

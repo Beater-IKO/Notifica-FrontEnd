@@ -6,9 +6,10 @@ import { ConfigService } from './config.service';
 import { MockService } from './mock.service';
 
 export interface Ticket {
+  room: any;
   id?: number;
   problema: string;
-  area: string;
+  sala: string;
   prioridade: string;
   status: string;
   user: { id: number };
