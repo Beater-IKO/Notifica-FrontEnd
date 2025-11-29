@@ -15,14 +15,17 @@ export class AuthInterceptor implements HttpInterceptor {
     constructor(private router: Router) { }
 
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('jwt-token');
 
         if (token) {
+            console.log('[AuthInterceptor] adding Authorization header for', request.url, 'tokenPreview:', token.substring(0, 10) + '... (len=' + token.length + ')');
             request = request.clone({
                 setHeaders: {
                     Authorization: `Bearer ${token}`
                 }
             });
+        } else {
+            console.log('[AuthInterceptor] No token found for', request.url);
         }
 
         return next.handle(request).pipe(

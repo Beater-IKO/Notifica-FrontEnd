@@ -82,7 +82,7 @@ export class CriacaoTicketsComponent implements OnInit {
       sala: this.sala,
       status: 'INICIADO',
       user: { id: this.authService.getUserId() },
-      room: undefined
+
     };
 
     this.ticketService.criarTicket(ticket).subscribe({

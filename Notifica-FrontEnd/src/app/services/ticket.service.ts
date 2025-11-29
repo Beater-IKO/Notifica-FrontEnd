@@ -6,7 +6,6 @@ import { ConfigService } from './config.service';
 import { MockService } from './mock.service';
 
 export interface Ticket {
-  room: any;
   id?: number;
   problema: string;
   sala: string;
@@ -50,7 +49,8 @@ export class TicketService {
   obterTicketsPorStatus(status: string): Observable<Ticket[]> {
     return this.http.get<Ticket[]>(`${this.apiUrl}/status/${status}`).pipe(
       catchError(error => {
-        console.warn('Backend indisponível, usando mock:', error);
+        console.warn('Backend indisponível para status', status, '- erro:', error.status, error.message);
+        console.warn('Usando mock service como fallback');
         return this.mockService.obterTickets();
       })
     );
