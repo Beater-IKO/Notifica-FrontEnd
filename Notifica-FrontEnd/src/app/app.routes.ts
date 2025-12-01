@@ -1,5 +1,4 @@
 import { CriacaoTicketsComponent } from './components/criacao-tickets/criacao-tickets.component';
-import { HistoricoTicketsComponent } from './components/historico-tickets/historico-tickets.component';
 import { LoginComponent } from './components/layout/login/login.component';
 import { PrincipalComponent } from './components/layout/principal/principal.component';
 import { SalasdetailsComponent } from './components/salas/salasdetails/salasdetails.component';
@@ -29,7 +28,6 @@ export const routes: Routes = [
   
   // Rotas para PROFESSOR/FUNCIONARIO
   { path: 'criacao-tickets', component: CriacaoTicketsComponent, canActivate: [RoleGuard] },
-  { path: 'historico', component: HistoricoTicketsComponent, canActivate: [RoleGuard] },
   { path: 'andamentos', component: TicketsAndamentosComponent, canActivate: [RoleGuard] },
   { path: 'finalizados', component: TicketsFinalizadosComponent, canActivate: [RoleGuard] },
 { path: 'tela-de-funcionarios', component: TelaFuncionariosComponent }, // removido canActivate temporariamente

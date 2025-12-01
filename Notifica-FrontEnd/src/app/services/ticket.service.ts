@@ -47,12 +47,10 @@ export class TicketService {
   }
 
   obterTicketsPorStatus(status: string): Observable<Ticket[]> {
-    return this.http.get<Ticket[]>(`${this.apiUrl}/status/${status}`).pipe(
-      catchError(error => {
-        console.warn('Backend indisponível para status', status, '- erro:', error.status, error.message);
-        console.warn('Usando mock service como fallback');
-        return this.mockService.obterTickets();
-      })
-    );
+    return this.http.get<Ticket[]>(`${this.apiUrl}/status/${status}`);
+  }
+
+  atualizarStatus(ticketId: number, status: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${ticketId}/status`, { status });
   }
 }

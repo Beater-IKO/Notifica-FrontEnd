@@ -174,6 +174,93 @@
   transform: translateY(-1px);
 }
 
+/* Ticket Actions Styles */
+.ticket-actions {
+  margin-top: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.edit-controls, .status-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.edit-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-edit {
+  background: #007bff;
+  color: white;
+}
+
+.btn-edit:hover {
+  background: #0056b3;
+}
+
+.btn-save {
+  background: #28a745;
+  color: white;
+}
+
+.btn-save:hover {
+  background: #1e7e34;
+}
+
+.btn-cancel {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background: #545b62;
+}
+
+.ticket-edit {
+  margin: 15px 0;
+  padding: 15px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #00d4aa;
+  box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.2);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+}
+
 @media (max-width: 768px) {
   .assignment-actions {
     flex-direction: column;
@@ -182,5 +269,14 @@
   
   .form-select {
     min-width: auto;
+  }
+  
+  .edit-controls, .status-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .edit-buttons {
+    justify-content: center;
   }
 }

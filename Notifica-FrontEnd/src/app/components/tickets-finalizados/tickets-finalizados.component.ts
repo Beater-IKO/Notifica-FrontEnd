@@ -31,9 +31,10 @@ export class TicketsFinalizadosComponent implements OnInit {
     this.ticketService.obterTicketsPorStatus('FINALIZADOS').subscribe({
       next: (response) => {
         this.tickets = response;
+        console.log('Tickets finalizados carregados do backend:', this.tickets.length);
       },
       error: (error) => {
-        console.log('Erro ao carregar tickets:', error);
+        console.log('Erro ao carregar tickets finalizados:', error);
         this.tickets = [];
       }
     });

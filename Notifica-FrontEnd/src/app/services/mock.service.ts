@@ -58,4 +58,35 @@ export class MockService {
     console.log('MockService: retornando', mockTickets.length, 'tickets');
     return of(mockTickets).pipe(delay(500));
   }
+  
+  obterTicketsFinalizados(): Observable<any[]> {
+    const mockTicketsFinalizados = [
+      { 
+        id: 10, 
+        problema: 'Ar condicionado consertado', 
+        sala: 'Sala 101', 
+        prioridade: 'Alta', 
+        status: 'FINALIZADO',
+        user: { id: 1 }
+      },
+      { 
+        id: 11, 
+        problema: 'Projetor substituído', 
+        sala: 'Sala 202', 
+        prioridade: 'Média', 
+        status: 'FINALIZADO',
+        user: { id: 2 }
+      },
+      { 
+        id: 12, 
+        problema: 'Computador formatado', 
+        sala: 'Lab 301', 
+        prioridade: 'Alta', 
+        status: 'FINALIZADO',
+        user: { id: 1 }
+      }
+    ];
+    console.log('MockService: retornando', mockTicketsFinalizados.length, 'tickets finalizados');
+    return of(mockTicketsFinalizados).pipe(delay(500));
+  }
 }

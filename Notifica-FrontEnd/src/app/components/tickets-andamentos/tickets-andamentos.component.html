@@ -33,9 +33,6 @@
       <button routerLink="/finalizados" class="nav-item">
         Finalizados
       </button>
-      <button routerLink="/historico" class="nav-item">
-        Histórico de tickets
-      </button>
     </nav>
 
     <div class="sidebar-footer">
@@ -62,7 +59,60 @@
               <span class="badge badge-priority">{{ ticket.prioridade }}</span>
             </div>
           </div>
-          <p class="ticket-description">{{ ticket.problema }}</p>
+          <div *ngIf="!isEditingTicket(ticket.id!)" class="ticket-description">
+            <p>{{ ticket.problema }}</p>
+            <p><strong>Sala:</strong> {{ ticket.sala }}</p>
+          </div>
+
+          <!-- Edição de dados (apenas admin) -->
+          <div *ngIf="isEditingTicket(ticket.id!) && isAdmin()" class="ticket-edit">
+            <div class="form-group">
+              <label>Problema:</label>
+              <textarea class="form-control" [(ngModel)]="editingData[ticket.id!].problema"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Sala:</label>
+              <input class="form-control" [(ngModel)]="editingData[ticket.id!].sala">
+            </div>
+            <div class="form-group">
+              <label>Prioridade:</label>
+              <select class="form-control" [(ngModel)]="editingData[ticket.id!].prioridade">
+                <option value="Baixa">Baixa</option>
+                <option value="Média">Média</option>
+                <option value="Alta">Alta</option>
+                <option value="Urgente">Urgente</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Controles de ação -->
+          <div class="ticket-actions">
+            <!-- Botões de edição (apenas admin) -->
+            <div *ngIf="isAdmin()" class="edit-controls">
+              <button *ngIf="!isEditingTicket(ticket.id!)" class="btn btn-edit" (click)="startEdit(ticket)">
+                <i class="fas fa-edit"></i> Editar
+              </button>
+              <div *ngIf="isEditingTicket(ticket.id!)" class="edit-buttons">
+                <button class="btn btn-save" (click)="saveTicket(ticket)">
+                  <i class="fas fa-save"></i> Salvar
+                </button>
+                <button class="btn btn-cancel" (click)="cancelEdit(ticket.id!)">
+                  <i class="fas fa-times"></i> Cancelar
+                </button>
+              </div>
+            </div>
+
+            <!-- Controle de status (admin e funcionário) -->
+            <div *ngIf="canChangeStatus()" class="status-controls">
+              <label>Status:</label>
+              <select class="form-control" [(ngModel)]="ticket.status" (change)="updateStatus(ticket)">
+                <option value="INICIADO">Iniciado</option>
+                <option value="VISTO">Visto</option>
+                <option value="EM_ANDAMENTO">Em Andamento</option>
+                <option value="FINALIZADOS">Finalizado</option>
+              </select>
+            </div>
+          </div>
 
           <div class="ticket-assignment" *ngIf="isAdmin()">
             <div class="assignment-info">

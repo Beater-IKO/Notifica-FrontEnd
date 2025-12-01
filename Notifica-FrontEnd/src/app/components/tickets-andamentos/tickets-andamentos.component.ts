@@ -21,6 +21,8 @@ export class TicketsAndamentosComponent implements OnInit {
   funcionarios: Usuario[] = [];
   selectedFuncionario: { [key: number]: number } = {};
   userRole: string;
+  editingTickets: Set<number> = new Set();
+  editingData: { [key: number]: any } = {};
 
   constructor(
     private ticketService: TicketService,
@@ -43,72 +45,24 @@ export class TicketsAndamentosComponent implements OnInit {
   }
 
   carregarTickets() {
-    // Temporariamente forçar uso do mock se houver problemas com o backend
-    const forceMock = true; // Altere para false quando o backend estiver funcionando
+    // Carregar tickets INICIADO, EM_ANDAMENTO e VISTO
+    const ticketsIniciado$ = this.ticketService.obterTicketsPorStatus('INICIADO');
+    const ticketsEmAndamento$ = this.ticketService.obterTicketsPorStatus('EM_ANDAMENTO');
+    const ticketsVisto$ = this.ticketService.obterTicketsPorStatus('VISTO');
     
-    if (forceMock) {
-      console.log('Forçando uso do mock devido a problemas no backend');
-      this.carregarTicketsMock();
-      return;
-    }
-    
-    this.ticketService.obterTicketsPorStatus('INICIADO').subscribe({
-      next: (response) => {
-        this.tickets = response;
-        console.log('Tickets carregados do backend:', this.tickets.length);
-      },
-      error: (error) => {
-        console.log('Erro ao carregar tickets do backend:', error);
-        console.log('Fallback para dados mock');
-        this.carregarTicketsMock();
-      }
+    // Combinar as três chamadas
+    Promise.all([
+      ticketsIniciado$.toPromise(),
+      ticketsEmAndamento$.toPromise(),
+      ticketsVisto$.toPromise()
+    ]).then(([iniciados, emAndamento, visto]) => {
+      this.tickets = [...(iniciados || []), ...(emAndamento || []), ...(visto || [])];
+      console.log('Tickets em andamento carregados:', this.tickets.length);
+      console.log('Dados dos tickets:', this.tickets);
+    }).catch(error => {
+      console.log('Erro ao carregar tickets em andamento:', error);
+      this.tickets = [];
     });
-  }
-  
-  private carregarTicketsMock() {
-    this.tickets = [
-      { 
-        id: 1, 
-        problema: 'Ar condicionado não funciona', 
-        sala: 'Sala 101', 
-        prioridade: 'Alta', 
-        status: 'INICIADO',
-        user: { id: 1 }
-      },
-      { 
-        id: 2, 
-        problema: 'Projetor com defeito', 
-        sala: 'Sala 202', 
-        prioridade: 'Média', 
-        status: 'INICIADO',
-        user: { id: 1 }
-      },
-      { 
-        id: 3, 
-        problema: 'Computador não liga', 
-        sala: 'Lab 301', 
-        prioridade: 'Alta', 
-        status: 'INICIADO',
-        user: { id: 2 }
-      },
-      { 
-        id: 4, 
-        problema: 'Quadro branco riscado', 
-        sala: 'Sala 105', 
-        prioridade: 'Baixa', 
-        status: 'INICIADO',
-        user: { id: 1 }
-      },
-      { 
-        id: 5, 
-        problema: 'Internet lenta', 
-        sala: 'Biblioteca', 
-        prioridade: 'Média', 
-        status: 'INICIADO',
-        user: { id: 3 }
-      }
-    ];
-    console.log('Tickets mock carregados:', this.tickets.length);
   }
 
   carregarFuncionarios() {
@@ -127,6 +81,62 @@ export class TicketsAndamentosComponent implements OnInit {
 
   isAdmin(): boolean {
     return this.userRole === 'ADMIN' || this.userRole === 'GESTOR';
+  }
+
+  canChangeStatus(): boolean {
+    return this.userRole === 'ADMIN' || this.userRole === 'GESTOR' || this.userRole === 'FUNCIONARIO' || this.userRole === 'PROFESSOR';
+  }
+
+  isEditingTicket(ticketId: number): boolean {
+    return this.editingTickets.has(ticketId);
+  }
+
+  startEdit(ticket: Ticket): void {
+    if (!ticket.id) return;
+    
+    this.editingTickets.add(ticket.id);
+    this.editingData[ticket.id] = {
+      problema: ticket.problema,
+      sala: ticket.sala,
+      prioridade: ticket.prioridade
+    };
+  }
+
+  cancelEdit(ticketId: number): void {
+    this.editingTickets.delete(ticketId);
+    delete this.editingData[ticketId];
+  }
+
+  saveTicket(ticket: Ticket): void {
+    if (!ticket.id) return;
+    
+    const updatedData = this.editingData[ticket.id];
+    
+    // Atualizar o ticket localmente
+    ticket.problema = updatedData.problema;
+    ticket.sala = updatedData.sala;
+    ticket.prioridade = updatedData.prioridade;
+    
+    // TODO: Implementar chamada para o backend
+    console.log('Salvando ticket:', ticket);
+    
+    this.cancelEdit(ticket.id);
+  }
+
+  updateStatus(ticket: Ticket): void {
+    if (!ticket.id) return;
+    
+    this.ticketService.atualizarStatus(ticket.id, ticket.status).subscribe({
+      next: (response) => {
+        console.log('Status atualizado com sucesso');
+        if (ticket.status === 'FINALIZADOS') {
+          this.carregarTickets();
+        }
+      },
+      error: (error) => {
+        console.error('Erro ao atualizar status:', error);
+      }
+    });
   }
 
   onFuncionarioChange(ticketId: number) {
