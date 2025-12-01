@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { ConfigService } from './config.service';
-import { MockService } from './mock.service';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.prod';
+
 
 export interface Ticket {
   id?: number;
@@ -26,20 +25,13 @@ export class TicketService {
   private apiUrl: string;
 
   constructor(
-    private http: HttpClient,
-    private configService: ConfigService,
-    private mockService: MockService
+    private http: HttpClient
   ) {
-    this.apiUrl = `${this.configService.getApiUrl()}/tickets`;
+    this.apiUrl = environment.SERVIDOR + '/api/tickets';
   }
 
   criarTicket(ticket: Ticket): Observable<any> {
-    return this.http.post(this.apiUrl, ticket).pipe(
-      catchError(error => {
-        console.warn('Backend indisponível, usando mock:', error);
-        return this.mockService.criarTicket(ticket);
-      })
-    );
+    return this.http.post(this.apiUrl, ticket);
   }
 
   obterTickets(): Observable<Ticket[]> {

@@ -3,8 +3,10 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { ConfigService } from './config.service';
-import { Token } from '../models/token.model';
+import { environment } from '../../environments/environment.prod';
+
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +15,11 @@ export class AuthService {
 
   constructor(
     private router: Router,
-    private http: HttpClient,
-    private configService: ConfigService
+    private http: HttpClient
   ) { }
 
   login(dados: any): Observable<any> {
-    return this.http.post<any>(`${this.configService.getApiUrl()}/auth/login`, dados).pipe(
+    return this.http.post<any>(environment.SERVIDOR + '/auth/login', dados).pipe(
       tap(response => {
         console.log('Resposta completa do login:', response);
         if (response.token) {
@@ -41,7 +42,7 @@ export class AuthService {
     console.log('=== REDIRECIONAMENTO ===');
     console.log('Role recebido:', role);
     console.log('Tipo do role:', typeof role);
-    
+
     switch (role) {
       case 'ADMIN':
         console.log('Redirecionando para ADMIN: /admin-dashboard');
@@ -69,7 +70,7 @@ export class AuthService {
         console.log('Role não reconhecido, redirecionando para /student. Role:', role);
         this.router.navigate(['/student']);
     }
-    
+
     console.log('=== FIM REDIRECIONAMENTO ===');
   }
 

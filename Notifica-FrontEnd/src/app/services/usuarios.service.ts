@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Usuario } from '../models/usuario';
 import { Observable } from 'rxjs';
-import { ConfigService } from './config.service';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +12,9 @@ export class UsuariosService {
   private API: string;
 
   constructor(
-    private http: HttpClient,
-    private configService: ConfigService
+    private http: HttpClient
   ) {
-    this.API = `${this.configService.getApiUrl()}/usuarios`;
+    this.API = environment.SERVIDOR + '/api/usuarios';
   }
 
   private getHttpOptions() {
@@ -31,7 +30,7 @@ export class UsuariosService {
       return this.http.put<Usuario>(`${this.API}/update/${usuario.id}`, usuario, this.getHttpOptions());
     } else {
       // Usando endpoint público de registro
-      const registerUrl = `${this.configService.getApiUrl()}/auth/register`;
+      const registerUrl = environment.SERVIDOR + '/auth/register';
       return this.http.post<Usuario>(registerUrl, usuario, this.getHttpOptions());
     }
   }

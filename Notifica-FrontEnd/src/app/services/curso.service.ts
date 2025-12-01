@@ -2,13 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Curso } from '../models/curso';
+import { environment } from '../../environments/environment.prod';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class CursoService {
 
-  private API = 'http://localhost:8080/api/cursos';
+  private API = environment.SERVIDOR + "/cursos";
 
   constructor(private http: HttpClient) { }
 
