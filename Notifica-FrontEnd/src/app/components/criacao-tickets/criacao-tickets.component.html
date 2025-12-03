@@ -52,8 +52,8 @@
         <div class="form-section">
           <h5>Salas</h5>
           <select class="form-select" [(ngModel)]="sala">
-            <option value="" disabled selected>Selecione uma sala</option>
-            <option *ngFor="let salaOpcao of salas" [value]="salaOpcao.numero">Sala {{ salaOpcao.numero }}</option>
+            <option [value]="null" disabled selected>Selecione uma sala</option>
+            <option *ngFor="let salaOpcao of salas" [value]="salaOpcao.id">Sala {{ salaOpcao.numero }}</option>
           </select>
         </div>
 

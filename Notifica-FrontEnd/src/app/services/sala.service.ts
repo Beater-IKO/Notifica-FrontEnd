@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment.prod';
 })
 export class SalaService {
 
-  private API = environment.SERVIDOR + '/api/salas';
+  private API = environment.SERVIDOR + '/salas';
 
   constructor(private http: HttpClient) { }
 

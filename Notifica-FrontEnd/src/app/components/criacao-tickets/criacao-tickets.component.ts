@@ -23,7 +23,7 @@ export class CriacaoTicketsComponent implements OnInit {
 
   problema: string = '';
   prioridade: string = '';
-  sala: any = '';
+  sala: number | null = null;
   categoriaId: number = 0;
   tipoSelecionado: string = '';
   subtipoSelecionado: string = '';
@@ -79,10 +79,9 @@ export class CriacaoTicketsComponent implements OnInit {
     const ticket: Ticket = {
       problema: this.problema.trim(),
       prioridade: this.prioridade,
-      sala: this.sala,
+      sala: this.sala!,
       status: 'INICIADO',
-      user: { id: this.authService.getUserId() },
-
+      user: { id: this.authService.getUserId() }
     };
 
     this.ticketService.criarTicket(ticket).subscribe({
@@ -105,13 +104,17 @@ export class CriacaoTicketsComponent implements OnInit {
       alert('Por favor, selecione a prioridade.');
       return false;
     }
+    if (!this.sala) {
+      alert('Por favor, selecione uma sala.');
+      return false;
+    }
     return true;
   }
 
   limparFormulario() {
     this.problema = '';
     this.prioridade = '';
-    this.sala = '';
+    this.sala = null;
     this.categoriaId = 0;
     this.tipoSelecionado = '';
     this.subtipoSelecionado = '';

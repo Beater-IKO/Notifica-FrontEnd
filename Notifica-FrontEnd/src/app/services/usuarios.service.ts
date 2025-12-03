@@ -14,7 +14,7 @@ export class UsuariosService {
   constructor(
     private http: HttpClient
   ) {
-    this.API = environment.SERVIDOR + '/api/usuarios';
+    this.API = environment.SERVIDOR + '/usuarios';
   }
 
   private getHttpOptions() {

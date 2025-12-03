@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment.prod';
 export interface Ticket {
   id?: number;
   problema: string;
-  sala: string;
+  sala: number;
   prioridade: string;
   status: string;
   user: { id: number };
@@ -27,7 +27,7 @@ export class TicketService {
   constructor(
     private http: HttpClient
   ) {
-    this.apiUrl = environment.SERVIDOR + '/api/tickets';
+    this.apiUrl = environment.SERVIDOR + '/tickets';
   }
 
   criarTicket(ticket: Ticket): Observable<any> {

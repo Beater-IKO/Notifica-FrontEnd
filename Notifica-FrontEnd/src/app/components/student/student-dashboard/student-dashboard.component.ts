@@ -8,7 +8,7 @@ import { TicketService, Ticket as ServiceTicket } from '../../../services/ticket
 export interface Ticket {
   id: string;
   title: string;
-  sala: string;
+  sala: number;
   type: string;
   agent: string;
   status: 'open' | 'in-progress' | 'closed';
